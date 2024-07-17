@@ -17,7 +17,7 @@ $(NAME): $(OBJ_DIR) $(OBJS)
 $(OBJ_DIR):
 	@mkdir -p $(ALL_SRC_DIR)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@printf "$(YELLOW)Compile $<$(RESET) $(BRIGHT_BLACK)-->$(RESET) $(BRIGHT_MAGENTA)$@$(RESET)\n"
 	@$(CC) $(CFLAGS) -o $@ -c $<
 

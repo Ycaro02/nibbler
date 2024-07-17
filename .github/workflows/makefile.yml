@@ -15,9 +15,14 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Run sfml install script  
-      run: |
-        sudo apt-get install libx11-dev libxrandr-dev libxcursor-dev libxi-dev && sh -c rsc/init_sfml.sh
+    - name: X11 deps  
+      run: sudo apt install libx11-dev libxrandr-dev libxcursor-dev libxi-dev
+
+    - name: OpenGL package (need to change)
+      run : sudo apt install libglu1-mesa-dev freeglut3-dev mesa-common-dev
+
+    - name: run SFML script install
+      run: sh -c rsc/init_sfml.sh
 
     - name: Run make
       run: make

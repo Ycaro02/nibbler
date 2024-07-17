@@ -10,7 +10,7 @@ MAIN_MANDATORY 	=	main.cpp
 
 SRCS			=	test.cpp
 
-# SRCS_BONUS		=	main_bonus.c
+# SRCS_BONUS		=	main_bonus.cpp
 
 OBJS 			= $(addprefix $(OBJ_DIR)/, $(SRCS:.cpp=.o))
 
