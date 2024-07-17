@@ -15,6 +15,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Run sfml install script  
+      run: sh -c rsc/init_sfml.sh
+
     - name: Run make
       run: make
 
