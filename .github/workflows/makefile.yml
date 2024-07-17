@@ -16,7 +16,8 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Run sfml install script  
-      run: sh -c rsc/init_sfml.sh
+      run: |
+        sudo apt-get install libx11-dev libxrandr-dev libxcursor-dev libxi-dev && sh -c rsc/init_sfml.sh
 
     - name: Run make
       run: make
