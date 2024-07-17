@@ -2,7 +2,7 @@
 
 # Variables
 PWD=$(pwd)
-BASE_DIR="$PWD/local/sfml"
+BASE_DIR="$PWD/rsc/lib"
 DEPS_DIR="$BASE_DIR/deps"
 INSTALL_DIR="$BASE_DIR/install"
 
@@ -22,6 +22,8 @@ fi
 mkdir -p ${DEPS_DIR}
 mkdir -p ${INSTALL_DIR}
 
+set -e  # Exit immediately if a command exits with a non-zero status.
+
 # Helper function to install a library
 function install_library {
     local url=$1
@@ -29,7 +31,6 @@ function install_library {
     local extension=$3
     local configure_flags=$4
 
-	set -e  # Exit immediately if a command exits with a non-zero status.
 
     # echo "Dowlnoading $name..."
     wget $url -O ${DEPS_DIR}/$name.$extension
@@ -47,9 +48,11 @@ function install_library {
     make -s install
 
     cd ${DEPS_DIR}
-	set +e  # Disable exit immediately if a command exits with a non-zero status.
 }
 
+# Need libudev and libxrandr but they are already installed in the system (TOCHECK on 42 compute)
+# libudev should be in systemd package
+# libxrandr (should be aldready installed for running minilibx)
 # Download and install dependencies
 echo "Dowlnoading libogg..."
 install_library "https://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.gz" "libogg" "tar.gz" > $FD_OUT 2>&1
