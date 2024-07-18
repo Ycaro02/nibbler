@@ -30,6 +30,7 @@ mkdir -p ${INSTALL_DIR}
 
 set -e  # Exit immediately if a command exits with a non-zero status.
 
+# Load the archive file from the url and extract it to the directory, handle tar.gz and tar.xz
 function url_archive_to_directory {
 	local url=$1
 	local name=$2
@@ -44,7 +45,7 @@ function url_archive_to_directory {
 
 }
 
-# Helper function to install a library
+# Install a library from a url, name, extension and configure flags, using configure make and make install (default configure flags is empty)
 function install_library {
     local url=${1}
     local name=${2}
@@ -62,6 +63,7 @@ function install_library {
     cd ${DEPS_DIR}
 }
 
+# Install a library from a url, name, extension and configure flags, using cmake and make
 function cmake_install_lib {
 	local url=${1}
 	local name=${2}
@@ -75,27 +77,44 @@ function cmake_install_lib {
 	cd ${DEPS_DIR}
 }
 
+# Extract extension from url, last 2 field cut by dot (tar.gz, tar.xz)
+function extract_extension {
+	local url=${1}
+	local extension=$(echo $url | rev | cut -d'.' -f 1-2 | rev)
+	echo ${extension}
+}
+
+# Extract name from url, last field cut by slash and dash (name-version)
+function extract_name {
+	local url=${1}
+	local name=$(echo $url | rev | cut -d'/' -f 1 | rev | cut -d'-' -f 1)
+	echo ${name}
+}
+
+# Load a library from a url and configure flags
+function load_lib {
+	local url=${1}
+	local configure_flags=${2}
+
+	local extension=$(extract_extension ${url})
+	local name=$(extract_name ${url})
+
+	display_color_msg ${MAGENTA} "Dowlnoading ${name}..."
+	install_library ${url} ${name} ${extension} ${configure_flags} >> $FD_OUT 2>&1
+	display_color_msg ${GREEN} "Done ${name}"
+}
+
 # Need libudev and libxrandr but they are already installed in the system (TOCHECK on 42 compute)
 # libudev should be in systemd package
 # libxrandr (should be aldready installed for running minilibx)
 # Download and install dependencies
 display_double_color_msg ${BLUE} "Download and install dependencies for " ${RED} "SFML"
 
-display_color_msg ${MAGENTA} "Dowlnoading libogg..."
-install_library "https://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.gz" "libogg" "tar.gz" >> $FD_OUT 2>&1
-display_color_msg ${GREEN} "Done libogg"
 
-display_color_msg ${MAGENTA} "Dowlnoading libvorbis..."
-install_library "https://downloads.xiph.org/releases/vorbis/libvorbis-1.3.7.tar.gz" "libvorbis" "tar.gz" "--with-ogg=${INSTALL_DIR}" >> $FD_OUT 2>&1
-display_color_msg ${GREEN} "Done libvorbis"
-
-display_color_msg ${MAGENTA} "Dowlnoading flac..."
-install_library "https://downloads.xiph.org/releases/flac/flac-1.3.3.tar.xz" "flac" "tar.xz" "--disable-cpplibs" >> $FD_OUT 2>&1
-display_color_msg ${GREEN} "Done flac"
-
-display_color_msg ${MAGENTA} "Dowlnoading freetype..."
-install_library "https://download.savannah.gnu.org/releases/freetype/freetype-2.11.0.tar.gz" "freetype" "tar.gz" >> $FD_OUT 2>&1
-display_color_msg ${GREEN} "Done freetype"
+load_lib "https://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.gz"
+load_lib "https://downloads.xiph.org/releases/vorbis/libvorbis-1.3.7.tar.gz" "--with-ogg=${INSTALL_DIR}"
+load_lib "https://downloads.xiph.org/releases/flac/flac-1.3.3.tar.xz" "--disable-cpplibs"
+load_lib "https://download.savannah.gnu.org/releases/freetype/freetype-2.11.0.tar.gz"
 
 display_color_msg ${MAGENTA} "Dowlnoading openal-soft..."
 cmake_install_lib "https://github.com/kcat/openal-soft/archive/refs/tags/1.23.1.tar.gz" "openal-soft" "tar.gz" >> $FD_OUT 2>&1
@@ -145,7 +164,7 @@ make -s install >> $FD_OUT 2>&1
 
 # cd ${BASE_DIR}
 # Clear downloaded files
-# rm -rf ${BASE_DIR}/*.tar.gz
+rm -rf ${DEPS_DIR}/*.tar.*
 
 display_color_msg ${GREEN} "SFML instalation done in ${INSTALL_DIR}."
 
