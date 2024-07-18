@@ -13,8 +13,6 @@ LIB_DIR		 	=   rsc/lib
 CFLAGS    	+=   -I./rsc/lib/SFML/include
 LDFLAGS		:= -L./rsc/lib/SFML/build/lib  -Wl,-rpath=./rsc/lib/SFML/build/lib 
 LDLIBS		:= -lsfml-graphics -lsfml-window -lsfml-system
-# include rsc/lib/SFML/include
-# lib dir rsc/lib/SFML/build/lib 
 
 all:        $(NAME)
 
