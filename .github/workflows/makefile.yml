@@ -22,8 +22,8 @@ jobs:
       run : sudo apt install libglu1-mesa-dev freeglut3-dev mesa-common-dev
 
     - name: run SFML script install
-#   run: sudo apt install libudev-dev && sh -c rsc/init_sfml.sh
-      run: sudo apt install libudev-dev meson && sh -c rsc/install/get_sfml.sh
+      run: sudo apt install libudev-dev && sh -c rsc/install/init_sfml.sh
+    #   run: sudo apt install libudev-dev meson && sh -c rsc/install/get_sfml.sh
 
     - name: Run make
       run: make
