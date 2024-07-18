@@ -8,7 +8,7 @@ SRC_DIR 		=	src
 
 MAIN_MANDATORY 	=	main.cpp
 
-SRCS			=	SFLib.cpp
+SRCS			=	SFLib.cpp \
 
 # SRCS_BONUS		=	main_bonus.cpp
 

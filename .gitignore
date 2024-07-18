@@ -1,5 +1,6 @@
 rsc/lib
 rsc/log
+rsc/wrapperlib
 nibbler
 obj
 .vscode

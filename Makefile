@@ -5,14 +5,9 @@ NAME            =   nibbler
 CC              =   g++
 LIB_DIR		 	=   rsc/lib
 
-# CFLAGS    	+=   -I./rsc/lib/SFML/SFML-2.6.1/include
-# LDFLAGS		:= -L./rsc/lib/SFML/SFML-2.6.1/lib -Wl,-rpath=./rsc/lib/SFML/SFML-2.6.1/lib
-# LDLIBS		:= -lsfml-graphics -lsfml-window -lsfml-system
-
-
-CFLAGS    	+=   -I./rsc/lib/SFML/include
-LDFLAGS		:= -L./rsc/lib/SFML/build/lib  -Wl,-rpath=./rsc/lib/SFML/build/lib 
-LDLIBS		:= -lsfml-graphics -lsfml-window -lsfml-system
+CFLAGS			+=	-I./rsc/lib/SFML/include
+LDFLAGS			:=	-L./rsc/lib/SFML/build/lib  -Wl,-rpath=./rsc/lib/SFML/build/lib 
+LDLIBS			:=	-lsfml-graphics -lsfml-window -lsfml-system
 
 all:        $(NAME)
 
@@ -54,7 +49,7 @@ fclean:	 clean
 	@printf "$(RED)Clean $(NAME)$(RESET)\n"
 
 test: $(NAME)
-	@./$(NAME)
+	./rsc/sh/wrapper_compile.sh
 
 # @ulimit -c unlimited
 leak thread debug: clean $(NAME)
