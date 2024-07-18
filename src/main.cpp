@@ -1,28 +1,27 @@
-#include <SFML/Graphics.hpp>
 #include <iostream>
+
+#include "../include/SFLib.hpp"
 
 int main() {
 	std::cout << "Hello, World!" << std::endl;
 
-	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
-	sf::CircleShape shape(100.f);
-	shape.setFillColor(sf::Color::Green);
+	std::string title = "SFML Test";
 
-	while (window.isOpen()) {
-		sf::Event event;
-		while (window.pollEvent(event)) {
-			if (event.type == sf::Event::Closed) {
-				window.close();
-			}
-		}
-
-		window.clear();
-		window.draw(shape);
-		window.display();
+	GraphicLib *lib = new SFLib(1920, 1080, title);
+	if (!lib->init()) {
+		std::cerr << "Failed to initialize the graphics library" << std::endl;
+		return 1;
 	}
 
+	while (lib->isOpen()) {
+		lib->processEvents();
+		lib->clear();
+		lib->display();
+	}
 
-	std::cout << "Goodbye, World!" << std::endl;
+	lib->close();
+	delete lib;
+
     return 0;
 }
 
