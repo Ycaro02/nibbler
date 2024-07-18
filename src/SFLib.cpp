@@ -7,6 +7,37 @@ SFLib::SFLib()
 , windowDisplay(nullptr), windowIsOpen(nullptr), windowClose(nullptr), windowPollEvent(nullptr) 
 {}
 
+SFLib::~SFLib() {
+    if (this->window) {
+        destroyWindow(this->window);
+    }
+    if (this->dlPtr) {
+        dlclose(this->dlPtr);
+    }
+}
+
+SFLib& SFLib::operator=(const SFLib& ref) {
+    this->window = ref.window;
+    this->width = ref.width;
+	this->height = ref.height;
+	this->title = ref.title;
+	this->dlPtr = ref.dlPtr;
+	this->createWindow = ref.createWindow;
+	this->destroyWindow = ref.destroyWindow;
+	this->windowClear = ref.windowClear;
+	this->windowDisplay = ref.windowDisplay;
+	this->windowIsOpen = ref.windowIsOpen;
+	this->windowClose = ref.windowClose;
+	this->windowPollEvent = ref.windowPollEvent;
+	return *this;
+}
+
+SFLib::SFLib(const SFLib& ref) {
+	if (this == &ref)
+		return;
+	*this = ref;
+}
+
 SFLib::SFLib(const std::string& path, int width, int height, std::string& title) {
     
 	this->title = title;
@@ -27,54 +58,42 @@ SFLib::SFLib(const std::string& path, int width, int height, std::string& title)
     this->windowClose = reinterpret_cast<windowClose_t>(dlsym(dlPtr, "windowCloseWrapper"));
     this->windowPollEvent = reinterpret_cast<windowPollEvent_t>(dlsym(dlPtr, "windowPollEventWrapper"));
 
-    if (!this->createWindow || !this->destroyWindow || !this->windowClear || !this->windowDisplay || !this->windowIsOpen || !this->windowClose || !this->windowPollEvent) {
+    if (!this->createWindow || !this->destroyWindow || !this->windowClear\
+		|| !this->windowDisplay || !this->windowIsOpen || !this->windowClose || !this->windowPollEvent) {
         std::cerr << "Failed to load symbols: " << dlerror() << std::endl;
         exit(1);
     }
 }
 
-SFLib::~SFLib() {
-    if (window) {
-        destroyWindow(window);
-    }
-    if (dlPtr) {
-        dlclose(dlPtr);
-    }
-}
-
-SFLib& SFLib::operator=(const SFLib& ref) {
-    window = ref.window;
-    return *this;
-}
-
 bool SFLib::init() {
-    window = createWindow(width, height, title.c_str());
-    return (window != nullptr);
+    this->window = this->createWindow(width, height, title.c_str());
+    return (this->window != nullptr);
 }
 
 void SFLib::clear() {
-    windowClear(window);
+    this->windowClear(this->window);
 }
 
 void SFLib::display() {
-    windowDisplay(window);
+    this->windowDisplay(this->window);
 }
 
 bool SFLib::isOpen() {
-    return windowIsOpen(window);
+    return (this->windowIsOpen(this->window));
 }
 
 void SFLib::processEvents() {
     sf::Event event;
-    while (windowPollEvent(window, &event)) {
+
+    while (this->windowPollEvent(this->window, &event)) {
         if (event.type == sf::Event::Closed) {
-            windowClose(window);
+            this->windowClose(this->window);
         }
     }
 }
 
 void SFLib::close() {
-    if (windowIsOpen(window)) {
-        windowClose(window);
+	if (this->windowIsOpen(this->window)) {
+        this->windowClose(this->window);
     }
 }

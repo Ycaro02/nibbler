@@ -26,6 +26,4 @@ class GraphicLib {
 	virtual void close() = 0;
 };
 
-
-
 #endif /* GRAPHICLIB_HPP */
