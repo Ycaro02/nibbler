@@ -79,7 +79,7 @@ function extract_name {
 }
 
 # Need to check if the last word is download, if it is remove it (sourceforge url)
-function parse_url{
+function parse_url {
 	local tmp_url=${1}
 	local last_word=$(echo ${tmp_url} | rev | cut -d'/' -f 1 | rev)
 
