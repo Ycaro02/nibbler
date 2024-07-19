@@ -6,13 +6,13 @@
 
 SFLib::SFLib() 
 : dlPtr(nullptr), window(nullptr), width(800), height(600), title("SFML Window")
-, winCreate(nullptr), winDestroy(nullptr), winClear(nullptr)
-, winDisplay(nullptr), winIsOpen(nullptr), winClose(nullptr), winPollEvent(nullptr) 
+, winCreate(nullptr), winClear(nullptr), winDisplay(nullptr)
+, winIsOpen(nullptr), winClose(nullptr), winPollEvent(nullptr) 
 {}
 
 SFLib::~SFLib() {
     if (this->window) {
-        winDestroy(this->window);
+		delete this->window;
     }
     if (this->dlPtr) {
         dlclose(this->dlPtr);
@@ -26,7 +26,6 @@ SFLib& SFLib::operator=(const SFLib& ref) {
 	this->title = ref.title;
 	this->dlPtr = ref.dlPtr;
 	this->winCreate = ref.winCreate;
-	this->winDestroy = ref.winDestroy;
 	this->winClear = ref.winClear;
 	this->winDisplay = ref.winDisplay;
 	this->winIsOpen = ref.winIsOpen;
@@ -56,15 +55,14 @@ SFLib::SFLib(int width, int height, const std::string title, const std::string p
     }
 
     this->winCreate		= (createWindow_t)		dlsym(dlPtr, "createWindowWrapper");
-    this->winDestroy	= (destroyWindow_t)		dlsym(dlPtr, "destroyWindowWrapper");
     this->winClear		= (windowClear_t)		dlsym(dlPtr, "windowClearWrapper");
     this->winDisplay	= (windowDisplay_t)		dlsym(dlPtr, "windowDisplayWrapper");
     this->winIsOpen		= (windowIsOpen_t)		dlsym(dlPtr, "windowIsOpenWrapper");
     this->winClose		= (windowClose_t)		dlsym(dlPtr, "windowCloseWrapper");
     this->winPollEvent	= (windowPollEvent_t)	dlsym(dlPtr, "windowPollEventWrapper");
 
-    if (!this->winCreate || !this->winDestroy|| !this->winClear\
-		|| !this->winDisplay || !this->winIsOpen || !this->winClose || !this->winPollEvent) {
+    if (!this->winCreate || !this->winClear || !this->winDisplay 
+		|| !this->winIsOpen || !this->winClose || !this->winPollEvent) {
         std::cerr << "Failed to load symbols: " << dlerror() << std::endl;
         exit(1);
     }

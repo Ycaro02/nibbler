@@ -3,11 +3,7 @@
 
 extern "C" {
     sf::RenderWindow* createWindowWrapper(unsigned int width, unsigned int height, const char* title) {
-        return new sf::RenderWindow(sf::VideoMode(width, height), title);
-    }
-
-    void destroyWindowWrapper(sf::RenderWindow* window) {
-        delete window;
+        return (new sf::RenderWindow(sf::VideoMode(width, height), title));
     }
 
     void windowClearWrapper(sf::RenderWindow* window) {
@@ -19,7 +15,7 @@ extern "C" {
     }
 
     bool windowIsOpenWrapper(sf::RenderWindow* window) {
-        return window->isOpen();
+        return (window->isOpen());
     }
 
     void windowCloseWrapper(sf::RenderWindow* window) {
@@ -27,6 +23,6 @@ extern "C" {
     }
 
     bool windowPollEventWrapper(sf::RenderWindow* window, sf::Event* event) {
-        return window->pollEvent(*event);
+        return (window->pollEvent(*event));
     }
 }

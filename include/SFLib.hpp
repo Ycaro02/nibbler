@@ -42,7 +42,6 @@ private:
     std::string			title;		/* Title of the window */
 
     createWindow_t		winCreate;		/* Function pointer to createWindow */
-    destroyWindow_t		winDestroy;		/* Function pointer to destroyWindow */
     windowClear_t		winClear;		/* Function pointer to windowClear */
     windowDisplay_t		winDisplay;		/* Function pointer to windowDisplay */
     windowIsOpen_t		winIsOpen;		/* Function pointer to windowIsOpen */

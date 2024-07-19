@@ -23,7 +23,6 @@ function load_deps_SFML {
 	mkdir -p ${INSTALL_DIR}
 
 	# set -e  # Exit immediately if a command exits with a non-zero status.
-
 	# Need libudev and libxrandr but they are already installed in the system (TOCHECK on 42 compute)
 	# libudev should be in systemd package, libxrandr (should be aldready installed for running minilibx)
 
@@ -104,7 +103,8 @@ function load_SDL2 {
 load_deps_SFML
 load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
 load_SDL2 >> $FD_OUT 2>&1
-# Old code
+
+# Old code for SFML deps
 # echo "Dowlnoading libsndfile..."
 # install_library "https://github.com/libsndfile/libsndfile/releases/download/1.2.2/libsndfile-1.2.2.tar.xz" "libsndfile" "tar.xz" >> $FD_OUT 2>&1
 #   -DSNDFILE_INCLUDE_DIR=$INSTALL_DIR/include \
