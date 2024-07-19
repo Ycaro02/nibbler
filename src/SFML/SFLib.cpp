@@ -94,7 +94,7 @@ void SFLib::processEvents() {
     sf::Event event;
 
     while (this->winPollEvent(this->window, &event)) {
-        if (event.type == sf::Event::Closed) {
+        if (event.type == sf::Event::Closed || event.key.code == sf::Keyboard::Escape) {
             this->winClose(this->window);
         }
     }
