@@ -2,13 +2,14 @@ CFLAGS			=	-Wall -Wextra -Werror -O3
 
 OBJ_DIR			=	obj
 
-ALL_SRC_DIR 	=	obj
+ALL_SRC_DIR 	=	obj\
+					$(OBJ_DIR)/SFML\
 
 SRC_DIR 		=	src
 
 MAIN_MANDATORY 	=	main.cpp
 
-SRCS			=	SFLib.cpp \
+SRCS			=	SFML/SFLib.cpp \
 
 # SRCS_BONUS		=	main_bonus.cpp
 

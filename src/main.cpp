@@ -4,11 +4,9 @@
 int main() {
 	std::cout << "Hello, World!" << std::endl;
 
-	std::string title = "SFML Test";
-
-	GraphicLib *lib = new SFLib("rsc/wrapperlib/SFMLWrapper.so", 1920, 1080, title);
-	if (!lib->init()) {
-		std::cerr << "Failed to initialize the graphics library" << std::endl;
+	GraphicLib *lib = new SFLib(1920, 1080, "SFML Test", "rsc/wrapperlib/SFMLWrapper.so");
+	if (!lib->windowCreate()) {
+		std::cerr << "Failed to create SFML window" << std::endl;
 		return 1;
 	}
 

@@ -8,7 +8,7 @@ class GraphicLib {
 	virtual ~GraphicLib() {}
 
 	/* Initialize the graphics library */
-	virtual bool init() = 0;
+	virtual bool windowCreate() = 0;
 
 	/* Clear the screen */
 	virtual void clear() = 0;

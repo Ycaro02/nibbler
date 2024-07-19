@@ -22,12 +22,12 @@ public:
     SFLib();
 	SFLib(const SFLib& ref);
     SFLib& operator=(const SFLib& ref);
-    virtual ~SFLib();
+    ~SFLib();
 
 	/* Real Constructor */
-    SFLib(const std::string& path, int width, int height, std::string& title);
+    SFLib(int width, int height, const std::string title, const std::string path);
     
-	virtual bool init();			/* Create window need to rename */
+	virtual bool windowCreate();	/* Create window need to rename */
     virtual void clear();			/* Clear the window */
     virtual void display();			/* Display the window */
     virtual bool isOpen();			/* Check if the window is open */
@@ -41,13 +41,13 @@ private:
     int					height;		/* Height of the window */
     std::string			title;		/* Title of the window */
 
-    createWindow_t		createWindow;		/* Function pointer to createWindow */
-    destroyWindow_t		destroyWindow;		/* Function pointer to destroyWindow */
-    windowClear_t		windowClear;		/* Function pointer to windowClear */
-    windowDisplay_t		windowDisplay;		/* Function pointer to windowDisplay */
-    windowIsOpen_t		windowIsOpen;		/* Function pointer to windowIsOpen */
-    windowClose_t		windowClose;		/* Function pointer to windowClose */
-    windowPollEvent_t	windowPollEvent;	/* Function pointer to windowPollEvent */
+    createWindow_t		winCreate;		/* Function pointer to createWindow */
+    destroyWindow_t		winDestroy;		/* Function pointer to destroyWindow */
+    windowClear_t		winClear;		/* Function pointer to windowClear */
+    windowDisplay_t		winDisplay;		/* Function pointer to windowDisplay */
+    windowIsOpen_t		winIsOpen;		/* Function pointer to windowIsOpen */
+    windowClose_t		winClose;		/* Function pointer to windowClose */
+    windowPollEvent_t	winPollEvent;	/* Function pointer to windowPollEvent */
 };
 
-#endif // SFLIB_HPP
+#endif /* SFLIB_HPP */

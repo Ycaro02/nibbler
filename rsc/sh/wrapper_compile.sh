@@ -6,7 +6,7 @@
 mkdir -p rsc/wrapperlib
 
 # Compile the wrapper
-g++ -shared -o rsc/wrapperlib/SFMLWrapper.so -fPIC src/SF_C_Wrapper.cpp \
+g++ -shared -o rsc/wrapperlib/SFMLWrapper.so -fPIC src/SFML/SF_C_Wrapper.cpp \
 	-I./rsc/lib/SFML/include -L./rsc/lib/SFML/build/lib -lsfml-graphics -lsfml-window -lsfml-system \
 	-Wl,-rpath,./rsc/lib/SFML/build/lib
 

@@ -45,7 +45,7 @@ function url_archive_to_directory {
 
 }
 
-# Install a library from a url, name, extension and configure flags, using configure make and make install (default configure flags is empty)
+# Install a library from url, name, extension and configure flags, using configure make and make install (default configure flags is empty)
 function install_library {
     local url=${1}
     local name=${2}
@@ -63,7 +63,7 @@ function install_library {
     cd ${DEPS_DIR}
 }
 
-# Install a library from a url, name, extension and configure flags, using cmake and make
+# Install a library from url, name, extension, using cmake and make
 function cmake_install_lib {
 	local url=${1}
 	local name=${2}
