@@ -78,26 +78,27 @@ function extract_name {
 	echo ${name}
 }
 
+# Need to check if the last word is download, if it is remove it (sourceforge url)
+function parse_url{
+	local tmp_url=${1}
+	local last_word=$(echo ${tmp_url} | rev | cut -d'/' -f 1 | rev)
+
+	if [ ${last_word} == "download" ]; then
+		tmp_url=$(echo ${tmp_url} | rev | cut -d'/' -f 2- | rev)
+	fi
+	echo ${tmp_url}
+}
+
 # Load a library from a url and configure flags
 function load_lib {
 	local url=${1}
 	local configure_flags=${2}
 
 
-	# Need to check if the last word is download, if it is remove it (sourceforge url)
-	local tmp_url=${url}
-	local last_word=$(echo ${tmp_url} | rev | cut -d'/' -f 1 | rev)
-	if [ ${last_word} == "download" ]; then
-		tmp_url=$(echo ${tmp_url} | rev | cut -d'/' -f 2- | rev)
-	fi
-
-	# echo "Echo tmp url ${tmp_url}"
+	local tmp_url=$(parse_url ${url})
 
 	local extension=$(extract_extension ${tmp_url})
 	local name=$(extract_name ${tmp_url})
-
-	# echo "Echo name ${name}"
-	# echo "Echo extension ${extension}"
 
 
 	display_color_msg ${MAGENTA} "Dowlnoading ${name}..."
