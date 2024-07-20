@@ -31,7 +31,8 @@ SDL2Lib& SDL2Lib::operator=(const SDL2Lib &ref) {
 	this->winIsOpen = ref.winIsOpen;
 	this->winClose = ref.winClose;
 	this->winPollEvent = ref.winPollEvent;
-	return *this;
+	this->libDestructor = ref.libDestructor;
+	return (*this);
 }
 
 SDL2Lib::SDL2Lib(const SDL2Lib &ref) {
