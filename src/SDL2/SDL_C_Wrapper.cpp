@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_video.h>
 #include <SDL2/SDL_render.h>
+#include <iostream>
 
 extern "C" {
     SDL_Window* createWindowWrapper(unsigned int width, unsigned int height, const char* title) {

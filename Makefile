@@ -5,9 +5,9 @@ NAME            =   nibbler
 CC              =   g++
 LIB_DIR		 	=   rsc/lib
 
-CFLAGS			+=	-I./rsc/lib/SFML/include
-LDFLAGS			:=	-L./rsc/lib/SFML/build/lib  -Wl,-rpath=./rsc/lib/SFML/build/lib 
-LDLIBS			:=	-lsfml-graphics -lsfml-window -lsfml-system
+CFLAGS			+=	-I./rsc/lib/install/include/
+# LDFLAGS			:=	-L./rsc/lib/SFML/build/lib  -Wl,-rpath=./rsc/lib/SFML/build/lib 
+# LDLIBS			:=	-lsfml-graphics -lsfml-window -lsfml-system
 
 all:        $(NAME)
 

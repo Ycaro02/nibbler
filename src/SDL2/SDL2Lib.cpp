@@ -1,25 +1,24 @@
-#include "../../include/SFLib.hpp"
+#include "../../include/SDL2Lib.hpp"
 #include <iostream>
-
 
 /* Canonical form */
 
-SFLib::SFLib() 
+SDL2Lib::SDL2Lib() 
 : dlPtr(nullptr), window(nullptr), width(800), height(600), title("SFML Window")
 , winCreate(nullptr), winClear(nullptr), winDisplay(nullptr)
 , winIsOpen(nullptr), winClose(nullptr), winPollEvent(nullptr) 
 {}
 
-SFLib::~SFLib() {
+SDL2Lib::~SDL2Lib() {
     if (this->window) {
-		delete this->window;
+		free(this->window);
     }
     if (this->dlPtr) {
         dlclose(this->dlPtr);
     }
 }
 
-SFLib& SFLib::operator=(const SFLib& ref) {
+SDL2Lib& SDL2Lib::operator=(const SDL2Lib &ref) {
     this->window = ref.window;
     this->width = ref.width;
 	this->height = ref.height;
@@ -34,15 +33,15 @@ SFLib& SFLib::operator=(const SFLib& ref) {
 	return *this;
 }
 
-SFLib::SFLib(const SFLib& ref) {
+SDL2Lib::SDL2Lib(const SDL2Lib &ref) {
 	if (this == &ref)
 		return;
 	*this = ref;
 }
 
-/* Classic constructor */
 
-SFLib::SFLib(int width, int height, const std::string title, const std::string path) {
+/* Classic constructor */
+SDL2Lib::SDL2Lib(int width, int height, const std::string title, const std::string path) {
     
 	this->title = title;
 	this->window = NULL;
@@ -54,12 +53,12 @@ SFLib::SFLib(int width, int height, const std::string title, const std::string p
         exit(1);
     }
 
-    this->winCreate		= (createWindow_sfml)		dlsym(dlPtr, "createWindowWrapper");
-    this->winClear		= (windowClear_sfml)		dlsym(dlPtr, "windowClearWrapper");
-    this->winDisplay	= (windowDisplay_sfml)		dlsym(dlPtr, "windowDisplayWrapper");
-    this->winIsOpen		= (windowIsOpen_sfml)		dlsym(dlPtr, "windowIsOpenWrapper");
-    this->winClose		= (windowClose_sfml)		dlsym(dlPtr, "windowCloseWrapper");
-    this->winPollEvent	= (windowPollEvent_sfml)	dlsym(dlPtr, "windowPollEventWrapper");
+    this->winCreate		= (createWindow_sdl)	dlsym(dlPtr, "createWindowWrapper");
+    this->winClear		= (windowClear_sdl)		dlsym(dlPtr, "windowClearWrapper");
+    this->winDisplay	= (windowDisplay_sdl)	dlsym(dlPtr, "windowDisplayWrapper");
+    this->winIsOpen		= (windowIsOpen_sdl)	dlsym(dlPtr, "windowIsOpenWrapper");
+    this->winClose		= (windowClose_sdl)		dlsym(dlPtr, "windowCloseWrapper");
+    this->winPollEvent	= (windowPollEvent_sdl)	dlsym(dlPtr, "windowPollEventWrapper");
 
     if (!this->winCreate || !this->winClear || !this->winDisplay 
 		|| !this->winIsOpen || !this->winClose || !this->winPollEvent) {
@@ -68,37 +67,37 @@ SFLib::SFLib(int width, int height, const std::string title, const std::string p
     }
 }
 
-
 /* Wrapper function */
 
-bool SFLib::windowCreate() {
+bool SDL2Lib::windowCreate() {
     this->window = this->winCreate(width, height, title.c_str());
     return (this->window != nullptr);
 }
 
-void SFLib::clear() {
+void SDL2Lib::clear() {
     this->winClear(this->window);
 }
 
-void SFLib::display() {
+void SDL2Lib::display() {
     this->winDisplay(this->window);
 }
 
-bool SFLib::isOpen() {
+bool SDL2Lib::isOpen() {
     return (this->winIsOpen(this->window));
 }
 
-void SFLib::processEvents() {
-    sf::Event event;
+void SDL2Lib::processEvents() {
+	SDL_Event event;
 
     while (this->winPollEvent(this->window, &event)) {
-        if (event.type == sf::Event::Closed || event.key.code == sf::Keyboard::Escape) {
-            this->winClose(this->window);
+        if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)) {
+            // this->winClose(this->window);
+			this->close();
         }
     }
 }
 
-void SFLib::close() {
+void SDL2Lib::close() {
 	if (this->winIsOpen(this->window)) {
         this->winClose(this->window);
     }
