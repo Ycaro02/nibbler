@@ -49,11 +49,14 @@ extern "C" {
     void windowCloseWrapper(SDL_Window* window) {
         if (window) {
             SDL_DestroyWindow(window);
-            SDL_Quit();
         }
     }
 
     bool windowPollEventWrapper(SDL_Window* window, SDL_Event* event) {
         return (SDL_PollEvent(event));
     }
+
+	void SDL2LibDestructor() {
+		SDL_Quit();
+	}
 }

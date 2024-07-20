@@ -13,6 +13,7 @@ typedef void		(*windowDisplay_sdl)(SDL_Window*);
 typedef bool		(*windowIsOpen_sdl)(SDL_Window*);
 typedef void		(*windowClose_sdl)(SDL_Window*);
 typedef bool		(*windowPollEvent_sdl)(SDL_Window*, SDL_Event*);
+typedef void		(*SDL2LibDestructor_sdl)();
 
 class SDL2Lib : public GraphicLib {
 public:
@@ -39,12 +40,13 @@ private:
     int			height;					/* Height of the window */
     std::string	title;					/* Title of the window */
 
-    createWindow_sdl	winCreate;		/* Function pointer to createWindow */
-    windowClear_sdl		winClear;		/* Function pointer to windowClear */
-    windowDisplay_sdl	winDisplay;		/* Function pointer to windowDisplay */
-    windowIsOpen_sdl	winIsOpen;		/* Function pointer to windowIsOpen */
-    windowClose_sdl		winClose;		/* Function pointer to windowClose */
-    windowPollEvent_sdl	winPollEvent;	/* Function pointer to windowPollEvent */
+    createWindow_sdl		winCreate;		/* Function pointer to createWindow */
+    windowClear_sdl			winClear;		/* Function pointer to windowClear */
+    windowDisplay_sdl		winDisplay;		/* Function pointer to windowDisplay */
+    windowIsOpen_sdl		winIsOpen;		/* Function pointer to windowIsOpen */
+    windowClose_sdl			winClose;		/* Function pointer to windowClose */
+    windowPollEvent_sdl		winPollEvent;	/* Function pointer to windowPollEvent */
+	SDL2LibDestructor_sdl	libDestructor; /* Function pointer to libDestructor */
 };
 
 #endif /* SDL2LIB_HPP */

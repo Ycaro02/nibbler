@@ -10,9 +10,10 @@ SDL2Lib::SDL2Lib()
 {}
 
 SDL2Lib::~SDL2Lib() {
-    if (this->window) {
-		free(this->window);
-    }
+	if (this->window) {
+		this->close();
+	}
+	this->libDestructor();
     if (this->dlPtr) {
         dlclose(this->dlPtr);
     }
@@ -59,6 +60,7 @@ SDL2Lib::SDL2Lib(int width, int height, const std::string title, const std::stri
     this->winIsOpen		= (windowIsOpen_sdl)	dlsym(dlPtr, "windowIsOpenWrapper");
     this->winClose		= (windowClose_sdl)		dlsym(dlPtr, "windowCloseWrapper");
     this->winPollEvent	= (windowPollEvent_sdl)	dlsym(dlPtr, "windowPollEventWrapper");
+	this->libDestructor	= (SDL2LibDestructor_sdl)	dlsym(dlPtr, "SDL2LibDestructor");
 
     if (!this->winCreate || !this->winClear || !this->winDisplay 
 		|| !this->winIsOpen || !this->winClose || !this->winPollEvent) {
@@ -100,5 +102,6 @@ void SDL2Lib::processEvents() {
 void SDL2Lib::close() {
 	if (this->winIsOpen(this->window)) {
         this->winClose(this->window);
+		this->window = nullptr;
     }
 }
