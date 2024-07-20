@@ -7,7 +7,7 @@ extern "C" {
     }
 
     void windowClearWrapper(sf::RenderWindow* window) {
-        window->clear(sf::Color::Black);
+        window->clear(sf::Color::Green);
     }
 
     void windowDisplayWrapper(sf::RenderWindow* window) {
