@@ -1,5 +1,6 @@
 #include "../include/SFLib.hpp"
 #include "../include/SDL2Lib.hpp"
+#include <iostream>
 
 /* Typedef for construction wrapper function */
 typedef void *(*GraphicLibConstuctor)(int, int, std::string , std::string);
