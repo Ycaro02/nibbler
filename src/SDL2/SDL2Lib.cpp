@@ -88,13 +88,21 @@ bool SDL2Lib::isOpen() {
     return (this->winIsOpen(this->window));
 }
 
-void SDL2Lib::processEvents() {
+void SDL2Lib::processEvents(int *currentLib, int *isRunning) {
 	SDL_Event event;
 
     while (this->winPollEvent(this->window, &event)) {
         if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)) {
+			// this->close();
+			*isRunning = 0;
+        } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_1) {
+			std::cout << "SDL Key 1 pressed, close SDL window" << std::endl;
+			*currentLib = 0;
 			this->close();
-        }
+		} else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_2) {
+			std::cout << "SDL Key 2 pressed" << std::endl;
+			*currentLib = 1;
+		}
     }
 }
 

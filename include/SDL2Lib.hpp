@@ -26,12 +26,12 @@ public:
     /* Real Constructor */
     SDL2Lib(int width, int height, const std::string title, const std::string path);
     
-    virtual bool windowCreate();		/* Create window */
-    virtual void clear();				/* Clear the window */
-    virtual void display();				/* Display the window */
-    virtual bool isOpen();				/* Check if the window is open */
-    virtual void processEvents();		/* Process events */
-    virtual void close();				/* Close the window */
+    virtual bool windowCreate();				/* Create window */
+    virtual void clear();						/* Clear the window */
+    virtual void display();						/* Display the window */
+    virtual bool isOpen();						/* Check if the window is open */
+    virtual void processEvents(int *,int *);	/* Process events */
+    virtual void close();						/* Close the window */
 
 private:
     void 		*dlPtr;					/* Pointer to the dynamic library */

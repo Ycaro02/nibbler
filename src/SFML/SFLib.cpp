@@ -85,16 +85,26 @@ void SFLib::display() {
 }
 
 bool SFLib::isOpen() {
-    return (this->winIsOpen(this->window));
+    return (this->window && this->winIsOpen(this->window));
 }
 
-void SFLib::processEvents() {
+void SFLib::processEvents(int *currentLib, int *isRunning) {
     sf::Event event;
 
     while (this->winPollEvent(this->window, &event)) {
         if (event.type == sf::Event::Closed || event.key.code == sf::Keyboard::Escape) {
-            this->winClose(this->window);
-        }
+            // this->winClose(this->window);
+			*isRunning = 0;
+        } else if (event.type == sf::Event::KeyPressed) {
+			if (event.key.code == sf::Keyboard::Num1) {
+				std::cout << "SFML Key 1 pressed" << std::endl;
+				*currentLib = 0;
+			} else if (event.key.code == sf::Keyboard::Num2) {
+				std::cout << "SFML Key 2 pressed, close SFML window" << std::endl;
+				*currentLib = 1;
+				this->close();
+			}
+		}
     }
 }
 

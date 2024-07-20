@@ -1,6 +1,9 @@
 #ifndef GRAPHICLIB_HPP
 #define GRAPHICLIB_HPP
 
+#define SFML_IDX 0
+#define SDL2_IDX 1
+
 /* Abstract class for the graphics library */
 class GraphicLib { 
 	public:
@@ -20,7 +23,7 @@ class GraphicLib {
 	virtual bool isOpen() = 0;
 
 	/* Process events */
-	virtual void processEvents() = 0;
+	virtual void processEvents(int *currentLib, int *isRunning) = 0;
 
 	/* Close the graphics library */
 	virtual void close() = 0;
