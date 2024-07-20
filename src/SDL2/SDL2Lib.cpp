@@ -93,7 +93,6 @@ void SDL2Lib::processEvents() {
 
     while (this->winPollEvent(this->window, &event)) {
         if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)) {
-            // this->winClose(this->window);
 			this->close();
         }
     }

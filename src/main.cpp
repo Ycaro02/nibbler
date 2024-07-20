@@ -1,47 +1,38 @@
-#include <iostream>
 #include "../include/SFLib.hpp"
 #include "../include/SDL2Lib.hpp"
 
-void test_SFML() {
-	std::cout << "SFML TEST!" << std::endl;
+/* Typedef for construction wrapper function */
+typedef void *(*GraphicLibConstuctor)(int, int, std::string , std::string);
 
-	GraphicLib *lib = new SFLib(1920, 1080, "SFML Test", "rsc/wrapperlib/SFMLWrapper.so");
-	if (!lib->windowCreate()) {
-		std::cerr << "Failed to create SFML window" << std::endl;
-		return ;
-	}
 
-	while (lib->isOpen()) {
-		lib->clear();
-		lib->display();
-		lib->processEvents();
-	}
-
-	delete lib;
-
+/* SDL2 wrapper constructor */
+void *SDL2ConstuctorWrapper(int width, int height, std::string title, std::string lib_path) {
+	return (new SDL2Lib(width, height, title, lib_path));
 }
 
-void test_SDL2() {
-	std::cout << "SDL2 TEST!" << std::endl;
+/* SFML wrapper constructor */
+void *SFLibConstuctorWrapper(int width, int height, std::string title, std::string lib_path) {
+	return (new SFLib(width, height, title, lib_path));
+}
 
-	GraphicLib *lib = new SDL2Lib(1920, 1080, "SDL2 Test", "rsc/wrapperlib/SDL2Wrapper.so");
+/* Test function */
+void graphicLibTest(std::string name, std::string lib_path, GraphicLibConstuctor constructor) {
+	GraphicLib *lib = (GraphicLib *)constructor(1000, 800, name, lib_path);
 	if (!lib->windowCreate()) {
-		std::cerr << "Failed to create SDL2 window" << std::endl;
+		std::cerr << "Failed to create " << name << " window" << std::endl;
 		return ;
 	}
-
 	while (lib->isOpen()) {
 		lib->clear();
 		lib->display();
 		lib->processEvents();
 	}
-
 	delete lib;
 }
 
 int main() {
-	test_SFML();
-	test_SDL2();
+	graphicLibTest("SFML", "rsc/wrapperlib/SFMLWrapper.so", SFLibConstuctorWrapper);
+	graphicLibTest("SDL2", "rsc/wrapperlib/SDL2Wrapper.so", SDL2ConstuctorWrapper);
     return (0);
 }
 
