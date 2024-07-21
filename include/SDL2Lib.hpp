@@ -26,7 +26,8 @@ public:
     /* Real Constructor */
     SDL2Lib(int width, s32 height, const std::string title, const std::string path);
     
-    virtual void processEvents(int *,int *);	/* Process events */
+    virtual void processEvents(Nibbler& ctx);	/* Process events */
+	virtual void close();						/* Close the graphics library */
 };
 
 #endif /* SDL2LIB_HPP */

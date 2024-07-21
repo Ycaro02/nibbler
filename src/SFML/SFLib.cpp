@@ -1,4 +1,5 @@
 #include "../../include/SFLib.hpp"
+#include "../../include/Nibbler.hpp"
 #include <iostream>
 
 
@@ -33,22 +34,32 @@ SFLib::SFLib(int width, s32 height, const std::string title, const std::string p
 {}
 
 /* Wrapper function */
-void SFLib::processEvents(int *currentLib, s32 *isRunning) {
+void SFLib::processEvents(Nibbler &ctx) {
     sf::Event event = sf::Event();
 
     while (this->window && this->winPollEvent(this->window, &event)) {
         if (event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)) {
-			*isRunning = 0;
+			// *isRunning = 0;
+			ctx.setIsRunning(0);
         } else if (event.type == sf::Event::KeyPressed) {
 			if (event.key.code == sf::Keyboard::Num1) {
 				std::cout << "SFML Key 1 pressed" << std::endl;
-				*currentLib = 0;
+				// *currentLib = 0;
+				ctx.setCurrentLibIdx(SFML_IDX);
 			} else if (event.key.code == sf::Keyboard::Num2) {
 				std::cout << "SFML Key 2 pressed, close SFML window" << std::endl;
-				*currentLib = 1;
+				// *currentLib = 1;
+				ctx.setCurrentLibIdx(SDL2_IDX);
 				this->close();
 				this->window = nullptr;
 			}
 		}
     }
+}
+
+void SFLib::close() {
+	if (this->window) {
+		this->winClose(this->window);
+		delete (sf::Window *)this->window;
+	}
 }

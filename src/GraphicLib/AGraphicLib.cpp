@@ -73,10 +73,3 @@ void AGraphicLib::display() {
 bool AGraphicLib::isOpen() {
     return (this->window  && this->winIsOpen(this->window));
 }
-
-void AGraphicLib::close() {
-	if (this->winIsOpen(this->window)) {
-        this->winClose(this->window);
-		this->window = nullptr;
-    }
-}

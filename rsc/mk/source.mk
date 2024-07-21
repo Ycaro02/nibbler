@@ -14,6 +14,7 @@ MAIN_MANDATORY 	=	main.cpp
 SRCS			=	GraphicLib/AGraphicLib.cpp\
 					SFML/SFLib.cpp \
 					SDL2/SDL2Lib.cpp \
+					Nibbler.cpp \
 
 # SRCS_BONUS		=	main_bonus.cpp
 

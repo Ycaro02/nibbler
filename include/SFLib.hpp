@@ -25,7 +25,8 @@ public:
 	/* Real Constructor */
     SFLib(int width, s32 height, const std::string title, const std::string path);
     
-    virtual void processEvents(int *, s32*);	/* Process events */
+    virtual void processEvents(Nibbler& ctx);	/* Process events */
+	virtual void close();						/* Close the graphics library */
 };
 
 #endif /* SFLIB_HPP */

@@ -1,4 +1,5 @@
 #include "../../include/SDL2Lib.hpp"
+#include "../../include/Nibbler.hpp"
 #include <iostream>
 
 /* Canonical form */
@@ -32,20 +33,26 @@ SDL2Lib::SDL2Lib(int width, s32 height, const std::string title, const std::stri
 {}
 
 
-void SDL2Lib::processEvents(int *currentLib, s32 *isRunning) {
+void SDL2Lib::processEvents(Nibbler &ctx) {
 	SDL_Event event;
 
     while (this->winPollEvent(this->window, &event)) {
         if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)) {
-			// this->close();
-			*isRunning = 0;
+			ctx.setIsRunning(0);
         } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_1) {
 			std::cout << "SDL Key 1 pressed, close SDL window" << std::endl;
-			*currentLib = 0;
+			ctx.setCurrentLibIdx(SFML_IDX);
 			this->close();
 		} else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_2) {
 			std::cout << "SDL Key 2 pressed" << std::endl;
-			*currentLib = 1;
+			ctx.setCurrentLibIdx(SDL2_IDX);
 		}
     }
+}
+
+void SDL2Lib::close() {
+	if (this->window) {
+		this->winClose(this->window);
+		this->window = nullptr;
+	}
 }

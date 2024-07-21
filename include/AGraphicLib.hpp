@@ -17,6 +17,9 @@ typedef bool (*boolWinFunc)(void*);
 typedef bool (*winFuncPollFunc)(void*, void*);
 typedef void (*libDestructorFunc)();
 
+
+class Nibbler;
+
 /* Abstract class for the graphics library */
 class AGraphicLib { 
 	public:
@@ -41,10 +44,10 @@ class AGraphicLib {
 	/* Check if the window is open */
 	bool isOpen();
 	/* Close the graphics library */
-	void close();
+	virtual void close() = 0;
 
 	/* Process events */
-	virtual void processEvents(s32 *currentLib, s32 *isRunning) = 0;
+	virtual void processEvents(Nibbler &ctx) = 0;
 
 	protected:
 

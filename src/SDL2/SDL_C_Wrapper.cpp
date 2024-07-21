@@ -15,31 +15,32 @@ extern "C" {
             std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
             SDL_Quit();
         }
+		SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+		if (!renderer) {
+			std::cerr << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
+			SDL_DestroyWindow(window);
+            SDL_Quit();
+			return (nullptr);
+		}
         return (window);
     }
 
     void windowClearWrapper(SDL_Window* window) {
         SDL_Renderer* renderer = SDL_GetRenderer(window);
-        if (!renderer) {
-            renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-            if (!renderer) {
-                std::cerr << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
-                return;
-            }
-        }
+		if (!renderer) {
+			std::cerr << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
+			return;
+		}
         SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
         SDL_RenderClear(renderer);
     }
 
     void windowDisplayWrapper(SDL_Window* window) {
         SDL_Renderer* renderer = SDL_GetRenderer(window);
-        if (!renderer) {
-            renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-            if (!renderer) {
-                std::cerr << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
-                return;
-            }
-        }
+		if (!renderer) {
+			std::cerr << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
+			return;
+		}
         SDL_RenderPresent(renderer);
     }
 
@@ -49,6 +50,12 @@ extern "C" {
 
     void windowCloseWrapper(SDL_Window* window) {
         if (window) {
+			SDL_Renderer* renderer = SDL_GetRenderer(window);
+			if (!renderer) {
+				std::cerr << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
+				return;
+			}
+			SDL_DestroyRenderer(renderer);
             SDL_DestroyWindow(window);
         }
     }
@@ -58,6 +65,7 @@ extern "C" {
     }
 
 	void SDL2LibDestructor() {
+		SDL_QuitSubSystem(SDL_INIT_VIDEO);
 		SDL_Quit();
 	}
 }
