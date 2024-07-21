@@ -3,6 +3,12 @@
 #include "../include/SDL2Lib.hpp"
 #include <iostream>
 
+#define BLAK_COLOR		0,0,0,255			/* Base color */
+#define WHITE_COLOR		255,255,255,255		/* Empty color */
+#define GREEN_COLOR		0,255,0,255			/* Snake head color */
+#define LGREEN_COLOR	0,255,0,128			/* Snake body color */
+#define YELLOW_COLOR	255,255,0,255		/* Food color */
+
 void GameLoop(Nibbler &ctx) {
 	// AGraphicLib *currentLib = ctx.libs[ctx.currentLib];
 	AGraphicLib *currentLib = NULL;
@@ -17,12 +23,17 @@ void GameLoop(Nibbler &ctx) {
 		}
 		currentLib->clear();
 
-		for (s32 i = 0; i < ctx.getHeight(); i++) {
-			for (s32 j = 0; j < ctx.getWidth(); j++) {
-				currentLib->colorTile(j, i, 0,0,0, 255);
+		for (s32 y = 0; y < ctx.getHeight(); y++) {
+			for (s32 x = 0; x < ctx.getWidth(); x++) {
+				if (ctx.boarTileGet(x, y) == EMPTY) {
+					currentLib->colorTile(x, y, WHITE_COLOR);
+				} else if (ctx.boarTileGet(x, y) == FOOD) {
+					currentLib->colorTile(x, y, YELLOW_COLOR);
+				} else if (ctx.boarTileGet(x, y) == SNAKE_HEAD) {
+					currentLib->colorTile(x, y, GREEN_COLOR);
+				}
 			}
 		}
-
 
 		currentLib->display();
 		currentLib->processEvents(ctx);

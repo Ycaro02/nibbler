@@ -1,6 +1,7 @@
 #include "../include/Nibbler.hpp"
 #include "../include/SFLib.hpp"
 #include "../include/SDL2Lib.hpp"
+#include "../include/Snake.hpp"
 
 Nibbler::Nibbler() : width(0), height(0), board(nullptr) {
 	libs[0] = nullptr;
@@ -74,6 +75,15 @@ Nibbler::Nibbler(s32 width, s32 height) : width(width), height(height) {
 
 	NibblerInitLib("SFML", "rsc/wrapperlib/SFMLWrapper.so", 0, winWidth, winHeight);
 	NibblerInitLib("SDL2", "rsc/wrapperlib/SDL2Wrapper.so", 1, winWidth, winHeight);
+
+	/* Initialize the snake */
+
+	// srand(time(NULL));
+	// s32 startW = rand() % width;
+	// s32 startH = rand() % height;
+	// snake = Snake(*this, startW, startH);
+
+	snake = Snake(*this, 0, 9);
 }
 
 

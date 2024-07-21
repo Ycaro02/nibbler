@@ -1,12 +1,10 @@
 #ifndef AGraphicLib_HPP
 #define AGraphicLib_HPP
 
-
+#include "short_type.hpp"
+#include "dlfcn.h"
 #include <iostream>
 #include <string>
-#include <dlfcn.h>
-
-#include "short_type.hpp"
 
 #define SFML_IDX 0
 #define SDL2_IDX 1

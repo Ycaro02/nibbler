@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include "../../include/short_type.hpp"
+#include "../../include/Nibbler.hpp"
 
 extern "C" {
     sf::RenderWindow* createWindowWrapper(u32 width,u32 height, const char* title) {
@@ -8,7 +9,8 @@ extern "C" {
     }
 
     void windowClearWrapper(sf::RenderWindow* window) {
-        window->clear(sf::Color::Green);
+        // window->clear(sf::Color::Green);
+        window->clear(sf::Color::Black);
     }
 
     void windowDisplayWrapper(sf::RenderWindow* window) {
@@ -34,7 +36,7 @@ extern "C" {
 
         // Create a rectangle shape for the tile
         sf::RectangleShape tile(sf::Vector2f(TILE_SIZE, TILE_SIZE));
-        tile.setPosition(pixel_x, pixel_y);
+        tile.setPosition(pixel_y, pixel_x);
         tile.setFillColor(sf::Color(r, g, b, a));
 
         // Draw the tile

@@ -15,6 +15,7 @@ SRCS			=	GraphicLib/AGraphicLib.cpp\
 					SFML/SFLib.cpp \
 					SDL2/SDL2Lib.cpp \
 					Nibbler.cpp \
+					Snake.cpp \
 
 # SRCS_BONUS		=	main_bonus.cpp
 

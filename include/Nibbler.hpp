@@ -2,7 +2,10 @@
 #define NIBBLER_HPP
 
 #include "AGraphicLib.hpp"
+#include "Snake.hpp"
 
+#define TILE_SIZE 64
+#define TILE_SPACING 2
 
 typedef enum BoardState_e {
 	EMPTY = 0U,
@@ -24,6 +27,8 @@ class Nibbler {
 	void NibblerInitLib(std::string title, std::string path, s32 libID, s32 winWidth, s32 winHeight);
 	void DisplayBoardFD0();
 
+
+	/*Getter setter*/
 	u8 &boarTileGet(s32 x, s32 y);
 	void boardTileSet(s32 x, s32 y, u8 value);
 
@@ -45,6 +50,7 @@ class Nibbler {
 	u8					**board;
 	s32					currentLib;
 	s32					isRunning;	
+	Snake				snake;
 };
 
 #endif /* NIBBLER_HPP */

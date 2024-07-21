@@ -3,6 +3,7 @@
 #include <SDL2/SDL_render.h>
 #include <iostream>
 #include "../../include/short_type.hpp"
+#include "../../include/Nibbler.hpp"
 
 extern "C" {
     SDL_Window* createWindowWrapper(u32 width ,u32 height, const char* title) {
@@ -31,7 +32,8 @@ extern "C" {
 			std::cerr << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
 			return;
 		}
-        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+        // SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
     }
 
