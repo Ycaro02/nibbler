@@ -83,7 +83,7 @@ Nibbler::Nibbler(s32 width, s32 height) : width(width), height(height) {
 	// s32 startH = rand() % height;
 	// snake = Snake(*this, startW, startH);
 
-	snake = Snake(*this, 0, 9);
+	snake = Snake(*this, 4, 4);
 }
 
 
@@ -133,4 +133,8 @@ void Nibbler::setCurrentLibIdx(s32 value) {
 
 AGraphicLib *Nibbler::getCurrentLib() {
 	return (libs[currentLib]);
+}
+
+Snake &Nibbler::getSnake() {
+	return (snake);
 }

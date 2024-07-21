@@ -33,6 +33,20 @@ SFLib::SFLib(int width, s32 height, const std::string title, const std::string p
 : AGraphicLib(width, height, title, path)
 {}
 
+static void SFMLHandleSnakeMove(Nibbler &ctx, sf::Event &event) {
+	Snake &snake = ctx.getSnake();
+
+	if (event.key.code == sf::Keyboard::Up) {
+		snake.SnakeMove(ctx, UP);
+	} else if (event.key.code == sf::Keyboard::Down) {
+		snake.SnakeMove(ctx, DOWN);
+	} else if (event.key.code == sf::Keyboard::Left) {
+		snake.SnakeMove(ctx, LEFT);
+	} else if (event.key.code == sf::Keyboard::Right) {
+		snake.SnakeMove(ctx, RIGHT);
+	}
+}
+
 /* Wrapper function */
 void SFLib::processEvents(Nibbler &ctx) {
     sf::Event event = sf::Event();
@@ -50,6 +64,10 @@ void SFLib::processEvents(Nibbler &ctx) {
 				ctx.setCurrentLibIdx(SDL2_IDX);
 				this->close();
 				this->window = nullptr;
+			} else if (event.key.code == sf::Keyboard::Num3) {
+				std::cout << RED << "SFML Key 3 pressed, NEED TO IMPLEMENT LAST LIB" << RESET << std::endl;
+			} else {
+				SFMLHandleSnakeMove(ctx, event);
 			}
 		}
     }

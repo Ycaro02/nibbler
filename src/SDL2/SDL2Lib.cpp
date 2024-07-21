@@ -33,6 +33,20 @@ SDL2Lib::SDL2Lib(int width, s32 height, const std::string title, const std::stri
 {}
 
 
+static void SDL2HandleSnakeMove(Nibbler &ctx, SDL_Event &event) {
+	Snake &snake = ctx.getSnake();
+
+	if (event.key.keysym.sym == SDLK_UP) {
+		snake.SnakeMove(ctx, UP);
+	} else if (event.key.keysym.sym == SDLK_DOWN) {
+		snake.SnakeMove(ctx, DOWN);
+	} else if (event.key.keysym.sym == SDLK_LEFT) {
+		snake.SnakeMove(ctx, LEFT);
+	} else if (event.key.keysym.sym == SDLK_RIGHT) {
+		snake.SnakeMove(ctx, RIGHT);
+	}
+}
+
 void SDL2Lib::processEvents(Nibbler &ctx) {
 	SDL_Event event;
 
@@ -46,6 +60,10 @@ void SDL2Lib::processEvents(Nibbler &ctx) {
 		} else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_2) {
 			// std::cout << "SDL Key 2 pressed" << std::endl;
 			ctx.setCurrentLibIdx(SDL2_IDX);
+		} else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_3) {
+			std::cout << RED << "SDL Key 3 pressed, NEED TO IMPLEMENT LAST LIB" << RESET << std::endl;
+		} else if (event.type == SDL_KEYDOWN) {
+			SDL2HandleSnakeMove(ctx, event);
 		}
     }
 }

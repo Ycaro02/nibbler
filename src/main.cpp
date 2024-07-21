@@ -9,6 +9,8 @@
 #define LGREEN_COLOR	0,255,0,128			/* Snake body color */
 #define YELLOW_COLOR	255,255,0,255		/* Food color */
 
+#define PINK_COLOR		255,0,255,255		/* Snake head color */
+
 void GameLoop(Nibbler &ctx) {
 	// AGraphicLib *currentLib = ctx.libs[ctx.currentLib];
 	AGraphicLib *currentLib = NULL;
@@ -30,7 +32,11 @@ void GameLoop(Nibbler &ctx) {
 				} else if (ctx.boarTileGet(x, y) == FOOD) {
 					currentLib->colorTile(x, y, YELLOW_COLOR);
 				} else if (ctx.boarTileGet(x, y) == SNAKE_HEAD) {
-					currentLib->colorTile(x, y, GREEN_COLOR);
+					if (ctx.getCurrentLibIdx() == SFML_IDX) {
+						currentLib->colorTile(x, y, GREEN_COLOR);
+					} else {
+						currentLib->colorTile(x, y, PINK_COLOR);
+					}
 				}
 			}
 		}

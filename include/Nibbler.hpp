@@ -43,6 +43,8 @@ class Nibbler {
 
 	AGraphicLib *getCurrentLib();
 
+	Snake &getSnake();
+
 	private:
 	AGraphicLib			*libs[2];
 	s32					width;

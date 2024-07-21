@@ -27,16 +27,27 @@ Snake::Snake(Nibbler &ctx, s32 x, s32 y) {
 }
 
 void Snake::SnakeMove(Nibbler &ctx, s32 direction) {
+	s32 tmpX = getHeadX();
+	s32 tmpY = getHeadY();
+	
+	s32 newX = tmpX;
+	s32 newY = tmpY;
+
 	if (direction == UP) {
-		setHeadY(getHeadY() + 1);
+		newY -= 1;
 	} else if (direction == DOWN) {
-		setHeadY(getHeadY() - 1);
+		newY += 1;
 	} else if (direction == RIGHT) {
-		setHeadX(getHeadX() + 1);
+		newX += 1;
 	} else if (direction == LEFT) {
-		setHeadX(getHeadX() - 1);
-	}
-	ctx.boardTileSet(getHeadX(), getHeadY(), SNAKE_HEAD);
+		newX -= 1;
+	} 
+	if (newX < 0 || newX >= ctx.getWidth()) { return; }
+	if (newY < 0 || newY >= ctx.getHeight()) { return; }
+	setHeadX(newX);
+	setHeadY(newY);
+	ctx.boardTileSet(newX, newY, SNAKE_HEAD);
+	ctx.boardTileSet(tmpX, tmpY, EMPTY);
 }
 
 s32 &Snake::getHeadX() {
