@@ -1,8 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include "../../include/short_type.hpp"
 
 extern "C" {
-    sf::RenderWindow* createWindowWrapper(unsigned int width, unsigned int height, const char* title) {
+    sf::RenderWindow* createWindowWrapper(u32 width,u32 height, const char* title) {
         return (new sf::RenderWindow(sf::VideoMode(width, height), title));
     }
 

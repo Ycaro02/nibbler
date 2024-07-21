@@ -2,9 +2,10 @@
 #include <SDL2/SDL_video.h>
 #include <SDL2/SDL_render.h>
 #include <iostream>
+#include "../../include/short_type.hpp"
 
 extern "C" {
-    SDL_Window* createWindowWrapper(unsigned int width, unsigned int height, const char* title) {
+    SDL_Window* createWindowWrapper(u32 width ,u32 height, const char* title) {
         if (SDL_Init(SDL_INIT_VIDEO) != 0) {
             std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
             return (nullptr);

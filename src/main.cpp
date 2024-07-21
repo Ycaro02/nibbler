@@ -3,27 +3,27 @@
 #include <iostream>
 
 /* Typedef for construction wrapper function */
-typedef void *(*GraphicLibConstuctor)(int, int, std::string , std::string);
+typedef void *(*AGraphicLibConstuctor)(int, s32, std::string , std::string);
 
 /* SDL2 wrapper constructor */
-void *SDL2ConstuctorWrapper(int width, int height, std::string title, std::string lib_path) {
+void *SDL2ConstuctorWrapper(int width, s32 height, std::string title, std::string lib_path) {
 	return (new SDL2Lib(width, height, title, lib_path));
 }
 
 /* SFML wrapper constructor */
-void *SFLibConstuctorWrapper(int width, int height, std::string title, std::string lib_path) {
+void *SFLibConstuctorWrapper(int width, s32 height, std::string title, std::string lib_path) {
 	return (new SFLib(width, height, title, lib_path));
 }
 
 typedef struct NibblerCtx {
-	GraphicLib	*libs[2];
+	AGraphicLib	*libs[2];
 	int			currentLib;
 	int 		isRunning;
 } NibblerCtx;
 
 
 void GlibTest(NibblerCtx *ctx) {
-	GraphicLib *currentLib = ctx->libs[ctx->currentLib];
+	AGraphicLib *currentLib = ctx->libs[ctx->currentLib];
 
 	if (!currentLib->isOpen()) {
 		if (!currentLib->windowCreate()) {
@@ -36,7 +36,7 @@ void GlibTest(NibblerCtx *ctx) {
 	currentLib->processEvents(&ctx->currentLib, &ctx->isRunning);
 }
 
-void GlibInit(GraphicLib *libs[2]) {
+void GlibInit(AGraphicLib *libs[2]) {
 	libs[SFML_IDX] = new SFLib(1000, 800, "SFML", "rsc/wrapperlib/SFMLWrapper.so");
 	libs[SDL2_IDX] = new SDL2Lib(1000, 800, "SDL2", "rsc/wrapperlib/SDL2Wrapper.so");
 }

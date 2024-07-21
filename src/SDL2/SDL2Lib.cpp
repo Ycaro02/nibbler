@@ -4,9 +4,7 @@
 /* Canonical form */
 
 SDL2Lib::SDL2Lib() 
-: dlPtr(nullptr), window(nullptr), width(800), height(600), title("SFML Window")
-, winCreate(nullptr), winClear(nullptr), winDisplay(nullptr)
-, winIsOpen(nullptr), winClose(nullptr), winPollEvent(nullptr) 
+: AGraphicLib()
 {}
 
 SDL2Lib::~SDL2Lib() {
@@ -19,77 +17,22 @@ SDL2Lib::~SDL2Lib() {
     }
 }
 
-SDL2Lib& SDL2Lib::operator=(const SDL2Lib &ref) {
-    this->window = ref.window;
-    this->width = ref.width;
-	this->height = ref.height;
-	this->title = ref.title;
-	this->dlPtr = ref.dlPtr;
-	this->winCreate = ref.winCreate;
-	this->winClear = ref.winClear;
-	this->winDisplay = ref.winDisplay;
-	this->winIsOpen = ref.winIsOpen;
-	this->winClose = ref.winClose;
-	this->winPollEvent = ref.winPollEvent;
-	this->libDestructor = ref.libDestructor;
+SDL2Lib& SDL2Lib::operator=(const SDL2Lib& ref) {
+	AGraphicLib::operator=(ref);
 	return (*this);
 }
 
-SDL2Lib::SDL2Lib(const SDL2Lib &ref) {
-	if (this == &ref)
-		return;
-	*this = ref;
-}
-
+SDL2Lib::SDL2Lib(const SDL2Lib& ref)
+: AGraphicLib(ref)
+{}
 
 /* Classic constructor */
-SDL2Lib::SDL2Lib(int width, int height, const std::string title, const std::string path) {
-    
-	this->title = title;
-	this->window = NULL;
-	this->width = width;
-	this->height = height;
-	this->dlPtr = dlopen(path.c_str(), RTLD_LAZY);
-    if (dlPtr == nullptr) {
-        std::cerr << "Failed to load the library: " << dlerror() << "\nPath:" << path << std::endl;
-        exit(1);
-    }
+SDL2Lib::SDL2Lib(int width, s32 height, const std::string title, const std::string path) 
+: AGraphicLib(width, height, title, path)
+{}
 
-    this->winCreate		= (createWindow_sdl)	dlsym(dlPtr, "createWindowWrapper");
-    this->winClear		= (windowClear_sdl)		dlsym(dlPtr, "windowClearWrapper");
-    this->winDisplay	= (windowDisplay_sdl)	dlsym(dlPtr, "windowDisplayWrapper");
-    this->winIsOpen		= (windowIsOpen_sdl)	dlsym(dlPtr, "windowIsOpenWrapper");
-    this->winClose		= (windowClose_sdl)		dlsym(dlPtr, "windowCloseWrapper");
-    this->winPollEvent	= (windowPollEvent_sdl)	dlsym(dlPtr, "windowPollEventWrapper");
-	this->libDestructor	= (SDL2LibDestructor_sdl)	dlsym(dlPtr, "SDL2LibDestructor");
 
-    if (!this->winCreate || !this->winClear || !this->winDisplay 
-		|| !this->winIsOpen || !this->winClose || !this->winPollEvent) {
-        std::cerr << "Failed to load symbols: " << dlerror() << std::endl;
-        exit(1);
-    }
-}
-
-/* Wrapper function */
-
-bool SDL2Lib::windowCreate() {
-    this->window = this->winCreate(width, height, title.c_str());
-    return (this->window != nullptr);
-}
-
-void SDL2Lib::clear() {
-    this->winClear(this->window);
-}
-
-void SDL2Lib::display() {
-    this->winDisplay(this->window);
-}
-
-bool SDL2Lib::isOpen() {
-    return (this->winIsOpen(this->window));
-}
-
-void SDL2Lib::processEvents(int *currentLib, int *isRunning) {
+void SDL2Lib::processEvents(int *currentLib, s32 *isRunning) {
 	SDL_Event event;
 
     while (this->winPollEvent(this->window, &event)) {
@@ -104,12 +47,5 @@ void SDL2Lib::processEvents(int *currentLib, int *isRunning) {
 			std::cout << "SDL Key 2 pressed" << std::endl;
 			*currentLib = 1;
 		}
-    }
-}
-
-void SDL2Lib::close() {
-	if (this->winIsOpen(this->window)) {
-        this->winClose(this->window);
-		this->window = nullptr;
     }
 }

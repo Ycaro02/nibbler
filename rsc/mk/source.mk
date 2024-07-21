@@ -5,12 +5,14 @@ OBJ_DIR			=	obj
 ALL_SRC_DIR 	=	obj\
 					$(OBJ_DIR)/SFML\
 					$(OBJ_DIR)/SDL2\
+					$(OBJ_DIR)/GraphicLib\
 
 SRC_DIR 		=	src
 
 MAIN_MANDATORY 	=	main.cpp
 
-SRCS			=	SFML/SFLib.cpp \
+SRCS			=	GraphicLib/AGraphicLib.cpp\
+					SFML/SFLib.cpp \
 					SDL2/SDL2Lib.cpp \
 
 # SRCS_BONUS		=	main_bonus.cpp
