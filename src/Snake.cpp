@@ -46,6 +46,14 @@ void Snake::SnakeMove(Nibbler &ctx, s32 direction) {
 	if (newY < 0 || newY >= ctx.getHeight()) { return; }
 	setHeadX(newX);
 	setHeadY(newY);
+
+	if (ctx.boardTileGet(newX, newY) == FOOD) {
+		ctx.setNbFood(ctx.getNbFood() - 1);
+		if (ctx.getNbFood() == 0) {
+			ctx.foodAdd();
+		}
+	}
+
 	ctx.boardTileSet(newX, newY, SNAKE_HEAD);
 	ctx.boardTileSet(tmpX, tmpY, EMPTY);
 }

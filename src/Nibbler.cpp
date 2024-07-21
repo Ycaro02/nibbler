@@ -3,7 +3,7 @@
 #include "../include/SDL2Lib.hpp"
 #include "../include/Snake.hpp"
 
-Nibbler::Nibbler() : width(0), height(0), board(nullptr) {
+Nibbler::Nibbler() : width(0), height(0), board(nullptr), nbFood(0), currentLib(0), isRunning(0) {
 	libs[0] = nullptr;
 	libs[1] = nullptr;
 }
@@ -54,6 +54,21 @@ void Nibbler::NibblerInitLib(std::string title, std::string path, s32 libID, s32
 	}
 }
 
+void Nibbler::foodAdd() {
+	s32 foodY = -1, foodX = -1;
+	while (foodY == -1 || foodX == -1) {
+		foodY = rand() % getHeight();
+		foodX = rand() % getWidth();
+		if (boardTileGet(foodX, foodY) != EMPTY) {
+			std::cout << "Food already present at " << foodX << " " << foodY << std::endl;
+			foodY = -1;
+			foodX = -1;
+		}
+	}
+	boardTileSet(foodX, foodY, FOOD);
+	setNbFood(getNbFood() + 1);
+}
+
 Nibbler::Nibbler(s32 width, s32 height) : width(width), height(height) {
 	board = new u8*[height];
 	for (s32 i = 0; i < height; i++) {
@@ -64,7 +79,7 @@ Nibbler::Nibbler(s32 width, s32 height) : width(width), height(height) {
 	}
 	isRunning = 1;
 	currentLib = SFML_IDX;
-
+	nbFood = 0;
 	/* Load the libraries */
 
 	s32 winWidth = width * TILE_SIZE + width * TILE_SPACING;
@@ -78,12 +93,14 @@ Nibbler::Nibbler(s32 width, s32 height) : width(width), height(height) {
 
 	/* Initialize the snake */
 
-	// srand(time(NULL));
-	// s32 startW = rand() % width;
-	// s32 startH = rand() % height;
-	// snake = Snake(*this, startW, startH);
+	srand(time(NULL));
+	s32 startW = rand() % width;
+	s32 startH = rand() % height;
+	snake = Snake(*this, startW, startH);
 
-	snake = Snake(*this, 4, 4);
+	/* Initialize the food */
+	foodAdd();
+	foodAdd();
 }
 
 
@@ -99,7 +116,7 @@ void Nibbler::DisplayBoardFD0() {
 
 /* Getters and setters */
 
-u8 &Nibbler::boarTileGet(s32 x, s32 y) {
+u8 &Nibbler::boardTileGet(s32 x, s32 y) {
 	return (board[y][x]);
 }
 
@@ -129,6 +146,14 @@ s32 &Nibbler::getCurrentLibIdx() {
 
 void Nibbler::setCurrentLibIdx(s32 value) {
 	currentLib = value;
+}
+
+s32 &Nibbler::getNbFood() {
+	return (nbFood);
+}
+
+void Nibbler::setNbFood(s32 value) {
+	nbFood = value;
 }
 
 AGraphicLib *Nibbler::getCurrentLib() {

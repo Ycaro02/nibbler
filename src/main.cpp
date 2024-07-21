@@ -27,11 +27,11 @@ void GameLoop(Nibbler &ctx) {
 
 		for (s32 y = 0; y < ctx.getHeight(); y++) {
 			for (s32 x = 0; x < ctx.getWidth(); x++) {
-				if (ctx.boarTileGet(x, y) == EMPTY) {
+				if (ctx.boardTileGet(x, y) == EMPTY) {
 					currentLib->colorTile(x, y, WHITE_COLOR);
-				} else if (ctx.boarTileGet(x, y) == FOOD) {
+				} else if (ctx.boardTileGet(x, y) == FOOD) {
 					currentLib->colorTile(x, y, YELLOW_COLOR);
-				} else if (ctx.boarTileGet(x, y) == SNAKE_HEAD) {
+				} else if (ctx.boardTileGet(x, y) == SNAKE_HEAD) {
 					if (ctx.getCurrentLibIdx() == SFML_IDX) {
 						currentLib->colorTile(x, y, GREEN_COLOR);
 					} else {

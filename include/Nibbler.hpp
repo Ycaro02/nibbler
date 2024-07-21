@@ -27,9 +27,10 @@ class Nibbler {
 	void NibblerInitLib(std::string title, std::string path, s32 libID, s32 winWidth, s32 winHeight);
 	void DisplayBoardFD0();
 
+	void foodAdd();
 
 	/*Getter setter*/
-	u8 &boarTileGet(s32 x, s32 y);
+	u8 &boardTileGet(s32 x, s32 y);
 	void boardTileSet(s32 x, s32 y, u8 value);
 
 	s32 &getWidth();
@@ -41,6 +42,9 @@ class Nibbler {
 	s32 &getCurrentLibIdx();
 	void setCurrentLibIdx(s32 value);
 
+	s32 &getNbFood();
+	void setNbFood(s32 value);
+
 	AGraphicLib *getCurrentLib();
 
 	Snake &getSnake();
@@ -50,6 +54,7 @@ class Nibbler {
 	s32					width;
 	s32					height;
 	u8					**board;
+	s32					nbFood;
 	s32					currentLib;
 	s32					isRunning;	
 	Snake				snake;
