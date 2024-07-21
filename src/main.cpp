@@ -12,7 +12,7 @@
 #define PINK_COLOR		255,0,255,255		/* Snake head color */
 
 void GameLoop(Nibbler &ctx) {
-	// AGraphicLib *currentLib = ctx.libs[ctx.currentLib];
+
 	AGraphicLib *currentLib = NULL;
 	
 	while (ctx.getIsRunning()) {
@@ -37,14 +37,17 @@ void GameLoop(Nibbler &ctx) {
 					} else {
 						currentLib->colorTile(x, y, PINK_COLOR);
 					}
+				} 
+				else if (ctx.boardTileGet(x, y) == SNAKE_BODY) {
+					currentLib->colorTile(x, y, LGREEN_COLOR);
 				}
 			}
 		}
-
 		currentLib->display();
 		currentLib->processEvents(ctx);
 	}
 }
+
 
 int main() {
 	Nibbler ctx = Nibbler(10, 10);

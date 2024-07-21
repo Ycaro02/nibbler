@@ -39,7 +39,7 @@ Nibbler& Nibbler::operator=(const Nibbler &ref) {
 			}
 		}
 	}
-	return *this;
+	return (*this);
 }
 
 Nibbler::Nibbler(const Nibbler &ref) {

@@ -4,6 +4,13 @@
 #include "short_type.hpp"
 #include <vector>
 
+typedef enum BoardState_e {
+	EMPTY = 0U,
+	FOOD = 1U,
+	SNAKE_HEAD = 2U,
+	SNAKE_BODY = 3U
+} BoardState;
+
 typedef enum SnakeDirection_e {
 	UP = 0,
 	RIGHT = 1,
@@ -25,7 +32,11 @@ class Snake {
 	Snake(Nibbler &ctx, s32 x, s32 y);
 
 	/* Snake eat (grow), when snake eats food add a new body part */
-	// void SnakeEat();
+	void SnakeEat(Nibbler &ctx);
+
+	void detectSnakeExpension(Nibbler &ctx);
+	void brutForceBodySpace(Nibbler &ctx, s32 currX, s32 currY, s32 maxX, s32 maxY);
+	void bodyFollowHead(Nibbler &ctx, s32 oldX, s32 oldY);
 
 	/* Snake move, move the snake in the direction (move head and body follow him)*/
 	void SnakeMove(Nibbler &ctx, s32 direction);

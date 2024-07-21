@@ -7,12 +7,6 @@
 #define TILE_SIZE 64
 #define TILE_SPACING 2
 
-typedef enum BoardState_e {
-	EMPTY = 0U,
-	FOOD = 1U,
-	SNAKE_HEAD = 2U
-} BoardState;
-
 class Nibbler {
 	public:
 	/* Canonical form */
