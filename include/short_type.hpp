@@ -38,6 +38,7 @@ typedef		int64_t		s64;		/* Signed int 64 bits */
 typedef		float		f32;		/* Float 32 bits */
 typedef		double		f64;		/* Float 64 bits */
 
-
+#define TILE_SIZE 64
+#define TILE_SPACING 2
 
 #endif /* SHORT_TYPE_HPP */

@@ -40,11 +40,11 @@ void SDL2Lib::processEvents(Nibbler &ctx) {
         if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)) {
 			ctx.setIsRunning(0);
         } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_1) {
-			std::cout << "SDL Key 1 pressed, close SDL window" << std::endl;
+			// std::cout << "SDL Key 1 pressed, close SDL window" << std::endl;
 			ctx.setCurrentLibIdx(SFML_IDX);
 			this->close();
 		} else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_2) {
-			std::cout << "SDL Key 2 pressed" << std::endl;
+			// std::cout << "SDL Key 2 pressed" << std::endl;
 			ctx.setCurrentLibIdx(SDL2_IDX);
 		}
     }

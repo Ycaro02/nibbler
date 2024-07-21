@@ -68,4 +68,23 @@ extern "C" {
 		SDL_QuitSubSystem(SDL_INIT_VIDEO);
 		SDL_Quit();
 	}
+
+
+	void colorTileWrapper(SDL_Window* window, u32 y, u32 x, u8 r, u8 g, u8 b, u8 a) {
+        SDL_Renderer* renderer = SDL_GetRenderer(window);
+        if (!renderer) {
+            std::cerr << "SDL_GetRenderer Error: " << SDL_GetError() << std::endl;
+            return;
+        }
+
+        // Convert tile coordinates to pixel coordinates
+        s32 pixel_x = x * TILE_SIZE + (x + 1) * TILE_SPACING;
+        s32 pixel_y = y * TILE_SIZE + (y + 1) * TILE_SPACING;
+
+        SDL_Rect tileRect = { pixel_y, pixel_x, TILE_SIZE, TILE_SIZE };
+
+        // Set the drawing color and draw the tile
+        SDL_SetRenderDrawColor(renderer, r, g, b, a);
+        SDL_RenderFillRect(renderer, &tileRect);
+    }
 }

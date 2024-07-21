@@ -63,15 +63,24 @@ Nibbler::Nibbler(s32 width, s32 height) : width(width), height(height) {
 	}
 	isRunning = 1;
 	currentLib = SFML_IDX;
-	NibblerInitLib("SFML", "rsc/wrapperlib/SFMLWrapper.so", 0, 1000, 800);
-	NibblerInitLib("SDL2", "rsc/wrapperlib/SDL2Wrapper.so", 1, 1000, 800);
+
+	/* Load the libraries */
+
+	s32 winWidth = width * TILE_SIZE + width * TILE_SPACING;
+	s32 winHeight = height * TILE_SIZE + height * TILE_SPACING;
+
+	winWidth += TILE_SPACING;
+	winHeight += TILE_SPACING;
+
+	NibblerInitLib("SFML", "rsc/wrapperlib/SFMLWrapper.so", 0, winWidth, winHeight);
+	NibblerInitLib("SDL2", "rsc/wrapperlib/SDL2Wrapper.so", 1, winWidth, winHeight);
 }
 
 
 void Nibbler::DisplayBoardFD0() {
 	for (s32 i = 0; i < height; i++) {
 		for (s32 j = 0; j < width; j++) {
-			std::cout << board[i][j];
+			std::cout << (u8)(board[i][j] + '0');
 		}
 		std::cout << std::endl;
 	}

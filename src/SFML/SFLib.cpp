@@ -43,12 +43,10 @@ void SFLib::processEvents(Nibbler &ctx) {
 			ctx.setIsRunning(0);
         } else if (event.type == sf::Event::KeyPressed) {
 			if (event.key.code == sf::Keyboard::Num1) {
-				std::cout << "SFML Key 1 pressed" << std::endl;
-				// *currentLib = 0;
+				// std::cout << "SFML Key 1 pressed" << std::endl;
 				ctx.setCurrentLibIdx(SFML_IDX);
 			} else if (event.key.code == sf::Keyboard::Num2) {
-				std::cout << "SFML Key 2 pressed, close SFML window" << std::endl;
-				// *currentLib = 1;
+				// std::cout << "SFML Key 2 pressed, close SFML window" << std::endl;
 				ctx.setCurrentLibIdx(SDL2_IDX);
 				this->close();
 				this->window = nullptr;

@@ -43,6 +43,7 @@ AGraphicLib::AGraphicLib(int width, s32 height, const std::string title, const s
     this->winClose		= (voidWinFunc)dlsym(dlPtr, "windowCloseWrapper");
     this->winIsOpen		= (boolWinFunc)dlsym(dlPtr, "windowIsOpenWrapper");
     this->winPollEvent	= (winFuncPollFunc)dlsym(dlPtr, "windowPollEventWrapper");
+	this->winColorTile	= (tileColorFunc)dlsym(dlPtr, "colorTileWrapper");
 	if (title == "SDL2") {
 		this->libDestructor = (libDestructorFunc)dlsym(dlPtr, "SDL2LibDestructor");
 	}
@@ -68,6 +69,10 @@ void AGraphicLib::clear() {
 
 void AGraphicLib::display() {
     this->winDisplay(this->window);
+}
+
+void AGraphicLib::colorTile(u32 x, u32 y, u8 r, u8 g, u8 b, u8 a) {
+	this->winColorTile(this->window, x, y, r, g, b, a);
 }
 
 bool AGraphicLib::isOpen() {

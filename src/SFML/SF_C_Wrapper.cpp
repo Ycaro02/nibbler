@@ -26,4 +26,18 @@ extern "C" {
     bool windowPollEventWrapper(sf::RenderWindow* window, sf::Event* event) {
         return (window->pollEvent(*event));
     }
+
+	void colorTileWrapper(sf::RenderWindow* window, u32 y, u32 x, u8 r, u8 g, u8 b, u8 a) {
+        // Convert tile coordinates to pixel coordinates
+        s32 pixel_x = x * TILE_SIZE + (x + 1) * TILE_SPACING;
+        s32 pixel_y = y * TILE_SIZE + (y + 1) * TILE_SPACING;
+
+        // Create a rectangle shape for the tile
+        sf::RectangleShape tile(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+        tile.setPosition(pixel_x, pixel_y);
+        tile.setFillColor(sf::Color(r, g, b, a));
+
+        // Draw the tile
+        window->draw(tile);
+    }
 }

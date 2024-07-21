@@ -16,6 +16,7 @@ typedef void (*voidWinFunc)(void*);
 typedef bool (*boolWinFunc)(void*);
 typedef bool (*winFuncPollFunc)(void*, void*);
 typedef void (*libDestructorFunc)();
+typedef void (*tileColorFunc)(void*, u32, u32, u8, u8, u8, u8);
 
 
 class Nibbler;
@@ -43,9 +44,10 @@ class AGraphicLib {
 	void display();
 	/* Check if the window is open */
 	bool isOpen();
+
+	void colorTile(u32 x, u32 y, u8 r, u8 g, u8 b, u8 a);
 	/* Close the graphics library */
 	virtual void close() = 0;
-
 	/* Process events */
 	virtual void processEvents(Nibbler &ctx) = 0;
 
@@ -64,6 +66,7 @@ class AGraphicLib {
     boolWinFunc			winIsOpen;		/* Function pointer to windowIsOpen */
     winFuncPollFunc		winPollEvent;	/* Function pointer to windowPollEvent */
 	libDestructorFunc	libDestructor;	/* Function pointer to libDestructor */
+	tileColorFunc		winColorTile;		/* Function pointer to colorTile */
 
 };
 
