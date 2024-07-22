@@ -4,7 +4,7 @@
 #include "AGraphicLib.hpp"
 #include "Snake.hpp"
 
-#define TILE_SIZE 64
+#define TILE_SIZE 40
 #define TILE_SPACING 2
 
 class Nibbler {

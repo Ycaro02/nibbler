@@ -41,7 +41,7 @@ wrapper_lib_compile "SFMLWrapper.so" "src/SFML/SF_C_Wrapper.cpp" "-lsfml-graphic
 wrapper_lib_compile "SDL2Wrapper.so" "src/SDL2/SDL_C_Wrapper.cpp" "-lSDL2"
 
 # Run the test
-./nibbler
+./nibbler 20 20
 
 
 
