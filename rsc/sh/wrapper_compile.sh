@@ -39,7 +39,7 @@ function wrapper_lib_compile {
 
 wrapper_lib_compile "SFMLWrapper.so" "src/SFML/SF_C_Wrapper.cpp" "-lsfml-graphics -lsfml-window -lsfml-system"
 wrapper_lib_compile "SDL2Wrapper.so" "src/SDL2/SDL_C_Wrapper.cpp" "-lSDL2"
-# wrapper_lib_compile "RaylibWrapper.so" "src/Raylib/Raylib_C_Wrapper.cpp" "-lraylib"
+wrapper_lib_compile "RaylibWrapper.so" "src/Raylib/Raylib_C_Wrapper.cpp" "-lraylib"
 
 # Run the test
 ./nibbler 20 20

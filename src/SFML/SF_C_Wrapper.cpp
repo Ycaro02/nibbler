@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-#include "../../include/AGraphicLib.hpp"
+#include "../../include/GraphicLib.hpp"
 #include "../../include/short_type.hpp"
 #include "../../include/Nibbler.hpp"
 
@@ -30,23 +30,23 @@ extern "C" {
     s32 windowPollEventWrapper(sf::RenderWindow* window) {
 		sf::Event event = sf::Event();
 
-		s32 keyValue = KEY_INVALID;
+		s32 keyValue = NKEY_INVALID;
 		if (!window) {
 			return (keyValue);
 		}
 		if (window->pollEvent(event)) {
 			if (event.type == sf::Event::Closed) {
-				return (KEY_ESC);
+				return (NKEY_ESC);
 			}
 			else if (event.type == sf::Event::KeyPressed) {
-				if (event.key.code == sf::Keyboard::Up) { keyValue = KEY_UP ; }
-				else if (event.key.code == sf::Keyboard::Down) { keyValue = KEY_DOWN ; }
-				else if (event.key.code == sf::Keyboard::Left) { keyValue = KEY_LEFT ; }
-				else if (event.key.code == sf::Keyboard::Right) { keyValue = KEY_RIGHT ; }
-				else if (event.key.code == sf::Keyboard::Num1) { keyValue = KEY_1 ; }
-				else if (event.key.code == sf::Keyboard::Num2) { keyValue = KEY_2 ; }
-				else if (event.key.code == sf::Keyboard::Num3) { keyValue = KEY_3 ; }
-				else if (event.key.code == sf::Keyboard::Escape) { keyValue = KEY_ESC ; }
+				if (event.key.code == sf::Keyboard::Up) { keyValue = NKEY_UP ; }
+				else if (event.key.code == sf::Keyboard::Down) { keyValue = NKEY_DOWN ; }
+				else if (event.key.code == sf::Keyboard::Left) { keyValue = NKEY_LEFT ; }
+				else if (event.key.code == sf::Keyboard::Right) { keyValue = NKEY_RIGHT ; }
+				else if (event.key.code == sf::Keyboard::Num1) { keyValue = NKEY_1 ; }
+				else if (event.key.code == sf::Keyboard::Num2) { keyValue = NKEY_2 ; }
+				else if (event.key.code == sf::Keyboard::Num3) { keyValue = NKEY_3 ; }
+				else if (event.key.code == sf::Keyboard::Escape) { keyValue = NKEY_ESC ; }
 			}
 		}
 		return (keyValue);

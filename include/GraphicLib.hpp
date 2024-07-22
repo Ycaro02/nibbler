@@ -1,5 +1,5 @@
-#ifndef AGraphicLib_HPP
-#define AGraphicLib_HPP
+#ifndef GraphicLib_HPP
+#define GraphicLib_HPP
 
 #include "short_type.hpp"
 #include "dlfcn.h"
@@ -20,34 +20,34 @@ typedef void (*tileColorFunc)(void*, u32, u32, u8, u8, u8, u8);
 
 
 typedef enum NormaliseKey {
-	KEY_INVALID=-1,
-	KEY_1,
-	KEY_2,
-	KEY_3,
-	KEY_UP,
-	KEY_DOWN,
-	KEY_LEFT,
-	KEY_RIGHT,
-	KEY_ESC,
+	NKEY_INVALID=-1,
+	NKEY_1,
+	NKEY_2,
+	NKEY_3,
+	NKEY_UP,
+	NKEY_DOWN,
+	NKEY_LEFT,
+	NKEY_RIGHT,
+	NKEY_ESC,
 } NormaliseKey;
 
 
 class Nibbler;
 
 /* Abstract class for the graphics library */
-class AGraphicLib { 
+class GraphicLib { 
 	public:
 
 	/*Canonical form*/
-	AGraphicLib();
-	AGraphicLib(const AGraphicLib& ref);
-	AGraphicLib& operator=(const AGraphicLib& ref);
+	GraphicLib();
+	GraphicLib(const GraphicLib& ref);
+	GraphicLib& operator=(const GraphicLib& ref);
 
 	/* Destructor */
-	virtual ~AGraphicLib();
+	virtual ~GraphicLib();
 
 	/* Real Constructor */
-	AGraphicLib(s32 width, s32 height, const std::string title, const std::string path, s16 libID);
+	GraphicLib(s32 width, s32 height, const std::string title, const std::string path, s16 libID);
 
 	/* Initialize the graphics library */
 	bool windowCreate();
@@ -87,4 +87,4 @@ class AGraphicLib {
 
 
 
-#endif /* AGraphicLib_HPP */
+#endif /* GraphicLib_HPP */

@@ -1,6 +1,4 @@
 #include "../include/Nibbler.hpp"
-#include "../include/SFLib.hpp"
-#include "../include/SDL2Lib.hpp"
 #include "../include/Color.hpp"
 #include <iostream>
 
@@ -14,7 +12,7 @@
 
 void GameLoop(Nibbler &ctx) {
 
-	AGraphicLib *currentLib = NULL;
+	GraphicLib *currentLib = NULL;
 	
 	while (ctx.getIsRunning()) {
 		currentLib = ctx.getCurrentLib();

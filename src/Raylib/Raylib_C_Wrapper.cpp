@@ -4,16 +4,24 @@
 #include "../../include/short_type.hpp"
 #include "../../include/Nibbler.hpp"
 
+
+// Define the window pointer as a constant cause Raylib doesn't provide a way to get the window pointer
 #define RAYLIB_WINPTR ((void *)0x42)
+
+static bool IsKeyPressedOrDown(int key) {
+	return (IsKeyDown(key) || IsKeyPressed(key));
+}
 
 extern "C" {
     void* createWindowWrapper(u32 width, u32 height, const char* title) {
+        SetTraceLogLevel(LOG_NONE); // Disable raylib logs
         InitWindow(width, height, title);
-        if (!IsWindowReady()) {
+		if (!IsWindowReady()) {
             std::cerr << "Failed to initialize Raylib window" << std::endl;
-            return nullptr;
+            return (nullptr);
         }
-        return RAYLIB_WINPTR;
+		SetTargetFPS(30);
+        return (RAYLIB_WINPTR);
     }
 
     void windowClearWrapper(void* window) {
@@ -35,31 +43,44 @@ extern "C" {
 
     bool windowIsOpenWrapper(void* window) {
         if (window == nullptr || window != RAYLIB_WINPTR) {
-            return false;
+            return (false);
         }
-        return !WindowShouldClose();
+        return (!WindowShouldClose());
     }
 
     void windowCloseWrapper(void* window) {
         if (window == nullptr || window != RAYLIB_WINPTR) {
-            std::cerr << "Invalid window pointer" << std::endl;
+            std::cerr  << "windowCloseWrapper Invalid window pointer" << std::endl;
             return;
         }
         CloseWindow();
     }
 
-    bool windowPollEventWrapper(void* window, void* event) {
-        if (window == nullptr || window != RAYLIB_WINPTR) {
-            std::cerr << "Invalid window pointer" << std::endl;
-            return false;
-        }
-		
-		/*	
-			Need to change wrapper here, instead of bool we will return explicit 
-			value for each bind key and adapt the Nibbler class to handle this new event system
-		*/
 
-        return true; // Raylib does not have a direct poll event function
+	s32 windowPollEventWrapper(void* window) {
+        if (window == nullptr || window != RAYLIB_WINPTR) {
+            std::cerr << "windowPollEventWrapper Invalid window pointer" << std::endl;
+            return (NKEY_INVALID);
+        }
+
+        if (WindowShouldClose()) {
+            return (NKEY_ESC);
+        } else if (IsKeyPressedOrDown(KEY_UP)) { // up == left
+            return (NKEY_LEFT);
+        } else if (IsKeyPressedOrDown(KEY_DOWN)) { // down == right
+            return (NKEY_RIGHT);
+        } else if (IsKeyPressedOrDown(KEY_LEFT)) { // left == up
+            return (NKEY_UP);
+        } else if (IsKeyPressedOrDown(KEY_RIGHT)) { // right == down
+            return (NKEY_DOWN);
+        } else if (IsKeyPressedOrDown(KEY_ONE)) {
+            return (NKEY_1);
+        } else if (IsKeyPressedOrDown(KEY_TWO)) {
+            return (NKEY_2);
+        } else if (IsKeyPressedOrDown(KEY_THREE)) {
+            return (NKEY_3);
+        }
+        return (NKEY_INVALID);
     }
 
     void RaylibDestructor() {

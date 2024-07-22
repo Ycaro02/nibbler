@@ -1,7 +1,7 @@
 #ifndef NIBBLER_HPP
 #define NIBBLER_HPP
 
-#include "AGraphicLib.hpp"
+#include "GraphicLib.hpp"
 #include "Snake.hpp"
 
 #define TILE_SIZE 40
@@ -40,12 +40,12 @@ class Nibbler {
 	s32 &getNbFood();
 	void setNbFood(s32 value);
 
-	AGraphicLib *getCurrentLib();
+	GraphicLib *getCurrentLib();
 
 	Snake &getSnake();
 
 	private:
-	AGraphicLib			*libs[3];
+	GraphicLib			*libs[3];
 	s32					width;
 	s32					height;
 	u8					**board;

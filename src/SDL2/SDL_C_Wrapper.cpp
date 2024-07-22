@@ -68,18 +68,18 @@ extern "C" {
 
 
 		if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)) {
-			return (KEY_ESC);
+			return (NKEY_ESC);
 		} else if (event.type == SDL_KEYDOWN) {
 			SDL_Keycode code = event.key.keysym.sym;
-			if (code == SDLK_UP) { return (KEY_UP); }
-			else if (code == SDLK_DOWN) { return (KEY_DOWN); }
-			else if (code == SDLK_LEFT) { return (KEY_LEFT); }
-			else if (code == SDLK_RIGHT) { return (KEY_RIGHT); }
-			else if (code == SDLK_1) { return (KEY_1); }
-			else if (code == SDLK_2) { return (KEY_2); }
-			else if (code == SDLK_3) { return (KEY_3); }
+			if (code == SDLK_UP) { return (NKEY_UP); }
+			else if (code == SDLK_DOWN) { return (NKEY_DOWN); }
+			else if (code == SDLK_LEFT) { return (NKEY_LEFT); }
+			else if (code == SDLK_RIGHT) { return (NKEY_RIGHT); }
+			else if (code == SDLK_1) { return (NKEY_1); }
+			else if (code == SDLK_2) { return (NKEY_2); }
+			else if (code == SDLK_3) { return (NKEY_3); }
 		}
-		return (KEY_INVALID);
+		return (NKEY_INVALID);
     }
 
 	void SDL2LibDestructor() {
