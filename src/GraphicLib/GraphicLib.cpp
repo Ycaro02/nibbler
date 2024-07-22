@@ -1,6 +1,7 @@
 #include "../../include/GraphicLib.hpp"
 #include "../../include/Nibbler.hpp"
 #include "../../include/Snake.hpp"
+#include "../../include/Color.hpp"
 
 GraphicLib::GraphicLib() 
 : dlPtr(nullptr), window(nullptr), width(0), height(0), title("")
@@ -30,13 +31,20 @@ GraphicLib::GraphicLib(const GraphicLib& ref) {
 }
 
 GraphicLib::~GraphicLib() {
+
+	std::string name = libID == SDL2_IDX ? "SDL2" : libID == SFML_IDX ? "SFML" : "Raylib";
+
+	std::cout << YELLOW << "GraphicLib Destructor for " + name + " :";
 	if (window) {
+		std::cout << " with window ";
 		close();
 	}
 	if (libDestructor) {
+		std::cout << " with libDestructor ";
 		libDestructor();
 	}
 	if (dlPtr) {
+		std::cout << " with dlclose" << RESET << std::endl;
 		dlclose(dlPtr);
 	}
 }
@@ -60,9 +68,11 @@ GraphicLib::GraphicLib(int width, s32 height, const std::string title, const std
     this->winIsOpen		= (boolWinFunc)dlsym(dlPtr, "windowIsOpenWrapper");
     this->winPollEvent	= (winFuncPollFunc)dlsym(dlPtr, "windowPollEventWrapper");
 	this->winColorTile	= (tileColorFunc)dlsym(dlPtr, "colorTileWrapper");
-	if (title == "SDL2") {
+
+	this->libDestructor = nullptr;
+	if (libID == SDL2_IDX) {
 		this->libDestructor = (libDestructorFunc)dlsym(dlPtr, "SDL2LibDestructor");
-	}
+	} 
 
 	if (!this->winCreate || !this->winClear || !this->winDisplay 
 		|| !this->winIsOpen || !this->winClose || !this->winPollEvent) {
@@ -138,5 +148,4 @@ void GraphicLib::close() {
 		this->winClose(this->window);
 		this->window = nullptr;
 	}
-
 }

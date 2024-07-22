@@ -6,6 +6,7 @@
 Nibbler::Nibbler() : width(0), height(0), board(nullptr), nbFood(0), currentLib(0), isRunning(0) {
 	libs[0] = nullptr;
 	libs[1] = nullptr;
+	libs[2] = nullptr;
 }
 
 static void freeBoard(u8 **board, s32 height) {
@@ -22,6 +23,7 @@ Nibbler::~Nibbler() {
 	}
 	delete libs[0];
 	delete libs[1];
+	delete libs[2];
 }
 
 Nibbler& Nibbler::operator=(const Nibbler &ref) {
@@ -66,12 +68,16 @@ void Nibbler::foodAdd() {
 }
 
 void Nibbler::resetGame() {
+	/* Reset the board */
 	for (s32 i = 0; i < height; i++) {
 		for (s32 j = 0; j < width; j++) {
 			board[i][j] = EMPTY;
 		}
 	}
-	snake = Snake(*this, width / 2, height / 2);
+	/* Initialize the snake at the center of the board */
+	snake = Snake(*this, width >> 1, height >> 1);
+
+	/* Initialize the food */
 	setNbFood(0);
 	foodAdd();
 	foodAdd();
@@ -95,46 +101,39 @@ static int parseIntegerData(const std::string &line) {
 	return (nb);
 }
 
+
 Nibbler::Nibbler(std::string w, std::string h) {
 	
 	width = parseIntegerData(w);
 	height = parseIntegerData(h);
 
 	std::cout << "Width: " << width << " Height: " << height << std::endl;
-	
+
+	/* Initialize basic value */	
+	setIsRunning(1);
+	setCurrentLibIdx(SFML_IDX);
+
+	/* Alloc the board */
 	board = new u8*[height];
 	for (s32 i = 0; i < height; i++) {
 		board[i] = new u8[width];
-		for (s32 j = 0; j < width; j++) {
-			board[i][j] = 0;
-		}
 	}
-	isRunning = 1;
-	currentLib = RAYLIB_IDX;
-	nbFood = 0;
+
+	// s32 winWidth = width * TILE_SIZE + width * TILE_SPACING;
+	// s32 winHeight = height * TILE_SIZE + height * TILE_SPACING;
+
+	// winWidth += TILE_SPACING;
+	// winHeight += TILE_SPACING;
+
 	/* Load the libraries */
-
-	s32 winWidth = width * TILE_SIZE + width * TILE_SPACING;
-	s32 winHeight = height * TILE_SIZE + height * TILE_SPACING;
-
-	winWidth += TILE_SPACING;
-	winHeight += TILE_SPACING;
-
-	NibblerInitLib("SFML", "rsc/wrapperlib/SFMLWrapper.so", SFML_IDX, winWidth, winHeight);
-	NibblerInitLib("SDL2", "rsc/wrapperlib/SDL2Wrapper.so", SDL2_IDX, winWidth, winHeight);
-	NibblerInitLib("Raylib", "rsc/wrapperlib/RaylibWrapper.so", RAYLIB_IDX, winWidth, winHeight);
+	NibblerInitLib("SFML", "rsc/wrapperlib/SFMLWrapper.so", SFML_IDX, WIN_W(width), WIN_H(height));
+	NibblerInitLib("SDL2", "rsc/wrapperlib/SDL2Wrapper.so", SDL2_IDX, WIN_W(width), WIN_H(height));
+	NibblerInitLib("Raylib", "rsc/wrapperlib/RaylibWrapper.so", RAYLIB_IDX, WIN_W(width), WIN_H(height));
 
 	/* Initialize the random seed for food spawn */
 	srand(time(NULL));
 
-	/* Initialize the snake */
-	s32 startW = width / 2;
-	s32 startH = height / 2;
-	snake = Snake(*this, startW, startH);
-
-	/* Initialize the food */
-	foodAdd();
-	foodAdd();
+	resetGame();
 }
 
 

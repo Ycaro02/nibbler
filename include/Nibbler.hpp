@@ -7,6 +7,10 @@
 #define TILE_SIZE 40
 #define TILE_SPACING 2
 
+
+#define WIN_W(w) (s32)((w * TILE_SIZE) + (w * TILE_SPACING) + TILE_SPACING)
+#define WIN_H(h) (s32)((h * TILE_SIZE) + (h * TILE_SPACING) + TILE_SPACING)
+
 class Nibbler {
 	public:
 	/* Canonical form */
