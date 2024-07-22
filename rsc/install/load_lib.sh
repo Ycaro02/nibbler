@@ -91,8 +91,8 @@ function load_SDL2 {
 		wget ${sdl_archive} >> $FD_OUT 2>&1
 		tar -xvf ${sdl_dir_version}.tar.gz >> $FD_OUT 2>&1
 		rm -rf ${sdl_dir_version}.tar.gz
-		mv ${sdl_dir_version} ${local sdl_dir}
-		cd ${local sdl_dir}
+		mv ${sdl_dir_version} ${sdl_dir}
+		cd ${sdl_dir}
 		mkdir build
 		cd build
 		cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} -DCMAKE_PREFIX_PATH=${INSTALL_DIR} >> $FD_OUT 2>&1
