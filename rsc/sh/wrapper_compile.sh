@@ -40,17 +40,3 @@ function wrapper_lib_compile {
 wrapper_lib_compile "SFMLWrapper.so" "src/SFML/SF_C_Wrapper.cpp" "-lsfml-graphics -lsfml-window -lsfml-system"
 wrapper_lib_compile "SDL2Wrapper.so" "src/SDL2/SDL_C_Wrapper.cpp" "-lSDL2"
 wrapper_lib_compile "RaylibWrapper.so" "src/Raylib/Raylib_C_Wrapper.cpp" "-lraylib"
-
-# Run the test
-./nibbler 20 20
-
-
-
-# # Compile the wrapper
-# g++ -shared -o rsc/wrapperlib/SFMLWrapper.so -fPIC src/SFML/SF_C_Wrapper.cpp \
-# 	-I./rsc/lib/SFML/include -L./rsc/lib/SFML/build/lib -lsfml-graphics -lsfml-window -lsfml-system \
-# 	-Wl,-rpath,./rsc/lib/SFML/build/lib
-
-# g++ -shared -o rsc/wrapperlib/SDL2Wrapper.so -fPIC src/SDL2/SDL_C_Wrapper.cpp \
-# 	-I./rsc/lib/install/include -L./rsc/lib/install/lib -lSDL2 \
-# 	-Wl,-rpath,./rsc/lib/install/lib 

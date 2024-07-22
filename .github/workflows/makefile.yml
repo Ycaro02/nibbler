@@ -19,10 +19,7 @@ jobs:
       run: sudo apt install libxrandr-dev libxcursor-dev libxi-dev
 
     - name: OpenGL package (need to change)
-      run : sudo apt install libglu1-mesa-dev freeglut3-dev mesa-common-dev
-
-    - name: run SFML script install
-      run: sudo apt install libudev-dev && sh -c rsc/install/init_sfml.sh
+      run : sudo apt install libglu1-mesa-dev freeglut3-dev mesa-common-dev libudev-dev
 
     - name: Run make
       run: make
