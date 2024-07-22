@@ -72,7 +72,6 @@ void Nibbler::checkBoardFull() {
 		std::cout << GREEN << "Congratulations, you won!" << RESET << std::endl;
 		resetGame();
 	}
-
 }
 
 /* Add food to the board */
@@ -93,6 +92,7 @@ void Nibbler::foodAdd() {
 
 /* Reset the game */
 void Nibbler::resetGame() {
+	lastMove = std::chrono::steady_clock::now();
 	/* Reset the board */
 	for (s32 i = 0; i < height; i++) {
 		for (s32 j = 0; j < width; j++) {
@@ -106,6 +106,16 @@ void Nibbler::resetGame() {
 	setNbFood(0);
 	foodAdd();
 	foodAdd();
+}
+
+void Nibbler::snakeAutoMove() {
+	ChronoTimePoint now = std::chrono::steady_clock::now();
+	ChronoMilli diff = std::chrono::duration_cast<ChronoMilli>(now - lastMove);
+	if (diff.count() >= 500) {
+		snake.SnakeMove(*this, snake.getDirection());
+		lastMove = now;
+	}
+	return ;
 }
 
 /* Parse the integer data */

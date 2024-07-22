@@ -8,6 +8,7 @@ Snake::Snake() {
 	body = std::vector<iVec2>();
 	toAdd.x = -1;
 	toAdd.y = -1;
+	setDirection(UP);
 }
 
 /* Destructor */
@@ -37,6 +38,7 @@ Snake::Snake(const Snake &ref) {
 Snake::Snake(Nibbler &ctx, s32 x, s32 y) {
 	toAdd.x = -1;
 	toAdd.y = -1;
+	setDirection(UP);
 	setHeadX(x);
 	setHeadY(y);
 	ctx.boardTileSet(getHeadX(), getHeadY(), SNAKE_HEAD);
@@ -56,7 +58,10 @@ void Snake::resetSnake() {
 	body.clear();
 	toAdd.x = -1;
 	toAdd.y = -1;
+	direction = UP;
 }
+
+
 
 /**
  * @brief Detect where to add a new body part
@@ -179,8 +184,12 @@ void Snake::SnakeMove(Nibbler &ctx, s32 direction) {
 	} 
 
 	/* Guard for board */
-	if (newX < 0 || newX >= ctx.getWidth()) { return; }
-	if (newY < 0 || newY >= ctx.getHeight()) { return; }
+	if ((newX < 0 || newX >= ctx.getWidth()) || (newY < 0 || newY >= ctx.getHeight())) {
+		std::cout << "Out of board" << std::endl;
+		resetSnake();
+		ctx.resetGame();
+		return;
+	}
 
 	/* Guard for snake collision */
 	if (ctx.boardTileGet(newX, newY) == SNAKE_BODY) { 
@@ -211,6 +220,43 @@ void Snake::SnakeMove(Nibbler &ctx, s32 direction) {
 	}
 }
 
+
+s32 Snake::getSnakeNormaliseDir(s32 dir) {
+	if (dir == UP || dir == DOWN) {
+		return (TOP_BOT_DIR);
+	}
+	return (LEFT_RIGHT_DIR);
+}
+/* Handle snake move by key pressed */
+void Snake::handleSnakeDir(s32 event) {
+
+	s32 snakeDir = getSnakeNormaliseDir(getDirection());
+
+	if (snakeDir == TOP_BOT_DIR) {
+		if (event == NKEY_LEFT) {
+			setDirection(LEFT);
+		} else if (event == NKEY_RIGHT) {
+			setDirection(RIGHT);
+		}
+	} else if (snakeDir == LEFT_RIGHT_DIR) {
+		if (event == NKEY_UP) {
+			setDirection(UP);
+		} else if (event == NKEY_DOWN) {
+			setDirection(DOWN);
+		}
+	}
+	// if (event == NKEY_UP) {
+	// 	SnakeMove(ctx, UP);
+	// } else if (event == NKEY_DOWN) {
+	// 	SnakeMove(ctx, DOWN);
+	// } else if (event == NKEY_LEFT) {
+	// 	SnakeMove(ctx, LEFT);
+	// } else if (event == NKEY_RIGHT) {
+	// 	SnakeMove(ctx, RIGHT);
+	// }
+}
+
+
 /* Getter setter */
 
 s32 &Snake::getHeadX() {
@@ -231,4 +277,12 @@ void Snake::setHeadY(s32 y) {
 
 std::vector<iVec2> &Snake::getBody() {
 	return (body);
+}
+
+void Snake::setDirection(s32 dir) {
+	direction = dir;
+}
+
+s32 &Snake::getDirection() {
+	return (direction);
 }

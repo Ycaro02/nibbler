@@ -125,22 +125,6 @@ bool GraphicLib::isOpen() {
     return (this->window  && this->winIsOpen(this->window));
 }
 
-/* Handle snake move by key pressed */
-static void handleSnakeMove(Nibbler &ctx, s32 event) {
-	Snake &snake = ctx.getSnake();
-
-	if (event == NKEY_UP) {
-		snake.SnakeMove(ctx, UP);
-	} else if (event == NKEY_DOWN) {
-		snake.SnakeMove(ctx, DOWN);
-	} else if (event == NKEY_LEFT) {
-		snake.SnakeMove(ctx, LEFT);
-	} else if (event == NKEY_RIGHT) {
-		snake.SnakeMove(ctx, RIGHT);
-	}
-}
-
-
 /* Process events */
 void GraphicLib::processEvents(Nibbler &ctx) {
 	s32 key = NKEY_INVALID;
@@ -158,7 +142,7 @@ void GraphicLib::processEvents(Nibbler &ctx) {
 			break ;
 		} 
 		else if (key == NKEY_UP || key == NKEY_DOWN || key == NKEY_LEFT || key == NKEY_RIGHT) {
-			handleSnakeMove(ctx, key);
+			ctx.getSnake().handleSnakeDir(key);
 			break ;
 		}
 	}

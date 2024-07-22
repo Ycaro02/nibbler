@@ -26,6 +26,10 @@ typedef enum SnakeDirection_e {
 	LEFT = 3
 } SnakeDirection;
 
+/* Define normalise direction of the snake */
+#define TOP_BOT_DIR		0
+#define LEFT_RIGHT_DIR	1
+
 /* Forward Nibbler declaration */
 class Nibbler;
 
@@ -49,8 +53,12 @@ class Snake {
 	void bodyFollowHead(Nibbler &ctx, s32 oldX, s32 oldY);
 
 	/* Snake move, move the snake in the direction (move head and body follow him)*/
-	void SnakeMove(Nibbler &ctx, s32 direction);
-	void resetSnake();
+	void	SnakeMove(Nibbler &ctx, s32 direction);
+	void	resetSnake();
+
+	/* Auto move the snake */
+	s32		getSnakeNormaliseDir(s32 direction);
+	void	handleSnakeDir(s32 key);
 
 	/* Getter setter */
 	s32 &getHeadX();
@@ -58,11 +66,14 @@ class Snake {
 	void setHeadX(s32 x);
 	void setHeadY(s32 y);
 	std::vector<iVec2> &getBody();
+	s32 &getDirection();
+	void setDirection(s32 value);
 
 	private:
-	iVec2 head;					/* Head position */
-	iVec2 toAdd;				/* Position to add a new body part */
-	std::vector<iVec2> body;	/* Body position */
+	iVec2 				head;					/* Head position */
+	iVec2 				toAdd;				/* Position to add a new body part */
+	std::vector<iVec2>	body;	/* Body position */
+	s32					direction;	/* Direction of the snake */
 };
 
 #endif /* SNAKE_HPP */

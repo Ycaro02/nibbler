@@ -3,6 +3,11 @@
 
 #include "GraphicLib.hpp"
 #include "Snake.hpp"
+#include <chrono>
+
+typedef std::chrono::steady_clock::time_point ChronoTimePoint;
+typedef std::chrono::seconds ChronoSecond;
+typedef std::chrono::milliseconds ChronoMilli;
 
 /* Define tile size for the board */
 #define TILE_SIZE 40
@@ -35,6 +40,7 @@ class Nibbler {
 	void boardTileSet(s32 x, s32 y, u8 value);
 
 	void checkBoardFull();
+	void snakeAutoMove();
 
 	s32 &getWidth();
 	s32 &getHeight();
@@ -60,6 +66,7 @@ class Nibbler {
 	s32					nbFood;		/* Number of food */
 	s32					currentLib;	/* Current library index */
 	s32					isRunning;	/* Game state */
+	ChronoTimePoint		lastMove;	/* Last move time */
 	Snake				snake;		/* Snake object */
 };
 
