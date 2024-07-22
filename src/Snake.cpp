@@ -167,24 +167,16 @@ void Snake::bodyFollowHead(Nibbler &ctx, s32 oldX, s32 oldY) {
  * @direction direction to move
  */
 void Snake::SnakeMove(Nibbler &ctx, s32 direction) {
-	s32 oldX = getHeadX();
-	s32 oldY = getHeadY();
-	
-	s32 newX = oldX;
-	s32 newY = oldY;
+	iVec2 old = {getHeadX(), getHeadY()};
+	iVec2 newHead = {old.x, old.y};
 
-	if (direction == UP) {
-		newY -= 1;
-	} else if (direction == DOWN) {
-		newY += 1;
-	} else if (direction == RIGHT) {
-		newX += 1;
-	} else if (direction == LEFT) {
-		newX -= 1;
-	} 
+	if (direction == UP) { newHead.y -= 1; }
+	else if (direction == DOWN) { newHead.y += 1; }
+	else if (direction == RIGHT) { newHead.x += 1; }
+	else if (direction == LEFT) { newHead.x -= 1; }
 
-	/* Guard for board */
-	if ((newX < 0 || newX >= ctx.getWidth()) || (newY < 0 || newY >= ctx.getHeight())) {
+	/* Guard for out of board */
+	if ((newHead.x < 0 || newHead.x >= ctx.getWidth()) || (newHead.y < 0 || newHead.y >= ctx.getHeight())) {
 		std::cout << "Out of board" << std::endl;
 		resetSnake();
 		ctx.resetGame();
@@ -192,7 +184,7 @@ void Snake::SnakeMove(Nibbler &ctx, s32 direction) {
 	}
 
 	/* Guard for snake collision */
-	if (ctx.boardTileGet(newX, newY) == SNAKE_BODY) { 
+	if (ctx.boardTileGet(newHead.x, newHead.y) == SNAKE_BODY) { 
 		std::cout << "Snake collision" << std::endl;
 		resetSnake();
 		ctx.resetGame();
@@ -200,15 +192,15 @@ void Snake::SnakeMove(Nibbler &ctx, s32 direction) {
 	}
 
 	/* Food boolean */
-	u8 wasFood = ctx.boardTileGet(newX, newY) == FOOD;
+	u8 wasFood = ctx.boardTileGet(newHead.x, newHead.y) == FOOD;
 
-	setHeadX(newX);
-	setHeadY(newY);
-	ctx.boardTileSet(newX, newY, SNAKE_HEAD);
+	setHeadX(newHead.x);
+	setHeadY(newHead.y);
+	ctx.boardTileSet(newHead.x, newHead.y, SNAKE_HEAD);
 	/* Mark old head position empty */
-	ctx.boardTileSet(oldX, oldY, EMPTY);
+	ctx.boardTileSet(old.x, old.y, EMPTY);
 
-	bodyFollowHead(ctx, oldX, oldY);
+	bodyFollowHead(ctx, old.x, old.y);
 	
 	if (wasFood) {
 		ctx.setNbFood(ctx.getNbFood() - 1);
