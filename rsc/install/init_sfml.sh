@@ -36,20 +36,20 @@ function load_deps_SFML {
 }
 
 function load_SFML {
-	SFML_REPO="${1}"
-	SFML_VERSION="${2}"
-	SFML_DIR="${BASE_DIR}/SFML"
-	BUILD_DIR="${SFML_DIR}/build"
+	local sfm_repo="${1}"
+	local sfml_version="${2}"
+	local sfml_dir="${BASE_DIR}/SFML"
+	local build_dir="${sfml_dir}/build"
 
 	# Clone SFML repository if it doesn't exist
-	if [ ! -d "${SFML_DIR}" ]; then
+	if [ ! -d "${sfml_dir}" ]; then
 		display_color_msg ${CYAN} "Clone SFML repo..."
-		git clone -b $SFML_VERSION --depth 1 $SFML_REPO ${SFML_DIR} >> $FD_OUT 2>&1
+		git clone -b ${sfml_version} --depth 1 ${sfm_repo} ${sfml_dir} >> $FD_OUT 2>&1
 	fi
 
 	# Create build directory
-	mkdir -p ${BUILD_DIR}
-	cd ${BUILD_DIR}
+	mkdir -p ${build_dir}
+	cd ${build_dir}
 
 	# Configure CMake with local dependencies
 	cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
@@ -84,14 +84,18 @@ function load_SFML {
 
 
 function load_SDL2 {
+	local sdl_archive="${1}"
+	local sdl_dir="${BASE_DIR}/SDL2"
+	
 	cd ${BASE_DIR}
 
 	display_color_msg ${YELLOW} "Download and install SDL2..."
 	# Download and install SDL2
-	wget https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz >> $FD_OUT 2>&1
+	wget ${sdl_archive} >> $FD_OUT 2>&1
 	tar -xvf SDL2-2.30.5.tar.gz >> $FD_OUT 2>&1
 	rm -rf SDL2-2.30.5.tar.gz
-	cd SDL2-2.30.5
+	mv SDL2-2.30.5 ${local sdl_dir}
+	cd ${local sdl_dir}
 	mkdir build
 	cd build
 	cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} -DCMAKE_PREFIX_PATH=${INSTALL_DIR} >> $FD_OUT 2>&1
@@ -101,20 +105,20 @@ function load_SDL2 {
 }
 
 function load_raylib {
-    RAYLIB_REPO="${1}"
-    RAYLIB_VERSION="${2}"
-    RAYLIB_DIR="${BASE_DIR}/raylib"
-    BUILD_DIR="${RAYLIB_DIR}/build"
+    local raylib_repo="${1}"
+    local raylib_version="${2}"
+    local raylib_dir="${BASE_DIR}/raylib"
+    local build_dir="${raylib_dir}/build"
 
     # Clone Raylib repository if it doesn't exist
-    if [ ! -d "${RAYLIB_DIR}" ]; then
+    if [ ! -d "${raylib_dir}" ]; then
         display_color_msg ${CYAN} "Clone Raylib repo..."
-        git clone -b $RAYLIB_VERSION --depth 1 $RAYLIB_REPO ${RAYLIB_DIR} >> $FD_OUT 2>&1
+        git clone -b ${raylib_version} --depth 1 ${raylib_repo} ${raylib_dir} >> $FD_OUT 2>&1
     fi
 
     # Create build directory
-    mkdir -p ${BUILD_DIR}
-    cd ${BUILD_DIR}
+    mkdir -p ${build_dir}
+    cd ${build_dir}
 
     # Configure CMake with local dependencies
     cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
@@ -133,7 +137,7 @@ function load_raylib {
 
 load_deps_SFML
 load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
-load_SDL2
+load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz"
 load_raylib "https://github.com/raysan5/raylib.git" "4.5.0"
 
 # Old code for SFML deps
