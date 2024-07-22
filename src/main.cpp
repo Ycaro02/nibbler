@@ -49,11 +49,21 @@ void GameLoop(Nibbler &ctx) {
 }
 
 
-int main() {
-	Nibbler ctx = Nibbler(10, 10);
+int main(int argc, char** argv) {
 
-	ctx.DisplayBoardFD0();
-	GameLoop(ctx);
+	if (argc != 3) {
+		std::cerr << "Usage: ./nibbler width height" << std::endl;
+		return (1);
+	}
+
+	try {
+		Nibbler ctx = Nibbler(argv[1], argv[2]);
+		ctx.DisplayBoardFD0();
+		GameLoop(ctx);
+	} catch (const std::exception &e) {
+		std::cerr << e.what() << std::endl;
+		return (1);
+	}
 	return (0);
 }
 

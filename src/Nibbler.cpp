@@ -3,6 +3,8 @@
 #include "../include/SDL2Lib.hpp"
 #include "../include/Snake.hpp"
 
+#include <stdexcept> // for std::invalid_argument
+
 Nibbler::Nibbler() : width(0), height(0), board(nullptr), nbFood(0), currentLib(0), isRunning(0) {
 	libs[0] = nullptr;
 	libs[1] = nullptr;
@@ -81,7 +83,31 @@ void Nibbler::resetGame() {
 	foodAdd();
 }
 
-Nibbler::Nibbler(s32 width, s32 height) : width(width), height(height) {
+
+static int parseIntegerData(const std::string &line) {
+    s32 nb = -1;
+	
+	try {
+        nb = std::stoi(line);
+    } catch (const std::exception& e) {
+		throw std::invalid_argument("Invalid integer data in Nibbler constructor: " + line);
+    }
+	if (nb <= 4) {
+		throw std::invalid_argument("Integer data in Nibbler constructor must be greater than 4");
+	} else if (nb >= 20) {
+		throw std::invalid_argument("Integer data in Nibbler constructor must be less than 20");
+	}
+
+	return (nb);
+}
+
+Nibbler::Nibbler(std::string w, std::string h) {
+	
+	width = parseIntegerData(w);
+	height = parseIntegerData(h);
+
+	std::cout << "Width: " << width << " Height: " << height << std::endl;
+	
 	board = new u8*[height];
 	for (s32 i = 0; i < height; i++) {
 		board[i] = new u8[width];
@@ -100,6 +126,7 @@ Nibbler::Nibbler(s32 width, s32 height) : width(width), height(height) {
 	winWidth += TILE_SPACING;
 	winHeight += TILE_SPACING;
 
+	// NibblerInitLib("SFML", "rsc/wrapperlib/SFMLWrapper.so", 0, winWidth, winHeight);
 	NibblerInitLib("SFML", "rsc/wrapperlib/SFMLWrapper.so", 0, winWidth, winHeight);
 	NibblerInitLib("SDL2", "rsc/wrapperlib/SDL2Wrapper.so", 1, winWidth, winHeight);
 

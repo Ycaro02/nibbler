@@ -34,8 +34,8 @@ AGraphicLib::AGraphicLib(int width, s32 height, const std::string title, const s
 	this->window = nullptr;
 	this->dlPtr = dlopen(path.c_str(), RTLD_LAZY);
 	if (!dlPtr) {
-		std::cerr << "Error: " << dlerror() << std::endl;
-		exit(1);
+		// std::cerr << "Error: dlOpen " << dlerror() << std::endl;
+		throw std::invalid_argument("Error: Graphic lib " + path + " not found");
 	}
     this->winCreate		= (createWindowFunc)dlsym(dlPtr, "createWindowWrapper");
     this->winClear		= (voidWinFunc)dlsym(dlPtr, "windowClearWrapper");
@@ -50,8 +50,8 @@ AGraphicLib::AGraphicLib(int width, s32 height, const std::string title, const s
 
 	if (!this->winCreate || !this->winClear || !this->winDisplay 
 		|| !this->winIsOpen || !this->winClose || !this->winPollEvent) {
-		std::cerr << "Error: " << dlerror() << std::endl;
-		exit(1);
+		// std::cerr << "Error: dlSym " << dlerror() << std::endl;
+		throw std::invalid_argument("Error: Symbole in lib " + path + " not found");
 	}
 
 }

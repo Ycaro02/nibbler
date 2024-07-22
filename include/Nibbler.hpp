@@ -17,7 +17,7 @@ class Nibbler {
 
 
 	/* Constructor */
-	Nibbler(s32 width, s32 height);
+	Nibbler(std::string w, std::string h);
 	void NibblerInitLib(std::string title, std::string path, s32 libID, s32 winWidth, s32 winHeight);
 	void DisplayBoardFD0();
 
