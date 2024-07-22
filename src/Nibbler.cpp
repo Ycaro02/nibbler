@@ -1,5 +1,6 @@
 #include "../include/Nibbler.hpp"
 #include "../include/Snake.hpp"
+#include "../include/Color.hpp"
 
 /* Needed for std::invalid_args */
 #include <stdexcept>
@@ -58,6 +59,22 @@ void Nibbler::NibblerInitLib(std::string title, std::string path, s32 libID, s32
 	libs[libID] = new GraphicLib(winWidth, winHeight, title, path, libID);
 }
 
+void Nibbler::checkBoardFull() {
+	s32 empty = 0;
+	for (s32 i = 0; i < height; i++) {
+		for (s32 j = 0; j < width; j++) {
+			if (board[i][j] == EMPTY) {
+				empty++;
+			}
+		}
+	}
+	if (empty == 0) {
+		std::cout << GREEN << "Congratulations, you won!" << RESET << std::endl;
+		resetGame();
+	}
+
+}
+
 /* Add food to the board */
 void Nibbler::foodAdd() {
 	s32 foodY = -1, foodX = -1;
@@ -65,7 +82,7 @@ void Nibbler::foodAdd() {
 		foodY = rand() % getHeight();
 		foodX = rand() % getWidth();
 		if (boardTileGet(foodX, foodY) != EMPTY) {
-			std::cout << "Food already present at " << foodX << " " << foodY << std::endl;
+			// std::cout << "Food already present at " << foodX << " " << foodY << std::endl;
 			foodY = -1;
 			foodX = -1;
 		}

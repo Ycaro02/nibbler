@@ -34,6 +34,8 @@ class Nibbler {
 	u8 &boardTileGet(s32 x, s32 y);
 	void boardTileSet(s32 x, s32 y, u8 value);
 
+	void checkBoardFull();
+
 	s32 &getWidth();
 	s32 &getHeight();
 

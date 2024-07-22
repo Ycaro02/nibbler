@@ -204,7 +204,7 @@ void Snake::SnakeMove(Nibbler &ctx, s32 direction) {
 	if (wasFood) {
 		ctx.setNbFood(ctx.getNbFood() - 1);
 		SnakeEat(ctx);
-		std::cout << "Snake eat body size : " << body.size() << std::endl;
+		// std::cout << "Snake eat body size : " << body.size() << std::endl;
 		if (ctx.getNbFood() == 0) {
 			ctx.foodAdd();
 		}
