@@ -22,6 +22,7 @@ class Nibbler {
 	void DisplayBoardFD0();
 
 	void foodAdd();
+	void resetGame();
 
 	/*Getter setter*/
 	u8 &boardTileGet(s32 x, s32 y);

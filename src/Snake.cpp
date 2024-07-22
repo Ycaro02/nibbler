@@ -2,17 +2,21 @@
 #include "../include/Nibbler.hpp"
 
 Snake::Snake() {
-	headX = 0;
-	headY = 0;
+	head.x = 0;
+	head.y = 0;
+	body = std::vector<iVec2>();
+	toAdd.x = -1;
+	toAdd.y = -1;
 }
 
 Snake::~Snake() {}
 
 Snake& Snake::operator=(const Snake &ref) {
-	headX = ref.headX;
-	headY = ref.headY;
-	bodyX = ref.bodyX;
-	bodyY = ref.bodyY;
+	head.x = ref.head.x;
+	head.y = ref.head.y;
+	body = ref.body;
+	toAdd.x = ref.toAdd.x;
+	toAdd.y = ref.toAdd.y;
 	return (*this);
 }
 
@@ -21,12 +25,24 @@ Snake::Snake(const Snake &ref) {
 }
 
 Snake::Snake(Nibbler &ctx, s32 x, s32 y) {
+	toAdd.x = -1;
+	toAdd.y = -1;
 	setHeadX(x);
 	setHeadY(y);
 	ctx.boardTileSet(getHeadX(), getHeadY(), SNAKE_HEAD);
-	bodyX = std::vector<s32>();
-	bodyY = std::vector<s32>();
+	body = std::vector<iVec2>();
+	brutExpension(ctx);
+	brutExpension(ctx);
+	brutExpension(ctx);
+	brutExpension(ctx);
+}
 
+void Snake::resetSnake() {
+	head.x = 0;
+	head.y = 0;
+	body.clear();
+	toAdd.x = -1;
+	toAdd.y = -1;
 }
 
 /**
@@ -38,40 +54,43 @@ Snake::Snake(Nibbler &ctx, s32 x, s32 y) {
  * @maxY board max Y position
 */
 void Snake::brutForceBodySpace(Nibbler &ctx, s32 currX, s32 currY, s32 maxX, s32 maxY) {
+	iVec2 tmp = {-1, -1};
+	
 	if (currY + 1 < maxY && ctx.boardTileGet(currX, currY + 1) == EMPTY){
-		bodyX.push_back(currX);
-		bodyY.push_back(currY + 1);
+		tmp.x = currX;
+		tmp.y = currY + 1;
 	} else if (currX + 1 < maxX && ctx.boardTileGet(currX + 1, currY) == EMPTY){
-		bodyX.push_back(currX + 1);
-		bodyY.push_back(currY);
+		tmp.x = currX + 1;
+		tmp.y = currY;
 	} else if (currY - 1 >= 0 && ctx.boardTileGet(currX, currY - 1) == EMPTY){
-		bodyX.push_back(currX);
-		bodyY.push_back(currY - 1);
+		tmp.x = currX;
+		tmp.y = currY - 1;
 	} else if (currX - 1 >= 0 && ctx.boardTileGet(currX - 1, currY) == EMPTY){
-		bodyX.push_back(currX - 1);
-		bodyY.push_back(currY);
+		tmp.x = currX - 1;
+		tmp.y = currY;
 	} else {
 		/* No more space to add a new body part */
 		std::cout << "No more space to add a new body part" << std::endl;
 		return ;
 	}
-	ctx.boardTileSet(bodyX[bodyX.size() - 1], bodyY[bodyY.size() - 1], SNAKE_BODY);
+	body.push_back(tmp);
+	ctx.boardTileSet(body[body.size() - 1].x, body[body.size() - 1].y, SNAKE_BODY);
 }
 
 /**
  * @brief Detect where to add a new body part
  * @ctx Nibbler context
 */
-void Snake::detectSnakeExpension(Nibbler &ctx) {
+void Snake::brutExpension(Nibbler &ctx) {
 	s32 tmpX = -1, tmpY = -1;
 	
 	/* Detect snake last tile */
-	if (bodyX.size() == 0) {
+	if (body.size() == 0) {
 		tmpX = getHeadX();
 		tmpY = getHeadY();
 	} else {
-		tmpX = bodyX[bodyX.size() - 1];
-		tmpY = bodyY[bodyY.size() - 1];
+		tmpX = body[body.size() - 1].x;
+		tmpY = body[body.size() - 1].y;
 	}
 	/*	
 		Detect with brut force where to add the new body part in range of the board 
@@ -84,7 +103,9 @@ void Snake::detectSnakeExpension(Nibbler &ctx) {
 }
 
 void Snake::SnakeEat(Nibbler &ctx) {
-	detectSnakeExpension(ctx);
+	iVec2 tmp = {toAdd.x, toAdd.y};
+	body.push_back(tmp);
+	ctx.boardTileSet(toAdd.x, toAdd.y, SNAKE_BODY);
 }
 
 /**
@@ -94,31 +115,28 @@ void Snake::SnakeEat(Nibbler &ctx) {
  * @oldY old head Y position
  */
 void Snake::bodyFollowHead(Nibbler &ctx, s32 oldX, s32 oldY) {
-    if (bodyX.empty() || bodyY.empty()) return; // S'assurer que le corps n'est pas vide
+    if (body.empty()) return;
 
     s32 tmpX, tmpY;
 
-    for (u64 i = 0; i < bodyX.size(); ++i) {
+    for (u64 i = 0; i < body.size(); ++i) {
 		/* Save current body position */
-        tmpX = bodyX[i];
-        tmpY = bodyY[i];
-
+        tmpX = body[i].x;
+        tmpY = body[i].y;
 		/* Update body position to old pos */
-        bodyX[i] = oldX;
-        bodyY[i] = oldY;
-
+        body[i].x = oldX;
+        body[i].y = oldY;
 		/* Update board */
         ctx.boardTileSet(oldX, oldY, SNAKE_BODY);
-
 		/* Update old pos */
         oldX = tmpX;
         oldY = tmpY;
     }
 
 	/* Update board (old last position become empty )*/
-	if (bodyX.size() != 0) {
-		ctx.boardTileSet(oldX, oldY, EMPTY);
-	}
+	ctx.boardTileSet(oldX, oldY, EMPTY);
+	toAdd.x = oldX;
+	toAdd.y = oldY;
 }
 
 void Snake::SnakeMove(Nibbler &ctx, s32 direction) {
@@ -142,6 +160,14 @@ void Snake::SnakeMove(Nibbler &ctx, s32 direction) {
 	if (newX < 0 || newX >= ctx.getWidth()) { return; }
 	if (newY < 0 || newY >= ctx.getHeight()) { return; }
 
+	/* Guard for snake collision */
+	if (ctx.boardTileGet(newX, newY) == SNAKE_BODY) { 
+		std::cout << "Snake collision" << std::endl;
+		resetSnake();
+		ctx.resetGame();
+		return;
+	}
+
 
 	/* Food boolean */
 	u8 wasFood = ctx.boardTileGet(newX, newY) == FOOD;
@@ -157,36 +183,29 @@ void Snake::SnakeMove(Nibbler &ctx, s32 direction) {
 	if (wasFood) {
 		ctx.setNbFood(ctx.getNbFood() - 1);
 		SnakeEat(ctx);
-		std::cout << "Snake eat body size : " << bodyX.size() << std::endl;
+		std::cout << "Snake eat body size : " << body.size() << std::endl;
 		if (ctx.getNbFood() == 0) {
 			ctx.foodAdd();
 		}
 	}
-
-
 }
 
 s32 &Snake::getHeadX() {
-	return (headX);
+	return (head.x);
 }
 
 s32 &Snake::getHeadY() {
-	return (headY);
+	return (head.y);
 }
 
 void Snake::setHeadX(s32 x) {
-	headX = x;
+	head.x = x;
 }
 
 void Snake::setHeadY(s32 y) {
-	headY = y;
+	head.y = y;
 }
 
-std::vector<s32> &Snake::getBodyX() {
-	return (bodyX);
+std::vector<iVec2> &Snake::getBody() {
+	return (body);
 }
-
-std::vector<s32> &Snake::getBodyY() {
-	return (bodyY);
-}
-

@@ -69,6 +69,18 @@ void Nibbler::foodAdd() {
 	setNbFood(getNbFood() + 1);
 }
 
+void Nibbler::resetGame() {
+	for (s32 i = 0; i < height; i++) {
+		for (s32 j = 0; j < width; j++) {
+			board[i][j] = EMPTY;
+		}
+	}
+	snake = Snake(*this, width / 2, height / 2);
+	setNbFood(0);
+	foodAdd();
+	foodAdd();
+}
+
 Nibbler::Nibbler(s32 width, s32 height) : width(width), height(height) {
 	board = new u8*[height];
 	for (s32 i = 0; i < height; i++) {
@@ -92,10 +104,10 @@ Nibbler::Nibbler(s32 width, s32 height) : width(width), height(height) {
 	NibblerInitLib("SDL2", "rsc/wrapperlib/SDL2Wrapper.so", 1, winWidth, winHeight);
 
 	/* Initialize the snake */
-
 	srand(time(NULL));
-	s32 startW = rand() % width;
-	s32 startH = rand() % height;
+
+	s32 startW = width / 2;
+	s32 startH = height / 2;
 	snake = Snake(*this, startW, startH);
 
 	/* Initialize the food */
