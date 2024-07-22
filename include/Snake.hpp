@@ -4,11 +4,13 @@
 #include "short_type.hpp"
 #include <vector>
 
+/* Define a 2D vector */
 typedef struct iVec2_s {
 	s32 x;
 	s32 y;
 } iVec2;
 
+/* Define the board state */
 typedef enum BoardState_e {
 	EMPTY = 0U,
 	FOOD = 1U,
@@ -16,6 +18,7 @@ typedef enum BoardState_e {
 	SNAKE_BODY = 3U
 } BoardState;
 
+/* Define the direction of the snake */
 typedef enum SnakeDirection_e {
 	UP = 0,
 	RIGHT = 1,
@@ -23,8 +26,10 @@ typedef enum SnakeDirection_e {
 	LEFT = 3
 } SnakeDirection;
 
+/* Forward Nibbler declaration */
 class Nibbler;
 
+/* Snake class to handle the snake */
 class Snake {
 	public:
 	/* Canonical form */
@@ -47,6 +52,7 @@ class Snake {
 	void SnakeMove(Nibbler &ctx, s32 direction);
 	void resetSnake();
 
+	/* Getter setter */
 	s32 &getHeadX();
 	s32 &getHeadY();
 	void setHeadX(s32 x);

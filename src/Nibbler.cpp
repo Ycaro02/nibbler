@@ -1,14 +1,17 @@
 #include "../include/Nibbler.hpp"
 #include "../include/Snake.hpp"
 
-#include <stdexcept> // for std::invalid_argument
+/* Needed for std::invalid_args */
+#include <stdexcept>
 
+/* Default constructor */
 Nibbler::Nibbler() : width(0), height(0), board(nullptr), nbFood(0), currentLib(0), isRunning(0) {
 	libs[0] = nullptr;
 	libs[1] = nullptr;
 	libs[2] = nullptr;
 }
 
+/* Free the board */
 static void freeBoard(u8 **board, s32 height) {
 	for (s32 i = 0; i < height; i++) {
 		delete[] board[i];
@@ -16,7 +19,7 @@ static void freeBoard(u8 **board, s32 height) {
 	delete[] board;
 }
 
-
+/* Destructor */
 Nibbler::~Nibbler() {
 	if (board) {
 		freeBoard(board, height);
@@ -26,6 +29,7 @@ Nibbler::~Nibbler() {
 	delete libs[2];
 }
 
+/* Assignment operator */
 Nibbler& Nibbler::operator=(const Nibbler &ref) {
 	if (this != &ref) {
 		width = ref.width;
@@ -44,14 +48,17 @@ Nibbler& Nibbler::operator=(const Nibbler &ref) {
 	return (*this);
 }
 
+/* Copy constructor */
 Nibbler::Nibbler(const Nibbler &ref) {
 	*this = ref;
 }
 
+/* Initialize lib wrapper */
 void Nibbler::NibblerInitLib(std::string title, std::string path, s32 libID, s32 winWidth, s32 winHeight) {
 	libs[libID] = new GraphicLib(winWidth, winHeight, title, path, libID);
 }
 
+/* Add food to the board */
 void Nibbler::foodAdd() {
 	s32 foodY = -1, foodX = -1;
 	while (foodY == -1 || foodX == -1) {
@@ -67,6 +74,7 @@ void Nibbler::foodAdd() {
 	setNbFood(getNbFood() + 1);
 }
 
+/* Reset the game */
 void Nibbler::resetGame() {
 	/* Reset the board */
 	for (s32 i = 0; i < height; i++) {
@@ -83,7 +91,7 @@ void Nibbler::resetGame() {
 	foodAdd();
 }
 
-
+/* Parse the integer data */
 static int parseIntegerData(const std::string &line) {
     s32 nb = -1;
 	
@@ -101,7 +109,11 @@ static int parseIntegerData(const std::string &line) {
 	return (nb);
 }
 
-
+/**	@brief Real Nibbler Constructor
+ *	@param w Width of the board
+ *	@param h Height of the board
+ *	This function can throw an exception if the input data is invalid or if we can't load any library
+*/
 Nibbler::Nibbler(std::string w, std::string h) {
 	
 	width = parseIntegerData(w);
@@ -119,12 +131,6 @@ Nibbler::Nibbler(std::string w, std::string h) {
 		board[i] = new u8[width];
 	}
 
-	// s32 winWidth = width * TILE_SIZE + width * TILE_SPACING;
-	// s32 winHeight = height * TILE_SIZE + height * TILE_SPACING;
-
-	// winWidth += TILE_SPACING;
-	// winHeight += TILE_SPACING;
-
 	/* Load the libraries */
 	NibblerInitLib("SFML", "rsc/wrapperlib/SFMLWrapper.so", SFML_IDX, WIN_W(width), WIN_H(height));
 	NibblerInitLib("SDL2", "rsc/wrapperlib/SDL2Wrapper.so", SDL2_IDX, WIN_W(width), WIN_H(height));
@@ -136,7 +142,7 @@ Nibbler::Nibbler(std::string w, std::string h) {
 	resetGame();
 }
 
-
+/* Display the board in fd 0 DEBUG FUNC */
 void Nibbler::DisplayBoardFD0() {
 	for (s32 i = 0; i < height; i++) {
 		for (s32 j = 0; j < width; j++) {

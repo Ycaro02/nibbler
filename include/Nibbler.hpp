@@ -4,13 +4,15 @@
 #include "GraphicLib.hpp"
 #include "Snake.hpp"
 
+/* Define tile size for the board */
 #define TILE_SIZE 40
 #define TILE_SPACING 2
 
-
+/* Define the window value */
 #define WIN_W(w) (s32)((w * TILE_SIZE) + (w * TILE_SPACING) + TILE_SPACING)
 #define WIN_H(h) (s32)((h * TILE_SIZE) + (h * TILE_SPACING) + TILE_SPACING)
 
+/* Nibbler class to handle the game (context)*/
 class Nibbler {
 	public:
 	/* Canonical form */
@@ -49,14 +51,14 @@ class Nibbler {
 	Snake &getSnake();
 
 	private:
-	GraphicLib			*libs[3];
-	s32					width;
-	s32					height;
-	u8					**board;
-	s32					nbFood;
-	s32					currentLib;
-	s32					isRunning;	
-	Snake				snake;
+	GraphicLib			*libs[3];	/* Array of the 3 libraries */
+	s32					width;		/* Width of the board */
+	s32					height;		/* Height of the board */
+	u8					**board;	/* Board of the game */
+	s32					nbFood;		/* Number of food */
+	s32					currentLib;	/* Current library index */
+	s32					isRunning;	/* Game state */
+	Snake				snake;		/* Snake object */
 };
 
 #endif /* NIBBLER_HPP */

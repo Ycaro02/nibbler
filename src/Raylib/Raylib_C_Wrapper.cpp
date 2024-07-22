@@ -65,14 +65,14 @@ extern "C" {
 
         if (WindowShouldClose()) {
             return (NKEY_ESC);
-        } else if (IsKeyPressedOrDown(KEY_UP)) { // up == left
-            return (NKEY_LEFT);
-        } else if (IsKeyPressedOrDown(KEY_DOWN)) { // down == right
-            return (NKEY_RIGHT);
-        } else if (IsKeyPressedOrDown(KEY_LEFT)) { // left == up
+        } else if (IsKeyPressedOrDown(KEY_UP)) {
             return (NKEY_UP);
-        } else if (IsKeyPressedOrDown(KEY_RIGHT)) { // right == down
+        } else if (IsKeyPressedOrDown(KEY_DOWN)) {
             return (NKEY_DOWN);
+        } else if (IsKeyPressedOrDown(KEY_LEFT)) {
+            return (NKEY_LEFT);
+        } else if (IsKeyPressedOrDown(KEY_RIGHT)) {
+            return (NKEY_RIGHT);
         } else if (IsKeyPressedOrDown(KEY_ONE)) {
             return (NKEY_1);
         } else if (IsKeyPressedOrDown(KEY_TWO)) {
@@ -99,6 +99,6 @@ extern "C" {
 
         // Set the drawing color and draw the tile
         Color color = { r, g, b, a };
-        DrawRectangle(pixel_x, pixel_y, TILE_SIZE, TILE_SIZE, color);
+        DrawRectangle(pixel_y, pixel_x, TILE_SIZE, TILE_SIZE, color);
     }
 }

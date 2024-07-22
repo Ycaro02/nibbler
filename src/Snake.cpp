@@ -1,6 +1,7 @@
 #include "../include/Snake.hpp"
 #include "../include/Nibbler.hpp"
 
+/* Default constructor */
 Snake::Snake() {
 	head.x = 0;
 	head.y = 0;
@@ -9,8 +10,10 @@ Snake::Snake() {
 	toAdd.y = -1;
 }
 
+/* Destructor */
 Snake::~Snake() {}
 
+/* Assignment operator */
 Snake& Snake::operator=(const Snake &ref) {
 	head.x = ref.head.x;
 	head.y = ref.head.y;
@@ -20,10 +23,17 @@ Snake& Snake::operator=(const Snake &ref) {
 	return (*this);
 }
 
+/* Copy constructor */
 Snake::Snake(const Snake &ref) {
 	*this = ref;
 }
 
+/**
+ * @brief Real Constructor
+ * @ctx Nibbler context
+ * @x X position
+ * @y Y position
+*/
 Snake::Snake(Nibbler &ctx, s32 x, s32 y) {
 	toAdd.x = -1;
 	toAdd.y = -1;
@@ -37,6 +47,9 @@ Snake::Snake(Nibbler &ctx, s32 x, s32 y) {
 	brutExpension(ctx);
 }
 
+/**
+ * @brief Reset the snake position
+*/
 void Snake::resetSnake() {
 	head.x = 0;
 	head.y = 0;
@@ -102,6 +115,10 @@ void Snake::brutExpension(Nibbler &ctx) {
 	brutForceBodySpace(ctx, tmpX, tmpY, maxX, maxY);
 }
 
+/**
+ * @brief Snake eat (grow), when snake eats food add a new body part
+ * @ctx Nibbler context
+*/
 void Snake::SnakeEat(Nibbler &ctx) {
 	iVec2 tmp = {toAdd.x, toAdd.y};
 	body.push_back(tmp);
@@ -139,6 +156,11 @@ void Snake::bodyFollowHead(Nibbler &ctx, s32 oldX, s32 oldY) {
 	toAdd.y = oldY;
 }
 
+/**
+ * @brief Move the snake in the direction (move head and body follow him)
+ * @ctx Nibbler context
+ * @direction direction to move
+ */
 void Snake::SnakeMove(Nibbler &ctx, s32 direction) {
 	s32 oldX = getHeadX();
 	s32 oldY = getHeadY();
@@ -168,7 +190,6 @@ void Snake::SnakeMove(Nibbler &ctx, s32 direction) {
 		return;
 	}
 
-
 	/* Food boolean */
 	u8 wasFood = ctx.boardTileGet(newX, newY) == FOOD;
 
@@ -189,6 +210,8 @@ void Snake::SnakeMove(Nibbler &ctx, s32 direction) {
 		}
 	}
 }
+
+/* Getter setter */
 
 s32 &Snake::getHeadX() {
 	return (head.x);
