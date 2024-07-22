@@ -29,7 +29,7 @@ function wrapper_lib_compile {
 	local wrapper_path="${2}"
 	local lib_deps="${3}"
 
-	g++ -shared -o rsc/wrapperlib/${lib_name} -fPIC ${wrapper_path} \
+	clang++ -shared -o rsc/wrapperlib/${lib_name} ${wrapper_path} \
 		-I./rsc/lib/install/include -L./rsc/lib/install/lib ${lib_deps} \
 		-Wl,-rpath,./rsc/lib/install/lib 
 
@@ -39,6 +39,7 @@ function wrapper_lib_compile {
 
 wrapper_lib_compile "SFMLWrapper.so" "src/SFML/SF_C_Wrapper.cpp" "-lsfml-graphics -lsfml-window -lsfml-system"
 wrapper_lib_compile "SDL2Wrapper.so" "src/SDL2/SDL_C_Wrapper.cpp" "-lSDL2"
+# wrapper_lib_compile "RaylibWrapper.so" "src/Raylib/Raylib_C_Wrapper.cpp" "-lraylib"
 
 # Run the test
 ./nibbler 20 20

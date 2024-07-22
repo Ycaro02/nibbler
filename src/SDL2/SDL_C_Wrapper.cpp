@@ -62,8 +62,24 @@ extern "C" {
         }
     }
 
-    bool windowPollEventWrapper(SDL_Window* window, SDL_Event* event) {
-        return (SDL_PollEvent(event));
+    s32 windowPollEventWrapper(SDL_Window* window) {
+        SDL_Event event;
+		SDL_PollEvent(&event);
+
+
+		if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)) {
+			return (KEY_ESC);
+		} else if (event.type == SDL_KEYDOWN) {
+			SDL_Keycode code = event.key.keysym.sym;
+			if (code == SDLK_UP) { return (KEY_UP); }
+			else if (code == SDLK_DOWN) { return (KEY_DOWN); }
+			else if (code == SDLK_LEFT) { return (KEY_LEFT); }
+			else if (code == SDLK_RIGHT) { return (KEY_RIGHT); }
+			else if (code == SDLK_1) { return (KEY_1); }
+			else if (code == SDLK_2) { return (KEY_2); }
+			else if (code == SDLK_3) { return (KEY_3); }
+		}
+		return (KEY_INVALID);
     }
 
 	void SDL2LibDestructor() {

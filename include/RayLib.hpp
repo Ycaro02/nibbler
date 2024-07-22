@@ -1,8 +1,8 @@
-#ifndef SDL2LIB_HPP
-#define SDL2LIB_HPP
+#ifndef RayLib_HPP
+#define RayLib_HPP
 
 #include "../include/AGraphicLib.hpp"
-#include <SDL2/SDL.h>
+#include "raylib.h" // to remove
 #include <string>
 #include <dlfcn.h>
 
@@ -15,19 +15,19 @@
 // typedef bool		(*windowPollEvent_sdl)(SDL_Window*, SDL_Event*);
 // typedef void		(*SDL2LibDestructor_sdl)();
 
-class SDL2Lib : public AGraphicLib {
+class RayLib : public AGraphicLib {
 public:
     /* Canonical form */
-    SDL2Lib();
-    SDL2Lib(const SDL2Lib& ref);
-    SDL2Lib& operator=(const SDL2Lib& ref);
-    ~SDL2Lib();
+    RayLib();
+    RayLib(const RayLib& ref);
+    RayLib& operator=(const RayLib& ref);
+    ~RayLib();
 
     /* Real Constructor */
-    SDL2Lib(int width, s32 height, const std::string title, const std::string path);
+    RayLib(int width, s32 height, const std::string title, const std::string path);
     
-    // virtual void processEvents(Nibbler& ctx);	/* Process events */
-	// virtual void close();						/* Close the graphics library */
+    virtual void processEvents(Nibbler& ctx);	/* Process events */
+	virtual void close();						/* Close the graphics library */
 };
 
-#endif /* SDL2LIB_HPP */
+#endif /* RayLib_HPP */

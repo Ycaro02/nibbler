@@ -88,21 +88,53 @@ function load_SDL2 {
 
 	display_color_msg ${YELLOW} "Download and install SDL2..."
 	# Download and install SDL2
-	wget https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz
-	tar -xvf SDL2-2.30.5.tar.gz
+	wget https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz >> $FD_OUT 2>&1
+	tar -xvf SDL2-2.30.5.tar.gz >> $FD_OUT 2>&1
 	rm -rf SDL2-2.30.5.tar.gz
 	cd SDL2-2.30.5
 	mkdir build
 	cd build
-	cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} -DCMAKE_PREFIX_PATH=${INSTALL_DIR}
-	make -s -j$(nproc)
-	make -s install
+	cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} -DCMAKE_PREFIX_PATH=${INSTALL_DIR} >> $FD_OUT 2>&1
+	make -s -j$(nproc) >> $FD_OUT 2>&1
+	make -s install >> $FD_OUT 2>&1
 	display_color_msg ${GREEN} "SDL2 instalation done in ${INSTALL_DIR}."
 }
 
+function load_raylib {
+    RAYLIB_REPO="${1}"
+    RAYLIB_VERSION="${2}"
+    RAYLIB_DIR="${BASE_DIR}/raylib"
+    BUILD_DIR="${RAYLIB_DIR}/build"
+
+    # Clone Raylib repository if it doesn't exist
+    if [ ! -d "${RAYLIB_DIR}" ]; then
+        display_color_msg ${CYAN} "Clone Raylib repo..."
+        git clone -b $RAYLIB_VERSION --depth 1 $RAYLIB_REPO ${RAYLIB_DIR} >> $FD_OUT 2>&1
+    fi
+
+    # Create build directory
+    mkdir -p ${BUILD_DIR}
+    cd ${BUILD_DIR}
+
+    # Configure CMake with local dependencies
+    cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
+        -DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
+		-DBUILD_SHARED_LIBS=ON \
+        >> $FD_OUT 2>&1
+
+    # Compile and install Raylib
+    display_color_msg ${YELLOW} "Compile and install Raylib in ${INSTALL_DIR}..."
+    make -s -j$(nproc) >> $FD_OUT 2>&1
+    make -s install >> $FD_OUT 2>&1
+
+    display_color_msg ${GREEN} "Raylib installation done in ${INSTALL_DIR}."
+}
+
+
 load_deps_SFML
 load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
-load_SDL2 >> $FD_OUT 2>&1
+load_SDL2
+load_raylib "https://github.com/raysan5/raylib.git" "4.5.0"
 
 # Old code for SFML deps
 # echo "Dowlnoading libsndfile..."

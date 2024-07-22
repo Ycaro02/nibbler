@@ -45,7 +45,7 @@ class Nibbler {
 	Snake &getSnake();
 
 	private:
-	AGraphicLib			*libs[2];
+	AGraphicLib			*libs[3];
 	s32					width;
 	s32					height;
 	u8					**board;

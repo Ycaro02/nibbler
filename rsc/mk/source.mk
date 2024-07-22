@@ -12,10 +12,10 @@ SRC_DIR 		=	src
 MAIN_MANDATORY 	=	main.cpp
 
 SRCS			=	GraphicLib/AGraphicLib.cpp\
-					SFML/SFLib.cpp \
-					SDL2/SDL2Lib.cpp \
 					Nibbler.cpp \
 					Snake.cpp \
+					# SFML/SFLib.cpp \
+					# SDL2/SDL2Lib.cpp \
 
 # SRCS_BONUS		=	main_bonus.cpp
 

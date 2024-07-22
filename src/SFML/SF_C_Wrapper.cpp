@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include "../../include/AGraphicLib.hpp"
 #include "../../include/short_type.hpp"
 #include "../../include/Nibbler.hpp"
 
@@ -23,11 +24,33 @@ extern "C" {
 
     void windowCloseWrapper(sf::RenderWindow* window) {
         window->close();
+		delete window;
     }
 
-    bool windowPollEventWrapper(sf::RenderWindow* window, sf::Event* event) {
-        return (window->pollEvent(*event));
-    }
+    s32 windowPollEventWrapper(sf::RenderWindow* window) {
+		sf::Event event = sf::Event();
+
+		s32 keyValue = KEY_INVALID;
+		if (!window) {
+			return (keyValue);
+		}
+		if (window->pollEvent(event)) {
+			if (event.type == sf::Event::Closed) {
+				return (KEY_ESC);
+			}
+			else if (event.type == sf::Event::KeyPressed) {
+				if (event.key.code == sf::Keyboard::Up) { keyValue = KEY_UP ; }
+				else if (event.key.code == sf::Keyboard::Down) { keyValue = KEY_DOWN ; }
+				else if (event.key.code == sf::Keyboard::Left) { keyValue = KEY_LEFT ; }
+				else if (event.key.code == sf::Keyboard::Right) { keyValue = KEY_RIGHT ; }
+				else if (event.key.code == sf::Keyboard::Num1) { keyValue = KEY_1 ; }
+				else if (event.key.code == sf::Keyboard::Num2) { keyValue = KEY_2 ; }
+				else if (event.key.code == sf::Keyboard::Num3) { keyValue = KEY_3 ; }
+				else if (event.key.code == sf::Keyboard::Escape) { keyValue = KEY_ESC ; }
+			}
+		}
+		return (keyValue);
+	}
 
 	void colorTileWrapper(sf::RenderWindow* window, u32 y, u32 x, u8 r, u8 g, u8 b, u8 a) {
         // Convert tile coordinates to pixel coordinates

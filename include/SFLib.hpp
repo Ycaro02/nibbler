@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
+
 /* Function pointers typedef */
 // typedef sf::RenderWindow*	(*createWindow_sfml)(u32,u32, const char*);
 // typedef void				(*windowClear_sfml)(sf::RenderWindow*);
@@ -25,8 +26,8 @@ public:
 	/* Real Constructor */
     SFLib(int width, s32 height, const std::string title, const std::string path);
     
-    virtual void processEvents(Nibbler& ctx);	/* Process events */
-	virtual void close();						/* Close the graphics library */
+    // virtual void processEvents(Nibbler& ctx);	/* Process events */
+	// virtual void close();						/* Close the graphics library */
 };
 
 #endif /* SFLIB_HPP */

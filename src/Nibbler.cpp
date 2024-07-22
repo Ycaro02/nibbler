@@ -49,11 +49,16 @@ Nibbler::Nibbler(const Nibbler &ref) {
 }
 
 void Nibbler::NibblerInitLib(std::string title, std::string path, s32 libID, s32 winWidth, s32 winHeight) {
-	if (libID == 0) {
-		libs[0] = new SFLib(winWidth, winHeight, title, path);
-	} else if (libID == 1) {
-		libs[1] = new SDL2Lib(winWidth, winHeight, title, path);
-	}
+
+	libs[libID] = new AGraphicLib(winWidth, winHeight, title, path, libID);
+	// if (libID == SFML_IDX) {
+	// 	libs[0] = new SFLib(winWidth, winHeight, title, path);
+	// } else if (libID == SDL2_IDX) {
+	// 	libs[1] = new SDL2Lib(winWidth, winHeight, title, path);
+	// } 
+	// else if (libID == RAYLIB_IDX) {
+	// 	libs[2] = new RayLib(winWidth, winHeight, title, path);
+	// }
 }
 
 void Nibbler::foodAdd() {
@@ -116,7 +121,7 @@ Nibbler::Nibbler(std::string w, std::string h) {
 		}
 	}
 	isRunning = 1;
-	currentLib = SFML_IDX;
+	currentLib = SDL2_IDX;
 	nbFood = 0;
 	/* Load the libraries */
 
@@ -127,8 +132,10 @@ Nibbler::Nibbler(std::string w, std::string h) {
 	winHeight += TILE_SPACING;
 
 	// NibblerInitLib("SFML", "rsc/wrapperlib/SFMLWrapper.so", 0, winWidth, winHeight);
-	NibblerInitLib("SFML", "rsc/wrapperlib/SFMLWrapper.so", 0, winWidth, winHeight);
-	NibblerInitLib("SDL2", "rsc/wrapperlib/SDL2Wrapper.so", 1, winWidth, winHeight);
+	NibblerInitLib("SFML", "rsc/wrapperlib/SFMLWrapper.so", SFML_IDX, winWidth, winHeight);
+	NibblerInitLib("SDL2", "rsc/wrapperlib/SDL2Wrapper.so", SDL2_IDX, winWidth, winHeight);
+	NibblerInitLib("Raylib", "rsc/wrapperlib/RaylibWrapper.so", RAYLIB_IDX, winWidth, winHeight);
+
 
 	/* Initialize the snake */
 	srand(time(NULL));

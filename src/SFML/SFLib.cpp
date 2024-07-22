@@ -1,5 +1,6 @@
 #include "../../include/SFLib.hpp"
 #include "../../include/Nibbler.hpp"
+#include "../../include/Color.hpp"
 #include <iostream>
 
 
@@ -30,52 +31,12 @@ SFLib::SFLib(const SFLib& ref)
 /* Classic constructor */
 
 SFLib::SFLib(int width, s32 height, const std::string title, const std::string path) 
-: AGraphicLib(width, height, title, path)
+: AGraphicLib(width, height, title, path, SFML_IDX)
 {}
 
-static void SFMLHandleSnakeMove(Nibbler &ctx, sf::Event &event) {
-	Snake &snake = ctx.getSnake();
-
-	if (event.key.code == sf::Keyboard::Up) {
-		snake.SnakeMove(ctx, UP);
-	} else if (event.key.code == sf::Keyboard::Down) {
-		snake.SnakeMove(ctx, DOWN);
-	} else if (event.key.code == sf::Keyboard::Left) {
-		snake.SnakeMove(ctx, LEFT);
-	} else if (event.key.code == sf::Keyboard::Right) {
-		snake.SnakeMove(ctx, RIGHT);
-	}
-}
-
-/* Wrapper function */
-void SFLib::processEvents(Nibbler &ctx) {
-    sf::Event event = sf::Event();
-
-    while (this->window && this->winPollEvent(this->window, &event)) {
-        if (event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)) {
-			// *isRunning = 0;
-			ctx.setIsRunning(0);
-        } else if (event.type == sf::Event::KeyPressed) {
-			if (event.key.code == sf::Keyboard::Num1) {
-				// std::cout << "SFML Key 1 pressed" << std::endl;
-				ctx.setCurrentLibIdx(SFML_IDX);
-			} else if (event.key.code == sf::Keyboard::Num2) {
-				// std::cout << "SFML Key 2 pressed, close SFML window" << std::endl;
-				ctx.setCurrentLibIdx(SDL2_IDX);
-				this->close();
-				this->window = nullptr;
-			} else if (event.key.code == sf::Keyboard::Num3) {
-				std::cout << RED << "SFML Key 3 pressed, NEED TO IMPLEMENT LAST LIB" << RESET << std::endl;
-			} else {
-				SFMLHandleSnakeMove(ctx, event);
-			}
-		}
-    }
-}
-
-void SFLib::close() {
-	if (this->window) {
-		this->winClose(this->window);
-		delete (sf::Window *)this->window;
-	}
-}
+// void SFLib::close() {
+// 	if (this->window) {
+// 		this->winClose(this->window);
+// 		delete (sf::Window *)this->window;
+// 	}
+// }

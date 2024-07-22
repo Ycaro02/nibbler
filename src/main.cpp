@@ -1,6 +1,7 @@
 #include "../include/Nibbler.hpp"
 #include "../include/SFLib.hpp"
 #include "../include/SDL2Lib.hpp"
+#include "../include/Color.hpp"
 #include <iostream>
 
 #define BLAK_COLOR		0,0,0,255			/* Base color */

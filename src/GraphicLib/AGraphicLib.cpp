@@ -1,4 +1,6 @@
 #include "../../include/AGraphicLib.hpp"
+#include "../../include/Nibbler.hpp"
+#include "../../include/Snake.hpp"
 
 AGraphicLib::AGraphicLib() 
 : dlPtr(nullptr), window(nullptr), width(0), height(0), title("")
@@ -27,7 +29,21 @@ AGraphicLib::AGraphicLib(const AGraphicLib& ref) {
 	*this = ref;
 }
 
-AGraphicLib::AGraphicLib(int width, s32 height, const std::string title, const std::string path) {
+AGraphicLib::~AGraphicLib() {
+	if (window) {
+		close();
+	}
+	if (libDestructor) {
+		libDestructor();
+	}
+	if (dlPtr) {
+		dlclose(dlPtr);
+	}
+}
+
+AGraphicLib::AGraphicLib(int width, s32 height, const std::string title, const std::string path, s16 libraryId) {
+	
+	this->libID = libraryId;
 	this->width = width;
 	this->height = height;
 	this->title = title;
@@ -77,4 +93,48 @@ void AGraphicLib::colorTile(u32 x, u32 y, u8 r, u8 g, u8 b, u8 a) {
 
 bool AGraphicLib::isOpen() {
     return (this->window  && this->winIsOpen(this->window));
+}
+
+static void handleSnakeMove(Nibbler &ctx, s32 event) {
+	Snake &snake = ctx.getSnake();
+
+	if (event == KEY_UP) {
+		snake.SnakeMove(ctx, UP);
+	} else if (event == KEY_DOWN) {
+		snake.SnakeMove(ctx, DOWN);
+	} else if (event == KEY_LEFT) {
+		snake.SnakeMove(ctx, LEFT);
+	} else if (event == KEY_RIGHT) {
+		snake.SnakeMove(ctx, RIGHT);
+	}
+}
+
+void AGraphicLib::processEvents(Nibbler &ctx) {
+	s32 key = KEY_INVALID;
+	
+	while ((key = this->winPollEvent(this->window)) != KEY_INVALID) {
+		if (key == KEY_ESC) {
+			ctx.setIsRunning(0);
+			break ;
+		} 
+		else if (key == KEY_1 || key == KEY_2 || key == KEY_3) {
+			if (key != this->libID) {
+				std::cout << "Switching to lib " << key << std::endl;
+				ctx.setCurrentLibIdx((s32)key);
+				this->close();
+			}
+		} 
+		else if (key == KEY_UP || key == KEY_DOWN || key == KEY_LEFT || key == KEY_RIGHT) {
+			handleSnakeMove(ctx, key);
+		}
+		std::cout << "key : " << key << std::endl;
+	}
+}
+
+void AGraphicLib::close() {
+	if (this->window) {
+		this->winClose(this->window);
+		this->window = nullptr;
+	}
+
 }

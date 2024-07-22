@@ -8,13 +8,28 @@
 
 #define SFML_IDX 0
 #define SDL2_IDX 1
+#define RAYLIB_IDX 2
 
 typedef void* (*createWindowFunc)(u32, u32, const char*);
 typedef void (*voidWinFunc)(void*);
 typedef bool (*boolWinFunc)(void*);
-typedef bool (*winFuncPollFunc)(void*, void*);
+// typedef bool (*winFuncPollFunc)(void*, void*);
+typedef s32 (*winFuncPollFunc)(void*);
 typedef void (*libDestructorFunc)();
 typedef void (*tileColorFunc)(void*, u32, u32, u8, u8, u8, u8);
+
+
+typedef enum NormaliseKey {
+	KEY_INVALID=-1,
+	KEY_1,
+	KEY_2,
+	KEY_3,
+	KEY_UP,
+	KEY_DOWN,
+	KEY_LEFT,
+	KEY_RIGHT,
+	KEY_ESC,
+} NormaliseKey;
 
 
 class Nibbler;
@@ -29,10 +44,10 @@ class AGraphicLib {
 	AGraphicLib& operator=(const AGraphicLib& ref);
 
 	/* Destructor */
-	virtual ~AGraphicLib() {}
+	virtual ~AGraphicLib();
 
 	/* Real Constructor */
-	AGraphicLib(s32 width, s32 height, const std::string title, const std::string path);
+	AGraphicLib(s32 width, s32 height, const std::string title, const std::string path, s16 libID);
 
 	/* Initialize the graphics library */
 	bool windowCreate();
@@ -45,9 +60,10 @@ class AGraphicLib {
 
 	void colorTile(u32 x, u32 y, u8 r, u8 g, u8 b, u8 a);
 	/* Close the graphics library */
-	virtual void close() = 0;
+	// virtual void close() = 0;
+	void close();
 	/* Process events */
-	virtual void processEvents(Nibbler &ctx) = 0;
+	void processEvents(Nibbler &ctx);
 
 	protected:
 
@@ -56,6 +72,7 @@ class AGraphicLib {
     s32			width;					/* Width of the window */
     s32			height;					/* Height of the window */
     std::string	title;					/* Title of the window */
+	s16			libID;					/* ID of the library */
 
     createWindowFunc	winCreate;		/* Function pointer to createWindow */
     voidWinFunc			winClear;		/* Function pointer to windowClear */
