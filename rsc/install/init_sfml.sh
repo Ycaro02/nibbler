@@ -85,6 +85,7 @@ function load_SFML {
 
 function load_SDL2 {
 	local sdl_archive="${1}"
+	local sdl_dir_version="${2}"
 	local sdl_dir="${BASE_DIR}/SDL2"
 	
 	cd ${BASE_DIR}
@@ -92,9 +93,9 @@ function load_SDL2 {
 	display_color_msg ${YELLOW} "Download and install SDL2..."
 	# Download and install SDL2
 	wget ${sdl_archive} >> $FD_OUT 2>&1
-	tar -xvf SDL2-2.30.5.tar.gz >> $FD_OUT 2>&1
-	rm -rf SDL2-2.30.5.tar.gz
-	mv SDL2-2.30.5 ${local sdl_dir}
+	tar -xvf ${sdl_dir_version}.tar.gz >> $FD_OUT 2>&1
+	rm -rf ${sdl_dir_version}.tar.gz
+	mv ${sdl_dir_version} ${local sdl_dir}
 	cd ${local sdl_dir}
 	mkdir build
 	cd build
@@ -134,10 +135,9 @@ function load_raylib {
     display_color_msg ${GREEN} "Raylib installation done in ${INSTALL_DIR}."
 }
 
-
 load_deps_SFML
 load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
-load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz"
+load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz" "SDL2-2.30.5"
 load_raylib "https://github.com/raysan5/raylib.git" "4.5.0"
 
 # Old code for SFML deps
