@@ -90,19 +90,22 @@ function load_SDL2 {
 	
 	cd ${BASE_DIR}
 
-	display_color_msg ${YELLOW} "Download and install SDL2..."
-	# Download and install SDL2
-	wget ${sdl_archive} >> $FD_OUT 2>&1
-	tar -xvf ${sdl_dir_version}.tar.gz >> $FD_OUT 2>&1
-	rm -rf ${sdl_dir_version}.tar.gz
-	mv ${sdl_dir_version} ${local sdl_dir}
-	cd ${local sdl_dir}
-	mkdir build
-	cd build
-	cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} -DCMAKE_PREFIX_PATH=${INSTALL_DIR} >> $FD_OUT 2>&1
-	make -s -j$(nproc) >> $FD_OUT 2>&1
-	make -s install >> $FD_OUT 2>&1
-	display_color_msg ${GREEN} "SDL2 instalation done in ${INSTALL_DIR}."
+	if [ ! -d "${sdl_dir}" ]; then
+		display_color_msg ${YELLOW} "Download and install SDL2..."
+		# Download and install SDL2
+		wget ${sdl_archive} >> $FD_OUT 2>&1
+		tar -xvf ${sdl_dir_version}.tar.gz >> $FD_OUT 2>&1
+		rm -rf ${sdl_dir_version}.tar.gz
+		mv ${sdl_dir_version} ${local sdl_dir}
+		cd ${local sdl_dir}
+		mkdir build
+		cd build
+		cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} -DCMAKE_PREFIX_PATH=${INSTALL_DIR} >> $FD_OUT 2>&1
+		make -s -j$(nproc) >> $FD_OUT 2>&1
+		make -s install >> $FD_OUT 2>&1
+		display_color_msg ${GREEN} "SDL2 instalation done in ${INSTALL_DIR}."
+	fi
+
 }
 
 function load_raylib {
