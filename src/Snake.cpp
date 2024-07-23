@@ -61,10 +61,8 @@ void Snake::resetSnake() {
 	direction = UP;
 }
 
-
-
 /**
- * @brief Detect where to add a new body part
+ * @brief Detect where to add a new body part (only use for first 4 body part)
  * @ctx Nibbler context
  * @currX current X position
  * @currY current Y position
@@ -237,15 +235,7 @@ void Snake::handleSnakeDir(s32 event) {
 			setDirection(DOWN);
 		}
 	}
-	// if (event == NKEY_UP) {
-	// 	SnakeMove(ctx, UP);
-	// } else if (event == NKEY_DOWN) {
-	// 	SnakeMove(ctx, DOWN);
-	// } else if (event == NKEY_LEFT) {
-	// 	SnakeMove(ctx, LEFT);
-	// } else if (event == NKEY_RIGHT) {
-	// 	SnakeMove(ctx, RIGHT);
-	// }
+
 }
 
 

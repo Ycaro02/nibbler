@@ -49,6 +49,8 @@ void GameLoop(Nibbler &ctx) {
 		}
 		/* Check if the board is full (win condition) */
 		ctx.checkBoardFull();
+		/* Spawn more food if needed */
+		ctx.spawnMoreFood();
 		/* Auto move the snake */
 		ctx.snakeAutoMove();
 		/* Clear the window */

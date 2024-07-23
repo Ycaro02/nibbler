@@ -20,7 +20,7 @@ extern "C" {
             std::cerr << "Failed to initialize Raylib window" << std::endl;
             return (nullptr);
         }
-		SetTargetFPS(30);
+		SetTargetFPS(60);
         return (RAYLIB_WINPTR);
     }
 

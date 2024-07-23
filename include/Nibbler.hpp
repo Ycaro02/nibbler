@@ -13,6 +13,9 @@ typedef std::chrono::milliseconds ChronoMilli;
 #define TILE_SIZE 40
 #define TILE_SPACING 2
 
+/* Snake move MS */
+#define SNAKE_MOVE_MS 500
+
 /* Define the window value */
 #define WIN_W(w) (s32)((w * TILE_SIZE) + (w * TILE_SPACING) + TILE_SPACING)
 #define WIN_H(h) (s32)((h * TILE_SIZE) + (h * TILE_SPACING) + TILE_SPACING)
@@ -32,15 +35,21 @@ class Nibbler {
 	void NibblerInitLib(std::string title, std::string path, s32 libID, s32 winWidth, s32 winHeight);
 	void DisplayBoardFD0();
 
+	/* Food handling */
+	void spawnMoreFood();
 	void foodAdd();
+
 	void resetGame();
+	void checkBoardFull();
+
+	/* Snake handling */
+	void snakeAutoMove();
+
 
 	/*Getter setter*/
 	u8 &boardTileGet(s32 x, s32 y);
 	void boardTileSet(s32 x, s32 y, u8 value);
 
-	void checkBoardFull();
-	void snakeAutoMove();
 
 	s32 &getWidth();
 	s32 &getHeight();
@@ -54,20 +63,24 @@ class Nibbler {
 	s32 &getNbFood();
 	void setNbFood(s32 value);
 
-	GraphicLib *getCurrentLib();
+	s32 &getEmptyTileNb();
+	void setEmptyTileNb(s32 value);
 
+	GraphicLib *getCurrentLib();
 	Snake &getSnake();
 
 	private:
-	GraphicLib			*libs[3];	/* Array of the 3 libraries */
-	s32					width;		/* Width of the board */
-	s32					height;		/* Height of the board */
-	u8					**board;	/* Board of the game */
-	s32					nbFood;		/* Number of food */
-	s32					currentLib;	/* Current library index */
-	s32					isRunning;	/* Game state */
-	ChronoTimePoint		lastMove;	/* Last move time */
-	Snake				snake;		/* Snake object */
+	GraphicLib			*libs[3];		/* Array of the 3 libraries */
+	s32					width;			/* Width of the board */
+	s32					height;			/* Height of the board */
+	u8					**board;		/* Board of the game */
+	s32					nbFood;			/* Number of food */
+	s32					currentLib;		/* Current library index */
+	s32					isRunning;		/* Game state */
+	s32					emptyTileNb;	/* Number of empty tile */
+	ChronoTimePoint		lastMove;		/* Last move time */
+	ChronoTimePoint		lastFoodSpawn;	/* Last auto move time */
+	Snake				snake;			/* Snake object */
 };
 
 #endif /* NIBBLER_HPP */

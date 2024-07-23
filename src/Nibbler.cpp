@@ -6,7 +6,9 @@
 #include <stdexcept>
 
 /* Default constructor */
-Nibbler::Nibbler() : width(0), height(0), board(nullptr), nbFood(0), currentLib(0), isRunning(0) {
+Nibbler::Nibbler() 
+: width(0), height(0), board(nullptr), nbFood(0), currentLib(0), isRunning(0), emptyTileNb(0),
+lastMove(std::chrono::steady_clock::now()), lastFoodSpawn(std::chrono::steady_clock::now()), snake(Snake()) {
 	libs[0] = nullptr;
 	libs[1] = nullptr;
 	libs[2] = nullptr;
@@ -60,23 +62,30 @@ void Nibbler::NibblerInitLib(std::string title, std::string path, s32 libID, s32
 }
 
 void Nibbler::checkBoardFull() {
-	s32 empty = 0;
+	s32 emptyNb = 0;
 	for (s32 i = 0; i < height; i++) {
 		for (s32 j = 0; j < width; j++) {
 			if (board[i][j] == EMPTY) {
-				empty++;
+				emptyNb++;
 			}
 		}
 	}
-	if (empty == 0) {
+	if (emptyNb == 0) {
 		std::cout << GREEN << "Congratulations, you won!" << RESET << std::endl;
 		resetGame();
 	}
+	setEmptyTileNb(emptyNb);
 }
 
 /* Add food to the board */
 void Nibbler::foodAdd() {
 	s32 foodY = -1, foodX = -1;
+
+	if (emptyTileNb == 0) {
+		std::cout << ORANGE << "No more space for food empty tile: " << emptyTileNb << RESET << std::endl;
+		return ;
+	}
+
 	while (foodY == -1 || foodX == -1) {
 		foodY = rand() % getHeight();
 		foodX = rand() % getWidth();
@@ -88,6 +97,7 @@ void Nibbler::foodAdd() {
 	}
 	boardTileSet(foodX, foodY, FOOD);
 	setNbFood(getNbFood() + 1);
+	lastFoodSpawn = std::chrono::steady_clock::now();
 }
 
 /* Reset the game */
@@ -102,20 +112,32 @@ void Nibbler::resetGame() {
 	/* Initialize the snake at the center of the board */
 	snake = Snake(*this, width >> 1, height >> 1);
 
+	setEmptyTileNb((width * height) - 5);
+
 	/* Initialize the food */
 	setNbFood(0);
 	foodAdd();
 	foodAdd();
+	/* Check if the board is full, this init emptyTileNb */
+	checkBoardFull();
 }
 
 void Nibbler::snakeAutoMove() {
 	ChronoTimePoint now = std::chrono::steady_clock::now();
 	ChronoMilli diff = std::chrono::duration_cast<ChronoMilli>(now - lastMove);
-	if (diff.count() >= 500) {
+	if (diff.count() >= SNAKE_MOVE_MS) {
 		snake.SnakeMove(*this, snake.getDirection());
 		lastMove = now;
 	}
 	return ;
+}
+
+void Nibbler::spawnMoreFood() {
+	ChronoTimePoint now = std::chrono::steady_clock::now();
+	ChronoMilli diff = std::chrono::duration_cast<ChronoMilli>(now - lastFoodSpawn);
+	if (diff.count() >= 5000 && getNbFood() < 3 && getEmptyTileNb() > 2) {
+		foodAdd();
+	}
 }
 
 /* Parse the integer data */
@@ -221,6 +243,15 @@ s32 &Nibbler::getNbFood() {
 void Nibbler::setNbFood(s32 value) {
 	nbFood = value;
 }
+
+void Nibbler::setEmptyTileNb(s32 value) {
+	emptyTileNb = value;
+}
+
+s32 &Nibbler::getEmptyTileNb() {
+	return (emptyTileNb);
+}
+
 
 GraphicLib *Nibbler::getCurrentLib() {
 	return (libs[currentLib]);
