@@ -82,7 +82,7 @@ extern "C" {
 		return (NKEY_INVALID);
     }
 
-	void SDL2LibDestructor() {
+	void libDestructorWrapper() {
 		SDL_QuitSubSystem(SDL_INIT_VIDEO);
 		SDL_Quit();
 	}

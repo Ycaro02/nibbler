@@ -101,4 +101,8 @@ extern "C" {
         Color color = { r, g, b, a };
         DrawRectangle(pixel_y, pixel_x, TILE_SIZE, TILE_SIZE, color);
     }
+
+	void libDestructorWrapper() {
+		/* Nothing todo just needed for SDL2 */
+	}
 }

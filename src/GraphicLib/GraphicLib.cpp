@@ -43,14 +43,9 @@ GraphicLib::~GraphicLib() {
 		std::cout << RED << " window close()";
 		close();
 	}
-	if (libDestructorF) {
-		std::cout << ORANGE << " libDestructor()";
-		libDestructorF();
-	}
-	if (dlPtr) {
-		std::cout << GREEN << " dlclose()" << RESET << std::endl;
-		dlclose(dlPtr);
-	}
+	std::cout << ORANGE << " libDestructor()" << GREEN << " dlclose()" << RESET << std::endl;
+	libDestructorF();
+	dlclose(dlPtr);
 }
 
 
@@ -87,11 +82,7 @@ GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std
     winIsOpenF		= (boolWinFunc)loadFuncPtr(dlPtr, "windowIsOpenWrapper");
     winPollEventF	= (winFuncPollFunc)loadFuncPtr(dlPtr, "windowPollEventWrapper");
 	winColorTileF	= (tileColorFunc)loadFuncPtr(dlPtr, "colorTileWrapper");
-
-	libDestructorF = nullptr;
-	if (libID == SDL2_IDX) {
-		libDestructorF = (libDestructorFunc)dlsym(dlPtr, "SDL2LibDestructor");
-	} 
+	libDestructorF = (libDestructorFunc)dlsym(dlPtr, "libDestructorWrapper");
 }
 
 /* Initialize the graphics library and create window */

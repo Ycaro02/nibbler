@@ -65,4 +65,8 @@ extern "C" {
         // Draw the tile
         window->draw(tile);
     }
+
+	void libDestructorWrapper() {
+		/* Nothing todo just needed for SDL2 */
+	}
 }
