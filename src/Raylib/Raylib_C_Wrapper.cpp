@@ -165,6 +165,19 @@ extern "C" {
 		}
 	}
 
+	void drawTextureTileWrapper(void* window, Texture2D *texture, u32 y, u32 x) {
+		Vector2 position;
+
+		if (!raylibWindowGuard(window) || !texture->id) {
+        	return;
+    	}
+		position.x = static_cast<f32>(x * TILE_SIZE + (x + 1) * TILE_SPACING);
+		position.y = static_cast<f32>(y * TILE_SIZE + (y + 1) * TILE_SPACING);
+		f32 scaleX = static_cast<f32>(TILE_SIZE) / texture->width;
+		f32 scaleY = static_cast<f32>(TILE_SIZE) / texture->height;
+		DrawTextureEx(*texture, position, 0.0f, scaleX, WHITE);
+	}
+
 	/**
 	 * @brief Raylib destructor
 	 * @note Nothing to do here to keep compatibility with the SDL2 lib

@@ -166,6 +166,22 @@ extern "C" {
 		SDL_DestroyTexture(texture);
 	}
 
+	void drawTextureTileWrapper(SDL_Window *window, SDL_Texture *texture, u32 y, u32 x) {
+		SDL_Renderer *renderer = SDL_GetRenderer(window);
+		SDL_Rect 	dstRect;
+		s32 		pixel_x = x * TILE_SIZE + (x + 1) * TILE_SPACING;
+		s32 		pixel_y = y * TILE_SIZE + (y + 1) * TILE_SPACING;
+		
+		if (!texture || !renderer) {
+        	return;
+    	}
+		dstRect.x = pixel_x;
+		dstRect.y = pixel_y;
+		dstRect.w = TILE_SIZE;
+		dstRect.h = TILE_SIZE;
+		SDL_RenderCopy(renderer, texture, NULL, &dstRect);
+	}
+
 	/**
 	 * @brief Destructor for the SDL2 library
 	 * @note This function will quit the SDL2 subsystem

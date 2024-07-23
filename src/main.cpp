@@ -22,6 +22,18 @@ static bool checkCreateWin(GraphicLib *lib) {
 static void drawGame(GraphicLib *lib, Nibbler &ctx) {
 	u8 tile = EMPTY;
 
+	// static void *texture = nullptr;
+	// if (!texture) {
+	// 	texture = lib->loadTexture(TEST_BMP);
+	// 	if (!texture) {
+	// 		throw std::runtime_error("Error: Load texture");
+	// 	}
+	// }
+	// for (s32 y = 0; y < ctx.getHeight(); y++) {
+	// 	for (s32 x = 0; x < ctx.getWidth(); x++) {
+	// 		lib->drawTextureTile(texture, x, y);
+	// 	}
+	// }
 	for (s32 y = 0; y < ctx.getHeight(); y++) {
 		for (s32 x = 0; x < ctx.getWidth(); x++) {
 			tile = ctx.boardTileGet(x, y);

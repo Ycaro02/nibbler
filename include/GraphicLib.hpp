@@ -6,6 +6,9 @@
 #include <iostream>
 #include <string>
 
+
+#define TEST_BMP "test.bmp"
+
 /* Define for the library ID */
 #define SFML_IDX 0
 #define SDL2_IDX 1
@@ -32,6 +35,9 @@ typedef void* (*loadTextFunc)(void *, const char*);
 
 /* Here void* is the texture to unload */
 typedef void (*unloadTextFunc)(void *);
+
+/* Here fist void* are window, second texture, u32 are x,y coordonate */
+typedef void (*drawTextFunc)(void *, void *, u32, u32);
 
 /* Enum for the keys normalise between lib */
 typedef enum NormaliseKey {
@@ -72,6 +78,15 @@ class GraphicLib {
 	bool isOpen();
 	/* Color a tile at x, y with r, g, b, a */
 	void colorTile(u32 x, u32 y, u8 r, u8 g, u8 b, u8 a);
+
+	/* Load a texture */
+	void *loadTexture(const char *path);
+	/* Unload a texture */
+	void unloadTexture(void *texture);
+
+	/* Draw a texture */
+	void drawTextureTile(void *texture, u32 x, u32 y);
+
 	/* Close the graphics library */
 	void close();
 	/* Process events */
@@ -94,8 +109,9 @@ class GraphicLib {
     winFuncPollFunc		winPollEventF;	/* Function pointer to windowPollEvent */
 	libDestructorFunc	libDestructorF;	/* Function pointer to libDestructor */
 	tileColorFunc		winColorTileF;	/* Function pointer to colorTile */
-	loadTextFunc		loadTextF;		/* Function pointer to loadText */
-	unloadTextFunc		unloadTextF;	/* Function pointer to unloadText */
+	loadTextFunc		loadTextF;		/* Function pointer to loadTexture */
+	unloadTextFunc		unloadTextF;	/* Function pointer to unloadTexture */
+	drawTextFunc		drawTextF;		/* Function pointer to drawTexture tile */
 };
 
 

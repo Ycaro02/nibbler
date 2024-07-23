@@ -49,10 +49,10 @@ GraphicLib::~GraphicLib() {
 }
 
 
-static void *loadFuncPtr(void *dlPtr, const std::string &name) {
+static void *loadFuncPtr(void *dlPtr, const std::string &name, const std::string &libName) {
 	void *funcPtr = dlsym(dlPtr, name.c_str());
 	if (!funcPtr) {
-		throw std::invalid_argument("Error: Symbole " + name + " not found");
+		throw std::invalid_argument("Error: Symbole " + name + " not found in : " + libName);
 	}
 	return funcPtr;
 }
@@ -75,16 +75,17 @@ GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std
 	if (!dlPtr) {
 		throw std::invalid_argument("Error: Graphic lib " + path + " not found");
 	}
-	winCreateF		= (createWindowFunc)loadFuncPtr(dlPtr, "createWindowWrapper");
-    winClearF		= (voidWinFunc)loadFuncPtr(dlPtr, "windowClearWrapper");
-    winDisplayF		= (voidWinFunc)loadFuncPtr(dlPtr, "windowDisplayWrapper");
-    winCloseF		= (voidWinFunc)loadFuncPtr(dlPtr, "windowCloseWrapper");
-    winIsOpenF		= (boolWinFunc)loadFuncPtr(dlPtr, "windowIsOpenWrapper");
-    winPollEventF	= (winFuncPollFunc)loadFuncPtr(dlPtr, "windowPollEventWrapper");
-	winColorTileF	= (tileColorFunc)loadFuncPtr(dlPtr, "colorTileWrapper");
-	libDestructorF = (libDestructorFunc)dlsym(dlPtr, "libDestructorWrapper");
-	loadTextF		= (loadTextFunc)loadFuncPtr(dlPtr, "loadTextureWrapper");
-	unloadTextF		= (unloadTextFunc)loadFuncPtr(dlPtr, "unloadTextureWrapper");
+	winCreateF		= (createWindowFunc)loadFuncPtr(dlPtr, "createWindowWrapper", path);
+    winClearF		= (voidWinFunc)loadFuncPtr(dlPtr, "windowClearWrapper", path);
+    winDisplayF		= (voidWinFunc)loadFuncPtr(dlPtr, "windowDisplayWrapper", path);
+    winCloseF		= (voidWinFunc)loadFuncPtr(dlPtr, "windowCloseWrapper", path);
+    winIsOpenF		= (boolWinFunc)loadFuncPtr(dlPtr, "windowIsOpenWrapper", path);
+    winPollEventF	= (winFuncPollFunc)loadFuncPtr(dlPtr, "windowPollEventWrapper", path);
+	winColorTileF	= (tileColorFunc)loadFuncPtr(dlPtr, "colorTileWrapper", path);
+	libDestructorF = (libDestructorFunc)loadFuncPtr(dlPtr, "libDestructorWrapper", path);
+	loadTextF		= (loadTextFunc)loadFuncPtr(dlPtr, "loadTextureWrapper", path);
+	unloadTextF		= (unloadTextFunc)loadFuncPtr(dlPtr, "unloadTextureWrapper", path);
+	drawTextF		= (drawTextFunc)loadFuncPtr(dlPtr, "drawTextureTileWrapper", path);
 }
 
 /* Initialize the graphics library and create window */
@@ -157,6 +158,18 @@ void GraphicLib::processEvents(Nibbler &ctx) {
 			break ;
 		}
 	}
+}
+
+void *GraphicLib::loadTexture(const char *path) {
+	return loadTextF(window, path);
+}
+
+void GraphicLib::unloadTexture(void *texture) {
+	unloadTextF(texture);
+}
+
+void GraphicLib::drawTextureTile(void *texture, u32 x, u32 y) {
+	drawTextF(window, texture, x, y);
 }
 
 /* Close the graphics library and set window to null */

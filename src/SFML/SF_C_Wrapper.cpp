@@ -123,6 +123,30 @@ extern "C" {
 		}
 	}
 
+	void drawTextureTileWrapper(sf::RenderWindow* window, sf::Texture *texture, u32 y, u32 x) {
+		if (!texture) {
+			return;
+		}
+		// Convert tile coordinates to pixel coordinates
+		s32 pixel_x = x * TILE_SIZE + (x + 1) * TILE_SPACING;
+		s32 pixel_y = y * TILE_SIZE + (y + 1) * TILE_SPACING;
+
+		// Create a sprite for the texture
+		sf::Sprite sprite(*texture);
+
+		// Calculate the scale factors
+		float scaleX = static_cast<float>(TILE_SIZE) / texture->getSize().x;
+		float scaleY = static_cast<float>(TILE_SIZE) / texture->getSize().y;
+
+		// Set the sprite's scale to fill TILE_SIZE * TILE_SIZE area
+		sprite.setScale(scaleX, scaleY);
+
+		// Set the sprite's position
+		sprite.setPosition(pixel_x, pixel_y); // Corrected the order of pixel_x and pixel_y
+
+		// Draw the sprite
+		window->draw(sprite);
+	}
 	/**
 	 * @brief Raylib destructor
 	 * @note Nothing to do here to keep compatibility with the SDL2 lib
