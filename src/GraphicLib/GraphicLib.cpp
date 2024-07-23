@@ -5,7 +5,7 @@
 
 /* Default constructor */
 GraphicLib::GraphicLib() 
-: dlPtr(nullptr), window(nullptr), winWidth(0), winHeight(0), winTitle("")
+: dlPtr(nullptr), window(nullptr), winWidth(0), winHeight(0), winTitle(""), libID(0)
 , winCreateF(nullptr), winClearF(nullptr), winDisplayF(nullptr), winCloseF(nullptr)
 , winIsOpenF(nullptr), winPollEventF(nullptr), libDestructorF(nullptr) {}
 
@@ -64,13 +64,18 @@ static void *loadFuncPtr(void *dlPtr, const std::string &name, const std::string
  *	@param path path to the dynamic library
  *	@param libraryId id of the library (SDL2, SFML, Raylib)
 */
-GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std::string path, s16 libraryId) {
+GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std::string path, const std::string textExt, s16 libraryId) {
 	
 	libID = libraryId;
 	winWidth = width;
 	winHeight = height;
 	winTitle = title;
 	window = nullptr;
+	
+	for (u32 i = 0; i < 4; i++) {
+		texture[i] = nullptr;
+	}
+	texturePath = textExt;
 	dlPtr = dlopen(path.c_str(), RTLD_LAZY);
 	if (!dlPtr) {
 		throw std::invalid_argument("Error: Graphic lib " + path + " not found");
@@ -91,7 +96,23 @@ GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std
 /* Initialize the graphics library and create window */
 bool GraphicLib::windowCreate() {
     window = winCreateF(winWidth, winHeight, winTitle.c_str());
-    return (window != nullptr);
+
+	std::string head_path = HEAD_path + texturePath;
+	std::string body_path = BODY_path + texturePath;
+	std::string empty_path = EMPTY_path + texturePath;
+	std::string food_path = FOOD_path + texturePath;
+
+	// std::cout << "Head path: " << head_path << std::endl;
+	// std::cout << "Body path: " << body_path << std::endl;
+	// std::cout << "Empty path: " << empty_path << std::endl;
+	// std::cout << "Food path: " << food_path << std::endl;
+
+	texture[HEAD_IDX] = loadTexture(head_path.c_str());
+    texture[BODY_IDX] = loadTexture(body_path.c_str());
+	texture[EMPTY_IDX] = loadTexture(empty_path.c_str());
+	texture[FOOD_IDX] = loadTexture(food_path.c_str());
+	
+	return (window != nullptr);
 }
 
 /* Clear the screen */
@@ -178,4 +199,18 @@ void GraphicLib::close() {
 		winCloseF(window);
 		window = nullptr;
 	}
+	
+	for (u32 i = 0; i < 4; i++) {
+		if (texture[i]) {
+			unloadTexture(texture[i]);
+			texture[i] = nullptr;
+		}
+	}
+}
+
+void *GraphicLib::getTexture(s32 id) const {
+	if (id > 4) {
+		return (nullptr);
+	}
+	return (texture[id]);
 }

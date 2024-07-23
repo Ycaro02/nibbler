@@ -19,6 +19,7 @@ extern "C" {
 			std::cerr << "Failed to initialize SFML window" << std::endl;
 			return (nullptr);
 		}
+		win->setFramerateLimit(60);
 		return (win);
 	}
 

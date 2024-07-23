@@ -42,7 +42,7 @@ extern "C" {
 	 * @return The window pointer
 	*/
     void* createWindowWrapper(u32 width, u32 height, const char* title) {
-        SetTraceLogLevel(LOG_NONE); // Disable raylib logs
+        // SetTraceLogLevel(LOG_NONE); // Disable raylib logs
         InitWindow(width, height, title);
 		if (!IsWindowReady()) {
             std::cerr << "Failed to initialize Raylib window" << std::endl;
@@ -148,13 +148,18 @@ extern "C" {
     }
 
 	void *loadTextureWrapper(void* window, const char* path) {
-		Texture2D *texture = NULL;
-		
+		Texture2D	*texture = NULL;
+		Image		image = {0};
 		if (!raylibWindowGuard(window)) {
 			return (nullptr);
 		}
-		texture = new Texture2D();
-		*texture = LoadTexture(path);
+		image = LoadImage(path);
+		if (image.data == NULL) {
+			std::cerr << "Failed to load image: " << path << std::endl;
+			return (nullptr);
+		}
+		texture = new Texture2D(LoadTextureFromImage(image));
+		UnloadImage(image);
 		return (texture);
 	}
 
@@ -168,9 +173,13 @@ extern "C" {
 	void drawTextureTileWrapper(void* window, Texture2D *texture, u32 y, u32 x) {
 		Vector2 position;
 
-		if (!raylibWindowGuard(window) || !texture->id) {
+		if (!raylibWindowGuard(window)) {
         	return;
     	}
+		if (!texture) {	
+			std::cout << "Error: Texture is null" << std::endl;
+		}
+
 		position.x = static_cast<f32>(x * TILE_SIZE + (x + 1) * TILE_SPACING);
 		position.y = static_cast<f32>(y * TILE_SIZE + (y + 1) * TILE_SPACING);
 		f32 scaleX = static_cast<f32>(TILE_SIZE) / texture->width;

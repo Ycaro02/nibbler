@@ -32,7 +32,7 @@ class Nibbler {
 
 	/* Constructor */
 	Nibbler(std::string w, std::string h);
-	void NibblerInitLib(std::string title, std::string path, s32 libID, s32 winWidth, s32 winHeight);
+	void NibblerInitLib(std::string title, std::string path, std::string texturePath, s32 libID, s32 winWidth, s32 winHeight);
 	void DisplayBoardFD0();
 
 	/* Food handling */

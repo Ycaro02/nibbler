@@ -6,8 +6,17 @@
 #include <iostream>
 #include <string>
 
+#define HEAD_path "rsc/texture/test."
+#define BODY_path "rsc/texture/green_wool."
+#define FOOD_path "rsc/texture/orange_wool."
+#define EMPTY_path "rsc/texture/white_wool."
 
-#define TEST_BMP "test.bmp"
+typedef enum textureIdx {
+	HEAD_IDX = 0,
+	BODY_IDX = 1,
+	FOOD_IDX = 2,
+	EMPTY_IDX = 3
+} textureIdx;
 
 /* Define for the library ID */
 #define SFML_IDX 0
@@ -66,7 +75,7 @@ class GraphicLib {
 	GraphicLib(const GraphicLib& ref);
 
 	/* Real Constructor */
-	GraphicLib(s32 width, s32 height, const std::string title, const std::string path, s16 libID);
+	GraphicLib(s32 width, s32 height, const std::string title, const std::string path, const std::string ext, s16 libID);
 
 	/* Initialize the graphics library */
 	bool windowCreate();
@@ -92,14 +101,20 @@ class GraphicLib {
 	/* Process events */
 	void processEvents(Nibbler &ctx);
 
+	/* Getter for the window width */
+	void *getTexture(s32 id) const;
+
 	private:
 
 	void 				*dlPtr;			/* Pointer to the dynamic library */
     void				*window;		/* Pointer to the window */
+	void				*texture[4];	/* Pointer to the texture -> need to be an array */
+	std::string			texturePath;	/* Path to the texture */
     s32					winWidth;		/* Width of the window */
     s32					winHeight;		/* Height of the window */
     std::string			winTitle;		/* Title of the window */
 	s16					libID;			/* ID of the library */
+
 
     createWindowFunc	winCreateF;		/* Function pointer to createWindow */
     voidWinFunc			winClearF;		/* Function pointer to windowClear */

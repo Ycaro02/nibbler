@@ -19,21 +19,10 @@ static bool checkCreateWin(GraphicLib *lib) {
 	return (true);
 }
 
-static void drawGame(GraphicLib *lib, Nibbler &ctx) {
-	u8 tile = EMPTY;
 
-	// static void *texture = nullptr;
-	// if (!texture) {
-	// 	texture = lib->loadTexture(TEST_BMP);
-	// 	if (!texture) {
-	// 		throw std::runtime_error("Error: Load texture");
-	// 	}
-	// }
-	// for (s32 y = 0; y < ctx.getHeight(); y++) {
-	// 	for (s32 x = 0; x < ctx.getWidth(); x++) {
-	// 		lib->drawTextureTile(texture, x, y);
-	// 	}
-	// }
+void colorDisplay(GraphicLib *lib, Nibbler &ctx) {
+	u8 tile = EMPTY;
+	
 	for (s32 y = 0; y < ctx.getHeight(); y++) {
 		for (s32 x = 0; x < ctx.getWidth(); x++) {
 			tile = ctx.boardTileGet(x, y);
@@ -50,9 +39,30 @@ static void drawGame(GraphicLib *lib, Nibbler &ctx) {
 	}
 }
 
+static void drawGame(GraphicLib *lib, Nibbler &ctx) {
+	u8 tile = EMPTY;
+	
+	for (s32 y = 0; y < ctx.getHeight(); y++) {
+		for (s32 x = 0; x < ctx.getWidth(); x++) {
+			tile = ctx.boardTileGet(x, y);
+			if (tile == EMPTY) {
+				lib->drawTextureTile(lib->getTexture(EMPTY_IDX),y,x);
+			} else if (tile == FOOD) {
+				lib->drawTextureTile(lib->getTexture(FOOD_IDX),y,x);
+			} else if (tile == SNAKE_HEAD) {
+				lib->drawTextureTile(lib->getTexture(HEAD_IDX),y,x);
+			} else if (tile == SNAKE_BODY) {
+				lib->drawTextureTile(lib->getTexture(BODY_IDX),y,x);
+			}
+		}
+	}
+	// colorDisplay(lib, ctx);
+}
+
 void GameLoop(Nibbler &ctx) {
 	GraphicLib *currentLib = nullptr;
 	
+
 	while (ctx.getIsRunning()) {
 		currentLib = ctx.getCurrentLib();
 		if (!checkCreateWin(currentLib)) {

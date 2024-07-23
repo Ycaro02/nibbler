@@ -57,8 +57,8 @@ Nibbler::Nibbler(const Nibbler &ref) {
 }
 
 /* Initialize lib wrapper */
-void Nibbler::NibblerInitLib(std::string title, std::string path, s32 libID, s32 winWidth, s32 winHeight) {
-	libs[libID] = new GraphicLib(winWidth, winHeight, title, path, libID);
+void Nibbler::NibblerInitLib(std::string title, std::string path, std::string texturePath, s32 libID, s32 winWidth, s32 winHeight) {
+	libs[libID] = new GraphicLib(winWidth, winHeight, title, path, texturePath, libID);
 }
 
 void Nibbler::checkBoardFull() {
@@ -181,9 +181,9 @@ Nibbler::Nibbler(std::string w, std::string h) {
 	}
 
 	/* Load the libraries */
-	NibblerInitLib("SFML", "rsc/wrapperlib/SFMLWrapper.so", SFML_IDX, WIN_W(width), WIN_H(height));
-	NibblerInitLib("SDL2", "rsc/wrapperlib/SDL2Wrapper.so", SDL2_IDX, WIN_W(width), WIN_H(height));
-	NibblerInitLib("Raylib", "rsc/wrapperlib/RaylibWrapper.so", RAYLIB_IDX, WIN_W(width), WIN_H(height));
+	NibblerInitLib("SFML", "rsc/wrapperlib/SFMLWrapper.so", "png", SFML_IDX, WIN_W(width), WIN_H(height));
+	NibblerInitLib("SDL2", "rsc/wrapperlib/SDL2Wrapper.so", "bmp", SDL2_IDX, WIN_W(width), WIN_H(height));
+	NibblerInitLib("Raylib", "rsc/wrapperlib/RaylibWrapper.so", "png", RAYLIB_IDX, WIN_W(width), WIN_H(height));
 
 	/* Initialize the random seed for food spawn */
 	srand(time(NULL));
