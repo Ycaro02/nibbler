@@ -5,14 +5,42 @@
 #include "../../include/Nibbler.hpp"
 
 
-// Define the window pointer as a constant cause Raylib doesn't provide a way to get the window pointer
+/** 
+ * Here to maintain compatibility with the other libraries, 
+ * Define the window pointer as a constant cause Raylib doesn't provide a way to get the window pointer 
+*/
 #define RAYLIB_WINPTR ((void *)0x42)
 
+/** 
+ * @brief Check if a key is pressed or down
+ * @param key The key to check
+ * @return true if the key is pressed or down, false otherwise
+*/
 static bool IsKeyPressedOrDown(int key) {
 	return (IsKeyDown(key) || IsKeyPressed(key));
 }
 
+/** 
+ * @brief Check if the window pointer is valid
+ * @param win The window pointer to check
+ * @return true if the window pointer is valid, false otherwise
+*/
+static bool raylibWindowGuard(void *win) {
+	if (win == nullptr || win != RAYLIB_WINPTR) {
+		return (false);
+	}
+	return (true);
+}
+
 extern "C" {
+
+	/**
+	 * @brief Create a window with Raylib
+	 * @param width The width of the window
+	 * @param height The height of the window
+	 * @param title The title of the window
+	 * @return The window pointer
+	*/
     void* createWindowWrapper(u32 width, u32 height, const char* title) {
         SetTraceLogLevel(LOG_NONE); // Disable raylib logs
         InitWindow(width, height, title);
@@ -24,45 +52,62 @@ extern "C" {
         return (RAYLIB_WINPTR);
     }
 
+	/**
+	 * @brief Clear the window with Raylib
+	 * @param window The window pointers
+	*/
     void windowClearWrapper(void* window) {
-        if (window == nullptr || window != RAYLIB_WINPTR) {
-            std::cerr << "Invalid window pointer" << std::endl;
-            return;
-        }
+		if (!raylibWindowGuard(window)) {
+			return;
+		}
         BeginDrawing();
         ClearBackground(BLACK);
     }
 
+	/**
+	 * @brief Display the window with Raylib
+	 * @param window The window pointers
+	 * @note This function must be called after windowClearWrapper
+	*/
     void windowDisplayWrapper(void* window) {
-        if (window == nullptr || window != RAYLIB_WINPTR) {
-            std::cerr << "Invalid window pointer" << std::endl;
-            return;
-        }
+		if (!raylibWindowGuard(window)) {
+			return;
+		}
         EndDrawing();
     }
 
+	/**
+	 * @brief Check if the window is open with Raylib
+	 * @param window The window pointers
+	 * @return true if the window is open, false otherwise
+	*/
     bool windowIsOpenWrapper(void* window) {
-        if (window == nullptr || window != RAYLIB_WINPTR) {
-            return (false);
-        }
+		if (!raylibWindowGuard(window)) {
+			return (false);
+		}
         return (!WindowShouldClose());
     }
 
+	/**
+	 * @brief Close the window with Raylib
+	 * @param window The window pointers
+	*/
     void windowCloseWrapper(void* window) {
-        if (window == nullptr || window != RAYLIB_WINPTR) {
-            std::cerr  << "windowCloseWrapper Invalid window pointer" << std::endl;
-            return;
-        }
+		if (!raylibWindowGuard(window)) {
+			return;
+		}
         CloseWindow();
     }
 
-
+	/**
+	 * @brief Poll the event with Raylib
+	 * @param window The window pointers
+	 * @return The normalized key (Defined in include/GraphicLib.hpp)
+	*/
 	s32 windowPollEventWrapper(void* window) {
-        if (window == nullptr || window != RAYLIB_WINPTR) {
-            std::cerr << "windowPollEventWrapper Invalid window pointer" << std::endl;
-            return (NKEY_INVALID);
-        }
-
+		if (!raylibWindowGuard(window)) {
+			return (NKEY_INVALID);
+		}
         if (WindowShouldClose()) {
             return (NKEY_ESC);
         } else if (IsKeyPressedOrDown(KEY_UP)) {
@@ -83,16 +128,16 @@ extern "C" {
         return (NKEY_INVALID);
     }
 
-    void RaylibDestructor() {
-        CloseWindow();
-    }
-
+	/**
+	 * @brief Color a tile with Raylib
+	 * @param window The window pointers
+	 * @param y,x The position of the tile
+	 * @param r,g,b,a The color of the tile
+	 */
     void colorTileWrapper(void* window, u32 y, u32 x, u8 r, u8 g, u8 b, u8 a) {
-        if (window == nullptr || window != RAYLIB_WINPTR) {
-            std::cerr << "Invalid window pointer" << std::endl;
-            return;
-        }
-
+		if (!raylibWindowGuard(window)) {
+			return;
+		}
         // Convert tile coordinates to pixel coordinates
         s32 pixel_x = x * TILE_SIZE + (x + 1) * TILE_SPACING;
         s32 pixel_y = y * TILE_SIZE + (y + 1) * TILE_SPACING;
@@ -102,7 +147,11 @@ extern "C" {
         DrawRectangle(pixel_y, pixel_x, TILE_SIZE, TILE_SIZE, color);
     }
 
+	/**
+	 * @brief Raylib destructor
+	 * @note Nothing to do here to keep compatibility with the SDL2 lib
+	*/
 	void libDestructorWrapper() {
-		/* Nothing todo just needed for SDL2 */
+		/* Nothing todo */
 	}
 }
