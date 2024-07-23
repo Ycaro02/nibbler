@@ -143,6 +143,29 @@ extern "C" {
         SDL_RenderFillRect(renderer, &tileRect);
     }
 
+	void *loadTextureWrapper(SDL_Window* window, const char* path) {
+		SDL_Renderer	*renderer = NULL;
+		SDL_Texture		*texture = NULL;
+
+		renderer = SDL_GetRenderer(window);
+		if (!renderer) {
+			return (nullptr);
+		}
+		texture = SDL_CreateTextureFromSurface(renderer, SDL_LoadBMP(path));
+		if (!texture) {
+			std::cerr << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
+			return (nullptr);
+		}
+		return (texture);
+	}
+
+	void unloadTextureWrapper(SDL_Texture *texture) {
+		if (!texture) {
+			return ;
+		}
+		SDL_DestroyTexture(texture);
+	}
+
 	/**
 	 * @brief Destructor for the SDL2 library
 	 * @note This function will quit the SDL2 subsystem

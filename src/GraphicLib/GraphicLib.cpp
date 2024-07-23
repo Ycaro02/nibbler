@@ -83,6 +83,8 @@ GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std
     winPollEventF	= (winFuncPollFunc)loadFuncPtr(dlPtr, "windowPollEventWrapper");
 	winColorTileF	= (tileColorFunc)loadFuncPtr(dlPtr, "colorTileWrapper");
 	libDestructorF = (libDestructorFunc)dlsym(dlPtr, "libDestructorWrapper");
+	loadTextF		= (loadTextFunc)loadFuncPtr(dlPtr, "loadTextureWrapper");
+	unloadTextF		= (unloadTextFunc)loadFuncPtr(dlPtr, "unloadTextureWrapper");
 }
 
 /* Initialize the graphics library and create window */

@@ -106,6 +106,23 @@ extern "C" {
         window->draw(tile);
     }
 
+	void *loadTextureWrapper(sf::RenderWindow* window, const char* path) {
+		sf::Texture *texture = new sf::Texture();
+	
+		if (!texture->loadFromFile(path)) {
+			// std::cerr << "Failed to load texture" << std::endl;
+			delete texture;
+			return (nullptr);
+		}
+		return (texture);
+	}
+
+	void unloadTextureWrapper(sf::Texture *texture) {
+		if (texture) {
+			delete texture;
+		}
+	}
+
 	/**
 	 * @brief Raylib destructor
 	 * @note Nothing to do here to keep compatibility with the SDL2 lib

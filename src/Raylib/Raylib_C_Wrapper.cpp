@@ -147,6 +147,24 @@ extern "C" {
         DrawRectangle(pixel_y, pixel_x, TILE_SIZE, TILE_SIZE, color);
     }
 
+	void *loadTextureWrapper(void* window, const char* path) {
+		Texture2D *texture = NULL;
+		
+		if (!raylibWindowGuard(window)) {
+			return (nullptr);
+		}
+		texture = new Texture2D();
+		*texture = LoadTexture(path);
+		return (texture);
+	}
+
+	void unloadTextureWrapper(Texture2D *texture) {
+		if (texture) {
+			UnloadTexture(*texture);
+			delete texture;
+		}
+	}
+
 	/**
 	 * @brief Raylib destructor
 	 * @note Nothing to do here to keep compatibility with the SDL2 lib

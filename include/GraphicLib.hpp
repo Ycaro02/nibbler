@@ -13,16 +13,25 @@
 
 /**	
  * 	Function pointer types for the dynamic library
- *	void* is always the window pointer
+ *	void* is always the window pointer except for unloadTextFunc
 */
+
+/* Here u32 are width and height for the window, const char* the window title */
 typedef void* (*createWindowFunc)(u32, u32, const char*);
 typedef void (*voidWinFunc)(void*);
 typedef void (*libDestructorFunc)();
-typedef void (*tileColorFunc)(void*, u32, u32, u8, u8, u8, u8);
 typedef bool (*boolWinFunc)(void*);
 
 /* Function pointer for polling events return normalised key */
 typedef s32 (*winFuncPollFunc)(void*);
+
+/* Here u32 are x,y tile position and u8 is RGBA color */
+typedef void (*tileColorFunc)(void*, u32, u32, u8, u8, u8, u8);
+
+typedef void* (*loadTextFunc)(void *, const char*);
+
+/* Here void* is the texture to unload */
+typedef void (*unloadTextFunc)(void *);
 
 /* Enum for the keys normalise between lib */
 typedef enum NormaliseKey {
@@ -85,6 +94,8 @@ class GraphicLib {
     winFuncPollFunc		winPollEventF;	/* Function pointer to windowPollEvent */
 	libDestructorFunc	libDestructorF;	/* Function pointer to libDestructor */
 	tileColorFunc		winColorTileF;	/* Function pointer to colorTile */
+	loadTextFunc		loadTextF;		/* Function pointer to loadText */
+	unloadTextFunc		unloadTextF;	/* Function pointer to unloadText */
 };
 
 
