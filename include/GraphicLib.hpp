@@ -71,9 +71,9 @@ class GraphicLib {
 
 	void 				*dlPtr;			/* Pointer to the dynamic library */
     void				*window;		/* Pointer to the window */
-    s32					width;			/* Width of the window */
-    s32					height;			/* Height of the window */
-    std::string			title;			/* Title of the window */
+    s32					winWidth;			/* Width of the window */
+    s32					winHeight;			/* Height of the window */
+    std::string			winTitle;			/* Title of the window */
 	s16					libID;			/* ID of the library */
 
     createWindowFunc	winCreate;		/* Function pointer to createWindow */

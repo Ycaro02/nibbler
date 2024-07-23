@@ -5,7 +5,7 @@
 
 /* Default constructor */
 GraphicLib::GraphicLib() 
-: dlPtr(nullptr), window(nullptr), width(0), height(0), title("")
+: dlPtr(nullptr), window(nullptr), winWidth(0), winHeight(0), winTitle("")
 , winCreate(nullptr), winClear(nullptr), winDisplay(nullptr), winClose(nullptr)
 , winIsOpen(nullptr), winPollEvent(nullptr), libDestructor(nullptr) {}
 
@@ -14,9 +14,9 @@ GraphicLib& GraphicLib::operator=(const GraphicLib& ref) {
 	if (this != &ref) {
 		dlPtr = ref.dlPtr;
 		window = ref.window;
-		width = ref.width;
-		height = ref.height;
-		title = ref.title;
+		winWidth = ref.winWidth;
+		winHeight = ref.winHeight;
+		winTitle = ref.winTitle;
 		winCreate = ref.winCreate;
 		winClear = ref.winClear;
 		winDisplay = ref.winDisplay;
@@ -38,19 +38,28 @@ GraphicLib::~GraphicLib() {
 
 	std::string name = libID == SDL2_IDX ? "SDL2" : libID == SFML_IDX ? "SFML" : "Raylib";
 
-	std::cout << YELLOW << "GraphicLib Destructor for " + name + " :";
+	std::cout << YELLOW << "GraphicLib Destructor for " + name + " with :";
 	if (window) {
-		std::cout << " with window ";
+		std::cout << RED << " window close()";
 		close();
 	}
 	if (libDestructor) {
-		std::cout << " with libDestructor ";
+		std::cout << ORANGE << " libDestructor()";
 		libDestructor();
 	}
 	if (dlPtr) {
-		std::cout << " with dlclose" << RESET << std::endl;
+		std::cout << GREEN << " dlclose()" << RESET << std::endl;
 		dlclose(dlPtr);
 	}
+}
+
+
+static void *loadFuncPtr(void *dlPtr, const std::string &name) {
+	void *funcPtr = dlsym(dlPtr, name.c_str());
+	if (!funcPtr) {
+		throw std::invalid_argument("Error: Symbole " + name + " not found");
+	}
+	return funcPtr;
 }
 
 /**	@brief Graphic lib Constructor 
@@ -62,52 +71,44 @@ GraphicLib::~GraphicLib() {
 */
 GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std::string path, s16 libraryId) {
 	
-	this->libID = libraryId;
-	this->width = width;
-	this->height = height;
-	this->title = title;
-	this->window = nullptr;
-	this->dlPtr = dlopen(path.c_str(), RTLD_LAZY);
+	libID = libraryId;
+	winWidth = width;
+	winHeight = height;
+	winTitle = title;
+	window = nullptr;
+	dlPtr = dlopen(path.c_str(), RTLD_LAZY);
 	if (!dlPtr) {
-		// std::cerr << "Error: dlOpen " << dlerror() << std::endl;
 		throw std::invalid_argument("Error: Graphic lib " + path + " not found");
 	}
-    this->winCreate		= (createWindowFunc)dlsym(dlPtr, "createWindowWrapper");
-    this->winClear		= (voidWinFunc)dlsym(dlPtr, "windowClearWrapper");
-    this->winDisplay	= (voidWinFunc)dlsym(dlPtr, "windowDisplayWrapper");
-    this->winClose		= (voidWinFunc)dlsym(dlPtr, "windowCloseWrapper");
-    this->winIsOpen		= (boolWinFunc)dlsym(dlPtr, "windowIsOpenWrapper");
-    this->winPollEvent	= (winFuncPollFunc)dlsym(dlPtr, "windowPollEventWrapper");
-	this->winColorTile	= (tileColorFunc)dlsym(dlPtr, "colorTileWrapper");
+	winCreate		= (createWindowFunc)loadFuncPtr(dlPtr, "createWindowWrapper");
+    winClear		= (voidWinFunc)loadFuncPtr(dlPtr, "windowClearWrapper");
+    winDisplay		= (voidWinFunc)loadFuncPtr(dlPtr, "windowDisplayWrapper");
+    winClose		= (voidWinFunc)loadFuncPtr(dlPtr, "windowCloseWrapper");
+    winIsOpen		= (boolWinFunc)loadFuncPtr(dlPtr, "windowIsOpenWrapper");
+    winPollEvent	= (winFuncPollFunc)loadFuncPtr(dlPtr, "windowPollEventWrapper");
+	winColorTile	= (tileColorFunc)loadFuncPtr(dlPtr, "colorTileWrapper");
 
-	this->libDestructor = nullptr;
+	libDestructor = nullptr;
 	if (libID == SDL2_IDX) {
-		this->libDestructor = (libDestructorFunc)dlsym(dlPtr, "SDL2LibDestructor");
+		libDestructor = (libDestructorFunc)dlsym(dlPtr, "SDL2LibDestructor");
 	} 
-
-	if (!this->winCreate || !this->winClear || !this->winDisplay 
-		|| !this->winIsOpen || !this->winClose || !this->winPollEvent) {
-		// std::cerr << "Error: dlSym " << dlerror() << std::endl;
-		throw std::invalid_argument("Error: Symbole in lib " + path + " not found");
-	}
-
 }
 
 /* Initialize the graphics library and create window */
 bool GraphicLib::windowCreate() {
-    this->window = this->winCreate(width, height, title.c_str());
-    return (this->window != nullptr);
+    window = winCreate(winWidth, winHeight, winTitle.c_str());
+    return (window != nullptr);
 }
 
 /* Clear the screen */
 void GraphicLib::clear() {
-    this->winClear(this->window);
+    winClear(window);
 }
 
 
 /* Display the rendered content */
 void GraphicLib::display() {
-    this->winDisplay(this->window);
+    winDisplay(window);
 }
 
 /**
@@ -117,12 +118,12 @@ void GraphicLib::display() {
  * @param rgba color of the tile in rgba
  */
 void GraphicLib::colorTile(u32 x, u32 y, u8 r, u8 g, u8 b, u8 a) {
-	this->winColorTile(this->window, x, y, r, g, b, a);
+	winColorTile(window, x, y, r, g, b, a);
 }
 
 /* Check if the window is open */
 bool GraphicLib::isOpen() {
-    return (this->window  && this->winIsOpen(this->window));
+    return (window  && winIsOpen(window));
 }
 
 /* Move the snake step by step, debug function for test */
@@ -146,15 +147,15 @@ void GraphicLib::processEvents(Nibbler &ctx) {
 	s32 key = NKEY_INVALID;
 	
 	/* While until no more valid event */
-	while ((key = this->winPollEvent(this->window)) != NKEY_INVALID) {
+	while ((key = winPollEvent(window)) != NKEY_INVALID) {
 		if (key == NKEY_ESC) {
 			ctx.setIsRunning(0);
 			break ;
 		} 
-		else if ((key == NKEY_1 || key == NKEY_2 || key == NKEY_3) && (key != this->libID)) {
+		else if ((key == NKEY_1 || key == NKEY_2 || key == NKEY_3) && (key != libID)) {
 			std::cout << PURPLE << "Switching to lib " << key << RESET << std::endl;
 			ctx.setCurrentLibIdx((s32)key);
-			this->close();
+			close();
 			break ;
 		} 
 		else if (key == NKEY_UP || key == NKEY_DOWN || key == NKEY_LEFT || key == NKEY_RIGHT) {
@@ -167,8 +168,8 @@ void GraphicLib::processEvents(Nibbler &ctx) {
 
 /* Close the graphics library and set window to null */
 void GraphicLib::close() {
-	if (this->window) {
-		this->winClose(this->window);
-		this->window = nullptr;
+	if (window) {
+		winClose(window);
+		window = nullptr;
 	}
 }
