@@ -6,8 +6,8 @@
 /* Default constructor */
 GraphicLib::GraphicLib() 
 : dlPtr(nullptr), window(nullptr), winWidth(0), winHeight(0), winTitle("")
-, winCreate(nullptr), winClear(nullptr), winDisplay(nullptr), winClose(nullptr)
-, winIsOpen(nullptr), winPollEvent(nullptr), libDestructor(nullptr) {}
+, winCreateF(nullptr), winClearF(nullptr), winDisplayF(nullptr), winCloseF(nullptr)
+, winIsOpenF(nullptr), winPollEventF(nullptr), libDestructorF(nullptr) {}
 
 /* Assignment operator */
 GraphicLib& GraphicLib::operator=(const GraphicLib& ref) {
@@ -17,13 +17,13 @@ GraphicLib& GraphicLib::operator=(const GraphicLib& ref) {
 		winWidth = ref.winWidth;
 		winHeight = ref.winHeight;
 		winTitle = ref.winTitle;
-		winCreate = ref.winCreate;
-		winClear = ref.winClear;
-		winDisplay = ref.winDisplay;
-		winIsOpen = ref.winIsOpen;
-		winClose = ref.winClose;
-		winPollEvent = ref.winPollEvent;
-		libDestructor = ref.libDestructor;
+		winCreateF = ref.winCreateF;
+		winClearF = ref.winClearF;
+		winDisplayF = ref.winDisplayF;
+		winIsOpenF = ref.winIsOpenF;
+		winCloseF = ref.winCloseF;
+		winPollEventF = ref.winPollEventF;
+		libDestructorF = ref.libDestructorF;
 	}
 	return (*this);
 }
@@ -43,9 +43,9 @@ GraphicLib::~GraphicLib() {
 		std::cout << RED << " window close()";
 		close();
 	}
-	if (libDestructor) {
+	if (libDestructorF) {
 		std::cout << ORANGE << " libDestructor()";
-		libDestructor();
+		libDestructorF();
 	}
 	if (dlPtr) {
 		std::cout << GREEN << " dlclose()" << RESET << std::endl;
@@ -80,35 +80,35 @@ GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std
 	if (!dlPtr) {
 		throw std::invalid_argument("Error: Graphic lib " + path + " not found");
 	}
-	winCreate		= (createWindowFunc)loadFuncPtr(dlPtr, "createWindowWrapper");
-    winClear		= (voidWinFunc)loadFuncPtr(dlPtr, "windowClearWrapper");
-    winDisplay		= (voidWinFunc)loadFuncPtr(dlPtr, "windowDisplayWrapper");
-    winClose		= (voidWinFunc)loadFuncPtr(dlPtr, "windowCloseWrapper");
-    winIsOpen		= (boolWinFunc)loadFuncPtr(dlPtr, "windowIsOpenWrapper");
-    winPollEvent	= (winFuncPollFunc)loadFuncPtr(dlPtr, "windowPollEventWrapper");
-	winColorTile	= (tileColorFunc)loadFuncPtr(dlPtr, "colorTileWrapper");
+	winCreateF		= (createWindowFunc)loadFuncPtr(dlPtr, "createWindowWrapper");
+    winClearF		= (voidWinFunc)loadFuncPtr(dlPtr, "windowClearWrapper");
+    winDisplayF		= (voidWinFunc)loadFuncPtr(dlPtr, "windowDisplayWrapper");
+    winCloseF		= (voidWinFunc)loadFuncPtr(dlPtr, "windowCloseWrapper");
+    winIsOpenF		= (boolWinFunc)loadFuncPtr(dlPtr, "windowIsOpenWrapper");
+    winPollEventF	= (winFuncPollFunc)loadFuncPtr(dlPtr, "windowPollEventWrapper");
+	winColorTileF	= (tileColorFunc)loadFuncPtr(dlPtr, "colorTileWrapper");
 
-	libDestructor = nullptr;
+	libDestructorF = nullptr;
 	if (libID == SDL2_IDX) {
-		libDestructor = (libDestructorFunc)dlsym(dlPtr, "SDL2LibDestructor");
+		libDestructorF = (libDestructorFunc)dlsym(dlPtr, "SDL2LibDestructor");
 	} 
 }
 
 /* Initialize the graphics library and create window */
 bool GraphicLib::windowCreate() {
-    window = winCreate(winWidth, winHeight, winTitle.c_str());
+    window = winCreateF(winWidth, winHeight, winTitle.c_str());
     return (window != nullptr);
 }
 
 /* Clear the screen */
 void GraphicLib::clear() {
-    winClear(window);
+    winClearF(window);
 }
 
 
 /* Display the rendered content */
 void GraphicLib::display() {
-    winDisplay(window);
+    winDisplayF(window);
 }
 
 /**
@@ -118,12 +118,12 @@ void GraphicLib::display() {
  * @param rgba color of the tile in rgba
  */
 void GraphicLib::colorTile(u32 x, u32 y, u8 r, u8 g, u8 b, u8 a) {
-	winColorTile(window, x, y, r, g, b, a);
+	winColorTileF(window, x, y, r, g, b, a);
 }
 
 /* Check if the window is open */
 bool GraphicLib::isOpen() {
-    return (window  && winIsOpen(window));
+    return (window  && winIsOpenF(window));
 }
 
 /* Move the snake step by step, debug function for test */
@@ -147,7 +147,7 @@ void GraphicLib::processEvents(Nibbler &ctx) {
 	s32 key = NKEY_INVALID;
 	
 	/* While until no more valid event */
-	while ((key = winPollEvent(window)) != NKEY_INVALID) {
+	while ((key = winPollEventF(window)) != NKEY_INVALID) {
 		if (key == NKEY_ESC) {
 			ctx.setIsRunning(0);
 			break ;
@@ -169,7 +169,7 @@ void GraphicLib::processEvents(Nibbler &ctx) {
 /* Close the graphics library and set window to null */
 void GraphicLib::close() {
 	if (window) {
-		winClose(window);
+		winCloseF(window);
 		window = nullptr;
 	}
 }

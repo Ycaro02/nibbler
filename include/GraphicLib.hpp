@@ -76,14 +76,14 @@ class GraphicLib {
     std::string			winTitle;			/* Title of the window */
 	s16					libID;			/* ID of the library */
 
-    createWindowFunc	winCreate;		/* Function pointer to createWindow */
-    voidWinFunc			winClear;		/* Function pointer to windowClear */
-    voidWinFunc			winDisplay;		/* Function pointer to windowDisplay */
-    voidWinFunc			winClose;		/* Function pointer to windowClose */
-    boolWinFunc			winIsOpen;		/* Function pointer to windowIsOpen */
-    winFuncPollFunc		winPollEvent;	/* Function pointer to windowPollEvent */
-	libDestructorFunc	libDestructor;	/* Function pointer to libDestructor */
-	tileColorFunc		winColorTile;	/* Function pointer to colorTile */
+    createWindowFunc	winCreateF;		/* Function pointer to createWindow */
+    voidWinFunc			winClearF;		/* Function pointer to windowClear */
+    voidWinFunc			winDisplayF;		/* Function pointer to windowDisplay */
+    voidWinFunc			winCloseF;		/* Function pointer to windowClose */
+    boolWinFunc			winIsOpenF;		/* Function pointer to windowIsOpen */
+    winFuncPollFunc		winPollEventF;	/* Function pointer to windowPollEvent */
+	libDestructorFunc	libDestructorF;	/* Function pointer to libDestructor */
+	tileColorFunc		winColorTileF;	/* Function pointer to colorTile */
 
 };
 
