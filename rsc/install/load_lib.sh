@@ -28,9 +28,9 @@ function all_deps_install {
 	load_lib "https://www.x.org/archive/individual/lib/libXinerama-1.1.4.tar.gz"
 	load_lib "ftp://ftp.freedesktop.org/pub/mesa/glu/glu-9.0.1.tar.gz"
 	load_lib_cmake "https://sourceforge.net/projects/freeglut/files/freeglut/3.4.0/freeglut-3.4.0.tar.gz" "freeglut-3.4.0"
-	#OKOK
-	# Need to work on mesa/openGL compiling, need to check for libudev too
+	# Need to work on mesa (openGl open source implementation) compiling with meson
 	# load_lib "https://mesa.freedesktop.org/archive/mesa-21.2.3.tar.xz"
+	# check for libudev maybe already installed
 	#libudev: https://www.freedesktop.org/software/systemd/systemd-248.tar.gz
 }
 
