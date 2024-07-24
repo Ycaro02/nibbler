@@ -57,9 +57,26 @@ function cmake_install_lib {
 	local extension=${3}
 
 	url_archive_to_directory ${url} ${name} ${extension}
-	cd ${DEPS_DIR}/${name}-*/build
-	cmake .. 
-	make -s -j$(nproc)
+
+	if [ ${name} == "freeglut-3.4.0" ]; then
+		
+		cd ${DEPS_DIR}/${name}
+		sed -i '/MACRO(ADD_DEMO name)/,/ENDMACRO()/d' CMakeLists.txt
+		sed -i '/ADD_DEMO(/,/^$/d' CMakeLists.txt
+
+
+
+		mkdir -p ${DEPS_DIR}/${name}/build
+		cd ${DEPS_DIR}/${name}/build
+		echo "cmake .. DCMAKE_INCLUDE_PATH=${INSTALL_DIR}/include DCMAKE_LIBRARY_PATH=${INSTALL_DIR}/lib"
+		cmake .. -DCMAKE_C_FLAGS="-I${INSTALL_DIR}/include" -DCMAKE_LIBRARY_PATH="${INSTALL_DIR}/lib" -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}
+		make -s -j$(nproc)
+		make install
+	else
+		cd ${DEPS_DIR}/${name}-*/build
+		cmake .. 
+		make -s -j$(nproc)
+	fi
 
 	cd ${DEPS_DIR}
 }

@@ -16,11 +16,26 @@ FD_OUT="/dev/stdout"
 # Update FD_OUT if -q option is passed
 handle_quiet_opt "${@}"
 
+# Create directories
+display_color_msg ${YELLOW} "Create directories ${DEPS_DIR} and ${INSTALL_DIR}."
+mkdir -p ${DEPS_DIR}
+mkdir -p ${INSTALL_DIR}
+
+function all_deps_install {
+	load_lib "https://www.x.org/archive/individual/lib/libXcursor-1.2.0.tar.gz"
+	load_lib "https://www.x.org/archive/individual/lib/libXi-1.7.10.tar.gz"
+	load_lib "https://www.x.org/archive/individual/lib/libXrandr-1.5.3.tar.gz"
+	load_lib "https://www.x.org/archive/individual/lib/libXinerama-1.1.4.tar.gz"
+	load_lib "ftp://ftp.freedesktop.org/pub/mesa/glu/glu-9.0.1.tar.gz"
+	load_lib_cmake "https://sourceforge.net/projects/freeglut/files/freeglut/3.4.0/freeglut-3.4.0.tar.gz" "freeglut-3.4.0"
+	#OKOK
+	# Need to work on mesa/openGL compiling, need to check for libudev too
+	# load_lib "https://mesa.freedesktop.org/archive/mesa-21.2.3.tar.xz"
+	#libudev: https://www.freedesktop.org/software/systemd/systemd-248.tar.gz
+}
+
 function load_deps_SFML {
-	# Create directories
-	display_color_msg ${YELLOW} "Create directories ${DEPS_DIR} and ${INSTALL_DIR}."
-	mkdir -p ${DEPS_DIR}
-	mkdir -p ${INSTALL_DIR}
+
 
 	# set -e  # Exit immediately if a command exits with a non-zero status.
 	# Need libudev and libxrandr but they are already installed in the system (TOCHECK on 42 compute)
@@ -133,6 +148,7 @@ function load_raylib {
     display_color_msg ${GREEN} "Raylib installation done in ${INSTALL_DIR}."
 }
 
+all_deps_install 
 load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
 load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz" "SDL2-2.30.5"
 load_raylib "https://github.com/raysan5/raylib.git" "4.5.0"

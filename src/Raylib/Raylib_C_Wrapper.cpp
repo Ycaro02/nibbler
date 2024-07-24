@@ -42,7 +42,8 @@ extern "C" {
 	 * @return The window pointer
 	*/
     void* createWindowWrapper(u32 width, u32 height, const char* title) {
-        // SetTraceLogLevel(LOG_NONE); // Disable raylib logs
+        /* Disable raylib logs*/
+		SetTraceLogLevel(LOG_NONE);
         InitWindow(width, height, title);
 		if (!IsWindowReady()) {
             std::cerr << "Failed to initialize Raylib window" << std::endl;
