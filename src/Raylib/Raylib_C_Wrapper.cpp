@@ -237,4 +237,11 @@ extern "C" {
 	void libDestructorWrapper() {
 		/* Nothing todo */
 	}
+
+	// void writeTextWrapper(void* window, const char* text, iVec2 pos, u32 fontSize, u32 color) {
+	// 	if (!raylibWindowGuard(window)) {
+	// 		return;
+	// 	}
+	// 	DrawText(text, pos.x, pos.y, fontSize, color);
+	// }
 }

@@ -93,6 +93,35 @@ function load_SFML {
 }
 
 
+# Function to download and install SDL2_ttf
+function install_sdl2_ttf {
+	local url="${1}"
+    local ttf_version="${2}"
+
+    display_color_msg ${YELLOW} "Downloading SDL2_ttf version: ${ttf_version}"
+
+	cd ${BASE_DIR}
+
+    # Download SDL2_ttf
+    wget ${url}
+
+    tar -xzf SDL2_ttf-${ttf_version}.tar.gz
+    cd SDL2_ttf-${ttf_version}
+
+    # Configure, make, and install SDL2_ttf
+    ./configure --prefix=${INSTALL_DIR}
+    make
+    make install
+
+    # Clean up
+    cd ..
+    rm -rf SDL2_ttf-${ttf_version}.tar.gz
+
+    display_color_msg ${GREEN} "SDL2_ttf version ${ttf_version} installed successfully."
+}
+
+
+
 function load_SDL2 {
 	local sdl_archive="${1}"
 	local sdl_dir_version="${2}"
@@ -114,6 +143,7 @@ function load_SDL2 {
 		make -s -j$(nproc) >> $FD_OUT 2>&1
 		make -s install >> $FD_OUT 2>&1
 		display_color_msg ${GREEN} "SDL2 instalation done in ${INSTALL_DIR}."
+		install_sdl2_ttf "https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.15.tar.gz" "2.0.15"
 	fi
 
 }

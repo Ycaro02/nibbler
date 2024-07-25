@@ -73,7 +73,7 @@ typedef enum NormaliseKey {
 		a = (color >> 24) & 0xFF;				\
 	} while (0)
 
-
+/* Define height for top band info */
 #define TOP_BAND_HEIGHT 100
 
 /* Macro to convert tile position to pixel */
@@ -137,6 +137,8 @@ class GraphicLib {
 
 	private:
 
+	/* Classic attributs */
+
 	void 				*dlPtr;			/* Pointer to the dynamic library */
     void				*window;		/* Pointer to the window */
 	void				*texture[4];	/* Pointer to the texture -> need to be an array */
@@ -146,6 +148,7 @@ class GraphicLib {
     std::string			winTitle;		/* Title of the window */
 	s16					libID;			/* ID of the library */
 
+	/* Function pointers */
 
     createWindowFunc	winCreateF;		/* Function pointer to createWindow */
     voidWinFunc			winClearF;		/* Function pointer to windowClear */

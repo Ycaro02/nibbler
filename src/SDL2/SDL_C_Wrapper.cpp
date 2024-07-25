@@ -1,6 +1,18 @@
+
+/**
+ * @file SDL_C_Wrapper.cpp
+ * @brief Implementation of the SDL2 wrapper in C
+*/
+
+/* Basic SDL include */
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_video.h>
 #include <SDL2/SDL_render.h>
+
+/* TTF include */
+#include <SDL2/SDL_ttf.h>
+
+/* C++ include */
 #include <iostream>
 #include "../../include/short_type.hpp"
 #include "../../include/Nibbler.hpp"
@@ -143,16 +155,12 @@ extern "C" {
 		if (scale.x == TILE_SIZE && scale.y == TILE_SIZE) {
 			TILE_POSITION_TO_PIXEL(tilePos, pixel_x, pixel_y);
 		} else {
-			pixel_x = tilePos.x;
-			pixel_y = tilePos.y;
+			pixel_x = tilePos.x; pixel_y = tilePos.y;
 		}
 
-		tileRect.x = pixel_x;
-		tileRect.y = pixel_y;
-		tileRect.w = scale.x;
-		tileRect.h = scale.y;
+		tileRect.x = pixel_x; tileRect.y = pixel_y;
+		tileRect.w = scale.x; tileRect.h = scale.y;
 
-        // tileRect = { pixel_y, pixel_x, scale.x, scale.y };
         /* Set the drawing color and draw the tile */
         SDL_SetRenderDrawColor(renderer, r, g, b, a);
         SDL_RenderFillRect(renderer, &tileRect);
@@ -232,4 +240,49 @@ extern "C" {
 		SDL_Quit();
 	}
 
+
+	/* TODO: need to init TTF and laod font before */
+	/**
+	 * @brief Write a text with SDL2
+	 * @param window The window pointers
+	 * @param text The text to write
+	 * @param pos The position of the text
+	 * @param color The color of the text
+	*/
+	// void writeTextWrapper(SDL_Window *window, const char *text, iVec2 pos, u32 fontSize, u32 color) {
+	// 	SDL_Renderer	*renderer = NULL;
+	// 	SDL_Surface		*textSurface = NULL;
+	// 	SDL_Texture		*textTexture = NULL;
+	// 	SDL_Rect		textRect = {0,0,0,0};
+	// 	u8 				r, g, b, a;
+
+	// 	(void)fontSize;
+
+	// 	renderer = SDL_GetRenderer(window);
+	// 	if (!renderer) {
+	// 		std::cerr << "SDL_GetRenderer Error: " << SDL_GetError() << std::endl;
+	// 		return;
+	// 	}
+
+	// 	UINT32_TO_RGBA(color, r, g, b, a);
+
+	// 	textSurface = TTF_RenderText_Solid(font, text, {r, g, b, a});
+	// 	if (!textSurface) {
+	// 		std::cerr << "TTF_RenderText_Solid Error: " << TTF_GetError() << std::endl;
+	// 		return;
+	// 	}
+	// 	textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+	// 	if (!textTexture) {
+	// 		std::cerr << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
+	// 		SDL_FreeSurface(textSurface);
+	// 		return;
+	// 	}
+	// 	textRect.x = pos.x;
+	// 	textRect.y = pos.y;
+	// 	textRect.w = textSurface->w;
+	// 	textRect.h = textSurface->h;
+	// 	SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
+	// 	SDL_DestroyTexture(textTexture);
+	// 	SDL_FreeSurface(textSurface);
+	// }
 }

@@ -191,4 +191,29 @@ extern "C" {
 	void libDestructorWrapper() {
 		/* Nothing todo */
 	}
+
+	/**
+	 * @brief Write a text with SFML
+	 * @param window The window pointers
+	 * @param text The text to write
+	 * @return The text pointer
+	*/
+	// void writeTextWrapper(sf::RenderWindow* window, const char* text, iVec2 pos, u32 fontSize, u32 color) {
+	// 	sf::Font font;
+	// 	sf::Text textObj;
+
+	// 	/* Maybe load font before */
+	// 	if (!font.loadFromFile("assets/arial.ttf")) {
+	// 		std::cerr << "Failed to load font" << std::endl;
+	// 		return;
+	// 	}
+
+	// 	textObj.setFont(font);
+	// 	textObj.setString(text);
+	// 	textObj.setCharacterSize(fontSize);
+	// 	textObj.setFillColor(sf::Color::White);
+	// 	textObj.setPosition(pos.x, pos.y);
+
+	// 	window->draw(textObj);
+	// }
 }
