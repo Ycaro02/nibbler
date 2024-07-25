@@ -13,9 +13,6 @@ typedef std::chrono::milliseconds ChronoMilli;
 /* Snake move MS */
 #define SNAKE_MOVE_MS 500
 
-/* Define the window value */
-#define WIN_W(w) (s32)((w * TILE_SIZE) + (w * TILE_SPACING) + TILE_SPACING)
-#define WIN_H(h) (s32)((h * TILE_SIZE) + (h * TILE_SPACING) + TILE_SPACING)
 
 /* Nibbler class to handle the game (context)*/
 class Nibbler {

@@ -10,10 +10,12 @@
 #define PINK_COLOR			255,0,255,255		/* Snake head color */
 
 
-#define WHITE_RGBA			(RGBA_TO_UINT32(255,255,255,255))		/* Empty color */
+#define WHITE_RGBA			(RGBA_TO_UINT32(255,255,255,255))	/* Empty color */
 #define GREEN_RGBA			(RGBA_TO_UINT32(0,255,0,255))		/* Snake head color */
-#define DARK_GREEN_RGBA		(RGBA_TO_UINT32(0,100,0,255))	/* Snake body color */
+#define DARK_GREEN_RGBA		(RGBA_TO_UINT32(0,100,0,255))		/* Snake body color */
 #define YELLOW_RGBA			(RGBA_TO_UINT32(255,255,0,255))		/* Food color */
+
+#define PINK_RGBA			(RGBA_TO_UINT32(255,0,255,255))		/* Snake head color */
 
 
 static bool checkCreateWin(GraphicLib *lib) {
@@ -26,10 +28,23 @@ static bool checkCreateWin(GraphicLib *lib) {
 }
 
 
+void drawTopBand(GraphicLib *lib, void *texture) {
+	iVec2 scale = {lib->getWidth(), TOP_BAND_HEIGHT};
+	iVec2 pos = {0, 0};
+
+	if (!texture) {
+		lib->colorTile(pos, scale, PINK_RGBA);
+		return ;
+	}
+	lib->drawTextureTile(texture, pos, scale);
+}
+
 void colorDisplay(GraphicLib *lib, Nibbler &ctx) {
 	u8 tile = EMPTY;
 	iVec2 scale = {TILE_SIZE, TILE_SIZE};
 	iVec2 pos = {0, 0};
+
+	drawTopBand(lib, nullptr);
 
 	for (s32 y = 0; y < ctx.getHeight(); y++) {
 		for (s32 x = 0; x < ctx.getWidth(); x++) {
@@ -54,6 +69,9 @@ void textureDisplay(GraphicLib *lib, Nibbler &ctx) {
 	u8 tile = EMPTY;
 	iVec2 scale = {TILE_SIZE, TILE_SIZE};
 	iVec2 pos = {0, 0};
+
+	// drawTopBand(lib, lib->getTexture(FOOD_IDX));
+	drawTopBand(lib, NULL);
 
 	for (s32 y = 0; y < ctx.getHeight(); y++) {
 		for (s32 x = 0; x < ctx.getWidth(); x++) {

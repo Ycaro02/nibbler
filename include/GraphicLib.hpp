@@ -72,12 +72,20 @@ typedef enum NormaliseKey {
 		a = (color >> 24) & 0xFF;				\
 	} while (0)
 
+
+#define TOP_BAND_HEIGHT 100
+
 /* Macro to convert tile position to pixel */
 #define TILE_POSITION_TO_PIXEL(p, px, py) \
     do { \
         (px) = (p).x * TILE_SIZE + ((p).x + 1) * TILE_SPACING; \
-        (py) = (p).y * TILE_SIZE + ((p).y + 1) * TILE_SPACING; \
+        (py) = ((p).y * TILE_SIZE + ((p).y + 1) * TILE_SPACING) + TOP_BAND_HEIGHT; \
     } while (0)
+
+/* Compute the window Height, width */
+#define WIN_W(w) (s32)((w * TILE_SIZE) + (w * TILE_SPACING) + TILE_SPACING)
+#define WIN_H(h) (s32)((h * TILE_SIZE) + (h * TILE_SPACING) + TILE_SPACING + TOP_BAND_HEIGHT)
+
 
 /* Forward declaration of Nibbler */
 class Nibbler;
@@ -120,7 +128,10 @@ class GraphicLib {
 	/* Process events */
 	void processEvents(Nibbler &ctx);
 
-	/* Getter for the window width */
+	/* Getter for the window width height */
+	s32 getWidth() const;
+	s32 getHeight() const;
+
 	void *getTexture(s32 id) const;
 
 	private:

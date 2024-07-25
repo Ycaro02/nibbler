@@ -223,3 +223,11 @@ void *GraphicLib::getTexture(s32 id) const {
 	}
 	return (texture[id]);
 }
+
+s32 GraphicLib::getWidth() const {
+	return (winWidth);
+}
+
+s32 GraphicLib::getHeight() const {
+	return (winHeight);
+}
