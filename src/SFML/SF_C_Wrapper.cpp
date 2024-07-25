@@ -93,10 +93,15 @@ extern "C" {
 	 * @brief Color a tile at x, y with r, g, b, a
 	 * @param window The window pointers
 	*/
-	void colorTileWrapper(sf::RenderWindow* window, u32 y, u32 x, u8 r, u8 g, u8 b, u8 a) {
+	// void colorTileWrapper(sf::RenderWindow* window, u32 y, u32 x, u8 r, u8 g, u8 b, u8 a) {
+	void colorTileWrapper(sf::RenderWindow* window, u32 y, u32 x, u32 color) {
         // Convert tile coordinates to pixel coordinates
-        s32 pixel_x = x * TILE_SIZE + (x + 1) * TILE_SPACING;
+        
+		s32 pixel_x = x * TILE_SIZE + (x + 1) * TILE_SPACING;
         s32 pixel_y = y * TILE_SIZE + (y + 1) * TILE_SPACING;
+
+		u8 r, g, b, a;
+		UINT32_TO_RGBA(color, r, g, b, a);
 
         // Create a rectangle shape for the tile
         sf::RectangleShape tile(sf::Vector2f(TILE_SIZE, TILE_SIZE));

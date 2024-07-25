@@ -124,7 +124,8 @@ extern "C" {
 	 * @param y,x The position of the tile
 	 * @param r,g,b,a The color of the tile
 	*/
-	void colorTileWrapper(SDL_Window* window, u32 y, u32 x, u8 r, u8 g, u8 b, u8 a) {
+	// void colorTileWrapper(SDL_Window* window, u32 y, u32 x, u8 r, u8 g, u8 b, u8 a) {
+	void colorTileWrapper(SDL_Window* window, u32 y, u32 x, u32 color) {
 		SDL_Rect		tileRect = {0,0,0,0};
 		SDL_Renderer	*renderer = NULL;
 		s32				pixel_x = 0, pixel_y = 0;
@@ -134,6 +135,10 @@ extern "C" {
             std::cerr << "SDL_GetRenderer Error: " << SDL_GetError() << std::endl;
             return;
         }
+
+		u8 r, g, b, a;
+		UINT32_TO_RGBA(color, r, g, b, a);
+
         /* Convert tile coordinates to pixel coordinates */
         pixel_x = x * TILE_SIZE + (x + 1) * TILE_SPACING;
         pixel_y = y * TILE_SIZE + (y + 1) * TILE_SPACING;

@@ -7,8 +7,14 @@
 #define GREEN_COLOR			0,255,0,255			/* Snake head color */
 #define DARK_GREEN_COLOR	0,100,0,255			/* Snake body color */
 #define YELLOW_COLOR		255,255,0,255		/* Food color */
-
 #define PINK_COLOR			255,0,255,255		/* Snake head color */
+
+
+#define WHITE_RGBA			(RGBA_TO_UINT32(255,255,255,255))		/* Empty color */
+#define GREEN_RGBA			(RGBA_TO_UINT32(0,255,0,255))		/* Snake head color */
+#define DARK_GREEN_RGBA		(RGBA_TO_UINT32(0,100,0,255))	/* Snake body color */
+#define YELLOW_RGBA			(RGBA_TO_UINT32(255,255,0,255))		/* Food color */
+
 
 static bool checkCreateWin(GraphicLib *lib) {
 	if (!lib->isOpen()) {
@@ -27,19 +33,20 @@ void colorDisplay(GraphicLib *lib, Nibbler &ctx) {
 		for (s32 x = 0; x < ctx.getWidth(); x++) {
 			tile = ctx.boardTileGet(x, y);
 			if (tile == EMPTY) {
-				lib->colorTile(x, y, WHITE_COLOR);
+				lib->colorTile(x, y, WHITE_RGBA);
 			} else if (tile == FOOD) {
-				lib->colorTile(x, y, YELLOW_COLOR);
+				lib->colorTile(x, y, YELLOW_RGBA);
 			} else if (tile == SNAKE_HEAD) {
-				lib->colorTile(x, y, DARK_GREEN_COLOR);
+				lib->colorTile(x, y, DARK_GREEN_RGBA);
 			} else if (tile == SNAKE_BODY) {
-				lib->colorTile(x, y, GREEN_COLOR);
+				lib->colorTile(x, y, GREEN_RGBA);
 			}
 		}
 	}
 }
 
-static void drawGame(GraphicLib *lib, Nibbler &ctx) {
+
+void textureDisplay(GraphicLib *lib, Nibbler &ctx) {
 	u8 tile = EMPTY;
 	
 	for (s32 y = 0; y < ctx.getHeight(); y++) {
@@ -56,7 +63,11 @@ static void drawGame(GraphicLib *lib, Nibbler &ctx) {
 			}
 		}
 	}
-	// colorDisplay(lib, ctx);
+}
+
+static void drawGame(GraphicLib *lib, Nibbler &ctx) {
+	// textureDisplay(lib, ctx);
+	colorDisplay(lib, ctx);
 }
 
 void GameLoop(Nibbler &ctx) {

@@ -38,7 +38,9 @@ typedef bool (*boolWinFunc)(void*);
 typedef s32 (*winFuncPollFunc)(void*);
 
 /* Here u32 are x,y tile position and u8 is RGBA color */
-typedef void (*tileColorFunc)(void*, u32, u32, u8, u8, u8, u8);
+// typedef void (*tileColorFunc)(void*, u32, u32, u8, u8, u8, u8);
+/* Here u32 are x,y tile position and last is RGBA color */
+typedef void (*tileColorFunc)(void*, u32, u32, u32);
 
 typedef void* (*loadTextFunc)(void *, const char*);
 
@@ -60,6 +62,15 @@ typedef enum NormaliseKey {
 	NKEY_RIGHT,			/* Key RIGHT, move snake dir to RIGHT */
 	NKEY_ESC,			/* Key ESC, close the window */
 } NormaliseKey;
+
+/* Macro to convert RGBA to UINT32 and UINT32 to RGBA */
+#define		RGBA_TO_UINT32(r, g, b, a)		((u32)((a << 24) | (r << 16) | (g << 8) | b))
+
+#define		UINT32_TO_RGBA(color, r, g, b, a)	\
+		r = (color >> 16) & 0xFF;				\
+		g = (color >> 8) & 0xFF;				\
+		b = color & 0xFF;						\
+		a = (color >> 24) & 0xFF;				\
 
 /* Forward declaration of Nibbler */
 class Nibbler;
@@ -86,7 +97,8 @@ class GraphicLib {
 	/* Check if the window is open */
 	bool isOpen();
 	/* Color a tile at x, y with r, g, b, a */
-	void colorTile(u32 x, u32 y, u8 r, u8 g, u8 b, u8 a);
+	// void colorTile(u32 x, u32 y, u8 r, u8 g, u8 b, u8 a);
+	void colorTile(u32 x, u32 y, u32 color);
 
 	/* Load a texture */
 	void *loadTexture(const char *path);

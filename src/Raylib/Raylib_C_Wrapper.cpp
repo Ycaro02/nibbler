@@ -135,7 +135,8 @@ extern "C" {
 	 * @param y,x The position of the tile
 	 * @param r,g,b,a The color of the tile
 	 */
-    void colorTileWrapper(void* window, u32 y, u32 x, u8 r, u8 g, u8 b, u8 a) {
+    // void colorTileWrapper(void* window, u32 y, u32 x, u8 r, u8 g, u8 b, u8 a) {
+    void colorTileWrapper(void* window, u32 y, u32 x, u32 color) {
 		if (!raylibWindowGuard(window)) {
 			return;
 		}
@@ -143,9 +144,13 @@ extern "C" {
         s32 pixel_x = x * TILE_SIZE + (x + 1) * TILE_SPACING;
         s32 pixel_y = y * TILE_SIZE + (y + 1) * TILE_SPACING;
 
+		// Extract the RGBA color components
+		u8 r, g, b, a;
+		UINT32_TO_RGBA(color, r, g, b, a);
+
         // Set the drawing color and draw the tile
-        Color color = { r, g, b, a };
-        DrawRectangle(pixel_y, pixel_x, TILE_SIZE, TILE_SIZE, color);
+        Color rayColor = { r, g, b, a };
+        DrawRectangle(pixel_y, pixel_x, TILE_SIZE, TILE_SIZE, rayColor);
     }
 
 	void *loadTextureWrapper(void* window, const char* path) {
