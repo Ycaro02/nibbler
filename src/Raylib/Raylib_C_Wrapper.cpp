@@ -111,21 +111,23 @@ extern "C" {
 		}
         if (WindowShouldClose()) {
             return (NKEY_ESC);
-        } else if (IsKeyPressedOrDown(KEY_UP)) {
+        } else if (IsKeyPressed(KEY_UP)) {
             return (NKEY_UP);
-        } else if (IsKeyPressedOrDown(KEY_DOWN)) {
+        } else if (IsKeyPressed(KEY_DOWN)) {
             return (NKEY_DOWN);
-        } else if (IsKeyPressedOrDown(KEY_LEFT)) {
+        } else if (IsKeyPressed(KEY_LEFT)) {
             return (NKEY_LEFT);
-        } else if (IsKeyPressedOrDown(KEY_RIGHT)) {
+        } else if (IsKeyPressed(KEY_RIGHT)) {
             return (NKEY_RIGHT);
-        } else if (IsKeyPressedOrDown(KEY_ONE)) {
+        } else if (IsKeyPressed(KEY_ONE)) {
             return (NKEY_1);
-        } else if (IsKeyPressedOrDown(KEY_TWO)) {
+        } else if (IsKeyPressed(KEY_TWO)) {
             return (NKEY_2);
-        } else if (IsKeyPressedOrDown(KEY_THREE)) {
+        } else if (IsKeyPressed(KEY_THREE)) {
             return (NKEY_3);
-        }
+        } else if (IsKeyPressed(KEY_A)) {
+			return (NKEY_A);
+		}
         return (NKEY_INVALID);
     }
 

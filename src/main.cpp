@@ -92,8 +92,11 @@ void textureDisplay(GraphicLib *lib, Nibbler &ctx) {
 }
 
 static void drawGame(GraphicLib *lib, Nibbler &ctx) {
-	textureDisplay(lib, ctx);
-	// colorDisplay(lib, ctx);
+	if (ctx.getColorMode()) {
+		colorDisplay(lib, ctx);
+	} else {
+		textureDisplay(lib, ctx);
+	}
 }
 
 void GameLoop(Nibbler &ctx) {

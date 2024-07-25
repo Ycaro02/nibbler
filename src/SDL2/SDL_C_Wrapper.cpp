@@ -113,6 +113,7 @@ extern "C" {
 			else if (code == SDLK_1) { return (NKEY_1); }
 			else if (code == SDLK_2) { return (NKEY_2); }
 			else if (code == SDLK_3) { return (NKEY_3); }
+			else if (code == SDLK_a) { return (NKEY_A); }
 		}
 		return (NKEY_INVALID);
     }

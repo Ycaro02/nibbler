@@ -7,7 +7,7 @@
 
 /* Default constructor */
 Nibbler::Nibbler() 
-: width(0), height(0), board(nullptr), nbFood(0), currentLib(0), isRunning(0), emptyTileNb(0),
+: width(0), height(0), board(nullptr), nbFood(0), currentLib(0), isRunning(0), colorMode(0), emptyTileNb(0),
 lastMove(std::chrono::steady_clock::now()), lastFoodSpawn(std::chrono::steady_clock::now()), snake(Snake()) {
 	libs[0] = nullptr;
 	libs[1] = nullptr;
@@ -173,7 +173,7 @@ Nibbler::Nibbler(std::string w, std::string h) {
 	/* Initialize basic value */	
 	setIsRunning(1);
 	setCurrentLibIdx(SFML_IDX);
-	// setCurrentLibIdx(SDL2_IDX);
+	setColorMode(0);
 
 	/* Alloc the board */
 	board = new u8*[height];
@@ -259,6 +259,15 @@ GraphicLib *Nibbler::getCurrentLib() {
 	return (libs[currentLib]);
 }
 
+s32 &Nibbler::getColorMode() {
+	return (colorMode);
+}
+
+void Nibbler::setColorMode(s32 value) {
+	colorMode = value;
+}
+
 Snake &Nibbler::getSnake() {
 	return (snake);
 }
+

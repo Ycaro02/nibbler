@@ -165,27 +165,21 @@ bool GraphicLib::isOpen() {
 
 /* Process events */
 void GraphicLib::processEvents(Nibbler &ctx) {
-	s32 key = NKEY_INVALID;
+	s32 key = winPollEventF(window);
 	
-	/* While until no more valid event */
-	while ((key = winPollEventF(window)) != NKEY_INVALID) {
-		if (key == NKEY_ESC) {
-			ctx.setIsRunning(0);
-			break ;
-		} 
-		else if ((key == NKEY_1 || key == NKEY_2 || key == NKEY_3) && (key != ctx.getCurrentLibIdx())) {
-			std::cout << PURPLE << "Switching to lib " << key << RESET << std::endl;
-			ctx.setCurrentLibIdx((s32)key);
-			close();
-			break ;
-		} 
-		else if (key == NKEY_UP || key == NKEY_DOWN || key == NKEY_LEFT || key == NKEY_RIGHT) {
-			ctx.getSnake().handleSnakeDir(key);
-			// moveStepByStep(ctx, key);
-			break ;
-		} else {
-			break ;
-		}
+	if (key == NKEY_ESC) {
+		ctx.setIsRunning(0);
+	} 
+	else if ((key == NKEY_1 || key == NKEY_2 || key == NKEY_3) && (key != ctx.getCurrentLibIdx())) {
+		std::cout << PURPLE << "Switching to lib " << key << RESET << std::endl;
+		ctx.setCurrentLibIdx((s32)key);
+		close();
+	} 
+	else if (key == NKEY_UP || key == NKEY_DOWN || key == NKEY_LEFT || key == NKEY_RIGHT) {
+		ctx.getSnake().handleSnakeDir(key);
+		// moveStepByStep(ctx, key);
+	} else if (key == NKEY_A) {
+		ctx.setColorMode(!(ctx.getColorMode()));
 	}
 }
 

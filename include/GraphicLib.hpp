@@ -58,6 +58,7 @@ typedef enum NormaliseKey {
 	NKEY_DOWN,			/* Key DOWN, move snake dir to DOWN */
 	NKEY_LEFT,			/* Key LEFT, move snake dir to LEFT */
 	NKEY_RIGHT,			/* Key RIGHT, move snake dir to RIGHT */
+	NKEY_A,				/* Key A, switch color mode */
 	NKEY_ESC,			/* Key ESC, close the window */
 } NormaliseKey;
 

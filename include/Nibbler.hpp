@@ -60,6 +60,9 @@ class Nibbler {
 	s32 &getEmptyTileNb();
 	void setEmptyTileNb(s32 value);
 
+	s32 &getColorMode();
+	void setColorMode(s32 value);
+
 	GraphicLib *getCurrentLib();
 	Snake &getSnake();
 
@@ -71,6 +74,7 @@ class Nibbler {
 	s32					nbFood;			/* Number of food */
 	s32					currentLib;		/* Current library index */
 	s32					isRunning;		/* Game state */
+	s32					colorMode;		/* Width of the window */
 	s32					emptyTileNb;	/* Number of empty tile */
 	ChronoTimePoint		lastMove;		/* Last move time */
 	ChronoTimePoint		lastFoodSpawn;	/* Last auto move time */
