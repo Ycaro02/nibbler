@@ -159,6 +159,32 @@ extern "C" {
         SDL_RenderFillRect(renderer, &tileRect);
     }
 
+
+	void drawTextureTileWrapper(SDL_Window *window, SDL_Texture *texture, iVec2 tilePos, iVec2 scale) {
+		SDL_Renderer *renderer = SDL_GetRenderer(window);
+		SDL_Rect 	dstRect;
+		s32 		pixel_x, pixel_y;
+		
+		if (!texture || !renderer) {
+        	return;
+    	}
+
+		/* Convert tile coordinates to pixel coordinates */
+		if (scale.x == TILE_SIZE && scale.y == TILE_SIZE) {
+			pixel_x = tilePos.x * TILE_SIZE + (tilePos.x + 1) * TILE_SPACING;
+			pixel_y = tilePos.y * TILE_SIZE + (tilePos.y + 1) * TILE_SPACING;
+		} else {
+			pixel_x = tilePos.x;
+			pixel_y = tilePos.y;
+		}
+
+		dstRect.x = pixel_x;
+		dstRect.y = pixel_y;
+		dstRect.w = scale.x;
+		dstRect.h = scale.y;
+		SDL_RenderCopy(renderer, texture, NULL, &dstRect);
+	}
+
 	void *loadTextureWrapper(SDL_Window* window, const char* path) {
 		SDL_Renderer	*renderer = NULL;
 		SDL_Texture		*texture = NULL;
@@ -180,22 +206,6 @@ extern "C" {
 			return ;
 		}
 		SDL_DestroyTexture(texture);
-	}
-
-	void drawTextureTileWrapper(SDL_Window *window, SDL_Texture *texture, u32 y, u32 x) {
-		SDL_Renderer *renderer = SDL_GetRenderer(window);
-		SDL_Rect 	dstRect;
-		s32 		pixel_x = x * TILE_SIZE + (x + 1) * TILE_SPACING;
-		s32 		pixel_y = y * TILE_SIZE + (y + 1) * TILE_SPACING;
-		
-		if (!texture || !renderer) {
-        	return;
-    	}
-		dstRect.x = pixel_x;
-		dstRect.y = pixel_y;
-		dstRect.w = TILE_SIZE;
-		dstRect.h = TILE_SIZE;
-		SDL_RenderCopy(renderer, texture, NULL, &dstRect);
 	}
 
 	/**

@@ -37,8 +37,6 @@ typedef bool (*boolWinFunc)(void*);
 /* Function pointer for polling events return normalised key */
 typedef s32 (*winFuncPollFunc)(void*);
 
-/* Here u32 are x,y tile position and last is RGBA color */
-// typedef void (*tileColorFunc)(void*, u32, u32, u32);
 /* Here first iVec is tilePos, second is scale, last is u32 RGBA color */
 typedef void (*tileColorFunc)(void*, iVec2, iVec2, u32);
 
@@ -48,7 +46,9 @@ typedef void* (*loadTextFunc)(void *, const char*);
 typedef void (*unloadTextFunc)(void *);
 
 /* Here fist void* are window, second texture, u32 are x,y coordonate */
-typedef void (*drawTextFunc)(void *, void *, u32, u32);
+// typedef void (*drawTextFunc)(void *, void *, u32, u32);
+/* Here first void* are window, second texture, iVec2 are x,y coordonate and second texture scaling */
+typedef void (*drawTextFunc)(void *, void *, iVec2, iVec2);
 
 /* Enum for the keys normalise between lib */
 typedef enum NormaliseKey {
@@ -105,7 +105,8 @@ class GraphicLib {
 	void unloadTexture(void *texture);
 
 	/* Draw a texture */
-	void drawTextureTile(void *texture, u32 x, u32 y);
+	// void drawTextureTile(void *texture, u32 x, u32 y);
+	void drawTextureTile(void *texture, iVec2 tilePos, iVec2 scale);
 
 	/* Close the graphics library */
 	void close();

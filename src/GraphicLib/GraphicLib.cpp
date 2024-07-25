@@ -197,8 +197,9 @@ void GraphicLib::unloadTexture(void *texture) {
 	unloadTextF(texture);
 }
 
-void GraphicLib::drawTextureTile(void *texture, u32 x, u32 y) {
-	drawTextF(window, texture, x, y);
+void GraphicLib::drawTextureTile(void *texture, iVec2 tilePos, iVec2 scale) {
+	// drawTextF(window, texture, x, y);
+	drawTextF(window, texture, tilePos, scale);
 }
 
 /* Close the graphics library and set window to null */

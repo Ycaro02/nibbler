@@ -135,7 +135,6 @@ extern "C" {
 	 * @param y,x The position of the tile
 	 * @param r,g,b,a The color of the tile
 	 */
-    // void colorTileWrapper(void* window, u32 y, u32 x, u32 color) {
     void colorTileWrapper(void* window, iVec2 tilePos, iVec2 scale, u32 color) {
 		Color	rayColor;
 		s32		pixel_x, pixel_y;
@@ -181,8 +180,9 @@ extern "C" {
 		}
 	}
 
-	void drawTextureTileWrapper(void* window, Texture2D *texture, u32 y, u32 x) {
+	void drawTextureTileWrapper(void* window, Texture2D *texture, iVec2 tilePos, iVec2 scale) {
 		Vector2 position;
+		f32		scaleX, scaleY;
 
 		if (!raylibWindowGuard(window)) {
         	return;
@@ -190,12 +190,23 @@ extern "C" {
 		if (!texture) {	
 			std::cout << "Error: Texture is null" << std::endl;
 		}
+		if (scale.x == TILE_SIZE && scale.y == TILE_SIZE) {
+			position.x = static_cast<f32>(tilePos.x * TILE_SIZE + (tilePos.x + 1) * TILE_SPACING);
+			position.y = static_cast<f32>(tilePos.y * TILE_SIZE + (tilePos.y + 1) * TILE_SPACING);
+		} else {
+			position.x = static_cast<f32>(tilePos.x);
+			position.y = static_cast<f32>(tilePos.y);
+		}
+		// Calculate scale factors
+		scaleX = static_cast<f32>(scale.x) / texture->width;
+		scaleY = static_cast<f32>(scale.y) / texture->height;
+    	// Define source and destination rectangles
+		Rectangle sourceRec = { 0.0f, 0.0f, static_cast<f32>(texture->width), static_cast<f32>(texture->height) };
+		Rectangle destRec = { position.x, position.y, static_cast<f32>(texture->width) * scaleX, static_cast<f32>(texture->height) * scaleY };
+		Vector2 origin = { 0.0f, 0.0f };
 
-		position.x = static_cast<f32>(x * TILE_SIZE + (x + 1) * TILE_SPACING);
-		position.y = static_cast<f32>(y * TILE_SIZE + (y + 1) * TILE_SPACING);
-		f32 scaleX = static_cast<f32>(TILE_SIZE) / texture->width;
-		f32 scaleY = static_cast<f32>(TILE_SIZE) / texture->height;
-		DrawTextureEx(*texture, position, 0.0f, scaleX, WHITE);
+		// Draw the texture with the calculated scale
+		DrawTexturePro(*texture, sourceRec, destRec, origin, 0.0f, WHITE);
 	}
 
 	/**

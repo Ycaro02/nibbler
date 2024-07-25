@@ -70,7 +70,7 @@ clean_lib:
 clean:
 ifeq ($(shell [ -d $(OBJ_DIR) ] && echo 0 || echo 1), 0)
 	@$(RM) $(OBJ_DIR) $(WRAPPER_LIB_DIR)
-	@printf "$(RED)Clean $(OBJ_DIR) done$(RESET)\n"
+	@printf "$(RED)Clean $(OBJ_DIR) $(WRAPPER_LIB_DIR) done$(RESET)\n"
 	@$(RM)
 endif
 

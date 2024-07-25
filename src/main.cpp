@@ -52,26 +52,30 @@ void colorDisplay(GraphicLib *lib, Nibbler &ctx) {
 
 void textureDisplay(GraphicLib *lib, Nibbler &ctx) {
 	u8 tile = EMPTY;
-	
+	iVec2 scale = {TILE_SIZE, TILE_SIZE};
+	iVec2 pos = {0, 0};
+
 	for (s32 y = 0; y < ctx.getHeight(); y++) {
 		for (s32 x = 0; x < ctx.getWidth(); x++) {
 			tile = ctx.boardTileGet(x, y);
+			pos.x = x;
+			pos.y = y;
 			if (tile == EMPTY) {
-				lib->drawTextureTile(lib->getTexture(EMPTY_IDX),y,x);
+				lib->drawTextureTile(lib->getTexture(EMPTY_IDX),pos,scale);
 			} else if (tile == FOOD) {
-				lib->drawTextureTile(lib->getTexture(FOOD_IDX),y,x);
+				lib->drawTextureTile(lib->getTexture(FOOD_IDX),pos,scale);
 			} else if (tile == SNAKE_HEAD) {
-				lib->drawTextureTile(lib->getTexture(HEAD_IDX),y,x);
+				lib->drawTextureTile(lib->getTexture(HEAD_IDX),pos,scale);
 			} else if (tile == SNAKE_BODY) {
-				lib->drawTextureTile(lib->getTexture(BODY_IDX),y,x);
+				lib->drawTextureTile(lib->getTexture(BODY_IDX),pos,scale);
 			}
 		}
 	}
 }
 
 static void drawGame(GraphicLib *lib, Nibbler &ctx) {
-	// textureDisplay(lib, ctx);
-	colorDisplay(lib, ctx);
+	textureDisplay(lib, ctx);
+	// colorDisplay(lib, ctx);
 }
 
 void GameLoop(Nibbler &ctx) {
