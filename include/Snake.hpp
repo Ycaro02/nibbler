@@ -4,12 +4,6 @@
 #include "short_type.hpp"
 #include <vector>
 
-/* Define a 2D vector */
-typedef struct iVec2_s {
-	s32 x;
-	s32 y;
-} iVec2;
-
 /* Define the board state */
 typedef enum BoardState_e {
 	EMPTY = 0U,

@@ -37,10 +37,10 @@ typedef bool (*boolWinFunc)(void*);
 /* Function pointer for polling events return normalised key */
 typedef s32 (*winFuncPollFunc)(void*);
 
-/* Here u32 are x,y tile position and u8 is RGBA color */
-// typedef void (*tileColorFunc)(void*, u32, u32, u8, u8, u8, u8);
 /* Here u32 are x,y tile position and last is RGBA color */
-typedef void (*tileColorFunc)(void*, u32, u32, u32);
+// typedef void (*tileColorFunc)(void*, u32, u32, u32);
+/* Here first iVec is tilePos, second is scale, last is u32 RGBA color */
+typedef void (*tileColorFunc)(void*, iVec2, iVec2, u32);
 
 typedef void* (*loadTextFunc)(void *, const char*);
 
@@ -97,8 +97,7 @@ class GraphicLib {
 	/* Check if the window is open */
 	bool isOpen();
 	/* Color a tile at x, y with r, g, b, a */
-	// void colorTile(u32 x, u32 y, u8 r, u8 g, u8 b, u8 a);
-	void colorTile(u32 x, u32 y, u32 color);
+	void colorTile(iVec2 tilePos, iVec2 scale, u32 color);
 
 	/* Load a texture */
 	void *loadTexture(const char *path);

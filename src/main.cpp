@@ -28,18 +28,22 @@ static bool checkCreateWin(GraphicLib *lib) {
 
 void colorDisplay(GraphicLib *lib, Nibbler &ctx) {
 	u8 tile = EMPTY;
-	
+	iVec2 scale = {TILE_SIZE, TILE_SIZE};
+	iVec2 pos = {0, 0};
+
 	for (s32 y = 0; y < ctx.getHeight(); y++) {
 		for (s32 x = 0; x < ctx.getWidth(); x++) {
 			tile = ctx.boardTileGet(x, y);
+			pos.x = x;
+			pos.y = y;
 			if (tile == EMPTY) {
-				lib->colorTile(x, y, WHITE_RGBA);
+				lib->colorTile(pos, scale, WHITE_RGBA);
 			} else if (tile == FOOD) {
-				lib->colorTile(x, y, YELLOW_RGBA);
+				lib->colorTile(pos, scale, YELLOW_RGBA);
 			} else if (tile == SNAKE_HEAD) {
-				lib->colorTile(x, y, DARK_GREEN_RGBA);
+				lib->colorTile(pos, scale, DARK_GREEN_RGBA);
 			} else if (tile == SNAKE_BODY) {
-				lib->colorTile(x, y, GREEN_RGBA);
+				lib->colorTile(pos, scale, GREEN_RGBA);
 			}
 		}
 	}

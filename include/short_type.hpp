@@ -23,5 +23,10 @@ typedef		int64_t		s64;		/* Signed int 64 bits */
 typedef		float		f32;		/* Float 32 bits */
 typedef		double		f64;		/* Float 64 bits */
 
+/* Define a 2D vector */
+typedef struct iVec2_s {
+	s32 x;
+	s32 y;
+} iVec2;
 
 #endif /* SHORT_TYPE_HPP */

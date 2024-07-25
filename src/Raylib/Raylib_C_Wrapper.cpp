@@ -135,22 +135,27 @@ extern "C" {
 	 * @param y,x The position of the tile
 	 * @param r,g,b,a The color of the tile
 	 */
-    // void colorTileWrapper(void* window, u32 y, u32 x, u8 r, u8 g, u8 b, u8 a) {
-    void colorTileWrapper(void* window, u32 y, u32 x, u32 color) {
+    // void colorTileWrapper(void* window, u32 y, u32 x, u32 color) {
+    void colorTileWrapper(void* window, iVec2 tilePos, iVec2 scale, u32 color) {
+		Color	rayColor;
+		s32		pixel_x, pixel_y;
+		u8		r, g, b, a;
 		if (!raylibWindowGuard(window)) {
 			return;
 		}
-        // Convert tile coordinates to pixel coordinates
-        s32 pixel_x = x * TILE_SIZE + (x + 1) * TILE_SPACING;
-        s32 pixel_y = y * TILE_SIZE + (y + 1) * TILE_SPACING;
+        /* Convert tile coordinates to pixel coordinates */
+		if (scale.x == TILE_SIZE && scale.y == TILE_SIZE) {
+			pixel_x = tilePos.x * TILE_SIZE + (tilePos.x + 1) * TILE_SPACING;
+			pixel_y = tilePos.y * TILE_SIZE + (tilePos.y + 1) * TILE_SPACING;
+		} else {
+			pixel_x = tilePos.x;
+			pixel_y = tilePos.y;
+		}
 
-		// Extract the RGBA color components
-		u8 r, g, b, a;
 		UINT32_TO_RGBA(color, r, g, b, a);
 
-        // Set the drawing color and draw the tile
-        Color rayColor = { r, g, b, a };
-        DrawRectangle(pixel_y, pixel_x, TILE_SIZE, TILE_SIZE, rayColor);
+        rayColor = { r, g, b, a };
+        DrawRectangle(pixel_x, pixel_y, scale.x, scale.y, rayColor);
     }
 
 	void *loadTextureWrapper(void* window, const char* path) {

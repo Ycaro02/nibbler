@@ -124,11 +124,12 @@ extern "C" {
 	 * @param y,x The position of the tile
 	 * @param r,g,b,a The color of the tile
 	*/
-	// void colorTileWrapper(SDL_Window* window, u32 y, u32 x, u8 r, u8 g, u8 b, u8 a) {
-	void colorTileWrapper(SDL_Window* window, u32 y, u32 x, u32 color) {
+	// void colorTileWrapper(SDL_Window* window, u32 y, u32 x, u32 color) {
+	void colorTileWrapper(SDL_Window* window, iVec2 tilePos, iVec2 scale, u32 color) {
 		SDL_Rect		tileRect = {0,0,0,0};
 		SDL_Renderer	*renderer = NULL;
 		s32				pixel_x = 0, pixel_y = 0;
+		u8 				r, g, b, a;
 
 		renderer = SDL_GetRenderer(window);
         if (!renderer) {
@@ -136,13 +137,23 @@ extern "C" {
             return;
         }
 
-		u8 r, g, b, a;
 		UINT32_TO_RGBA(color, r, g, b, a);
 
         /* Convert tile coordinates to pixel coordinates */
-        pixel_x = x * TILE_SIZE + (x + 1) * TILE_SPACING;
-        pixel_y = y * TILE_SIZE + (y + 1) * TILE_SPACING;
-        tileRect = { pixel_y, pixel_x, TILE_SIZE, TILE_SIZE };
+		if (scale.x == TILE_SIZE && scale.y == TILE_SIZE) {
+			pixel_x = tilePos.x * TILE_SIZE + (tilePos.x + 1) * TILE_SPACING;
+			pixel_y = tilePos.y * TILE_SIZE + (tilePos.y + 1) * TILE_SPACING;
+		} else {
+			pixel_x = tilePos.x;
+			pixel_y = tilePos.y;
+		}
+
+		tileRect.x = pixel_x;
+		tileRect.y = pixel_y;
+		tileRect.w = scale.x;
+		tileRect.h = scale.y;
+
+        // tileRect = { pixel_y, pixel_x, scale.x, scale.y };
         /* Set the drawing color and draw the tile */
         SDL_SetRenderDrawColor(renderer, r, g, b, a);
         SDL_RenderFillRect(renderer, &tileRect);

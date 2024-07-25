@@ -136,8 +136,10 @@ void GraphicLib::display() {
  * @param rgba color of the tile in rgba
  */
 // void GraphicLib::colorTile(u32 x, u32 y, u8 r, u8 g, u8 b, u8 a) {
-void GraphicLib::colorTile(u32 x, u32 y, u32 color) {
-	winColorTileF(window, x, y, color);
+void GraphicLib::colorTile(iVec2 tilePos, iVec2 scale, u32 color) {
+	(void)scale;
+	// winColorTileF(window, tilePos.x, tilePos.y, color);
+	winColorTileF(window, tilePos, scale, color);
 }
 
 /* Check if the window is open */

@@ -93,19 +93,24 @@ extern "C" {
 	 * @brief Color a tile at x, y with r, g, b, a
 	 * @param window The window pointers
 	*/
-	// void colorTileWrapper(sf::RenderWindow* window, u32 y, u32 x, u8 r, u8 g, u8 b, u8 a) {
-	void colorTileWrapper(sf::RenderWindow* window, u32 y, u32 x, u32 color) {
-        // Convert tile coordinates to pixel coordinates
-        
-		s32 pixel_x = x * TILE_SIZE + (x + 1) * TILE_SPACING;
-        s32 pixel_y = y * TILE_SIZE + (y + 1) * TILE_SPACING;
-
+	// void colorTileWrapper(sf::RenderWindow* window, u32 y, u32 x, u32 color) {
+	void colorTileWrapper(sf::RenderWindow* window, iVec2 tilePos, iVec2 scale, u32 color) {
+		s32 pixel_x, pixel_y; 
 		u8 r, g, b, a;
+		
+		if (scale.x == TILE_SIZE && scale.y == TILE_SIZE) {
+			pixel_x = tilePos.x * TILE_SIZE + (tilePos.x + 1) * TILE_SPACING;
+			pixel_y = tilePos.y * TILE_SIZE + (tilePos.y + 1) * TILE_SPACING;
+		} else {
+			pixel_x = tilePos.x;
+			pixel_y = tilePos.y;
+		}
+
 		UINT32_TO_RGBA(color, r, g, b, a);
 
         // Create a rectangle shape for the tile
-        sf::RectangleShape tile(sf::Vector2f(TILE_SIZE, TILE_SIZE));
-        tile.setPosition(pixel_y, pixel_x);
+        sf::RectangleShape tile(sf::Vector2f(scale.x, scale.y));
+        tile.setPosition(pixel_x, pixel_y);
         tile.setFillColor(sf::Color(r, g, b, a));
 
         // Draw the tile
