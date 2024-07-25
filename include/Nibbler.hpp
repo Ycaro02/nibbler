@@ -9,9 +9,6 @@ typedef std::chrono::steady_clock::time_point ChronoTimePoint;
 typedef std::chrono::seconds ChronoSecond;
 typedef std::chrono::milliseconds ChronoMilli;
 
-/* Define tile size for the board */
-#define TILE_SIZE 40
-#define TILE_SPACING 2
 
 /* Snake move MS */
 #define SNAKE_MOVE_MS 500
@@ -32,7 +29,7 @@ class Nibbler {
 
 	/* Constructor */
 	Nibbler(std::string w, std::string h);
-	void NibblerInitLib(std::string title, std::string path, std::string texturePath, s32 libID, s32 winWidth, s32 winHeight);
+	void NibblerInitLib(std::string title, std::string path, std::string textureExt, s32 libID, s32 winWidth, s32 winHeight);
 	void DisplayBoardFD0();
 
 	/* Food handling */

@@ -57,8 +57,8 @@ Nibbler::Nibbler(const Nibbler &ref) {
 }
 
 /* Initialize lib wrapper */
-void Nibbler::NibblerInitLib(std::string title, std::string path, std::string texturePath, s32 libID, s32 winWidth, s32 winHeight) {
-	libs[libID] = new GraphicLib(winWidth, winHeight, title, path, texturePath, libID);
+void Nibbler::NibblerInitLib(std::string title, std::string path, std::string textureExt, s32 libID, s32 winWidth, s32 winHeight) {
+	libs[libID] = new GraphicLib(winWidth, winHeight, title, path, textureExt, libID);
 }
 
 void Nibbler::checkBoardFull() {

@@ -77,7 +77,7 @@ GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std
 	for (u32 i = 0; i < 4; i++) {
 		texture[i] = nullptr;
 	}
-	texturePath = textExt;
+	textureExt = textExt;
 	dlPtr = dlopen(path.c_str(), RTLD_LAZY);
 	if (!dlPtr) {
 		std::cerr << "Error: " << dlerror() << std::endl;
@@ -100,10 +100,10 @@ GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std
 bool GraphicLib::windowCreate() {
     window = winCreateF(winWidth, winHeight, winTitle.c_str());
 
-	std::string head_path = HEAD_path + texturePath;
-	std::string body_path = BODY_path + texturePath;
-	std::string empty_path = EMPTY_path + texturePath;
-	std::string food_path = FOOD_path + texturePath;
+	std::string head_path = HEAD_path + textureExt;
+	std::string body_path = BODY_path + textureExt;
+	std::string empty_path = EMPTY_path + textureExt;
+	std::string food_path = FOOD_path + textureExt;
 
 	// std::cout << "Head path: " << head_path << std::endl;
 	// std::cout << "Body path: " << body_path << std::endl;

@@ -23,6 +23,11 @@ typedef		int64_t		s64;		/* Signed int 64 bits */
 typedef		float		f32;		/* Float 32 bits */
 typedef		double		f64;		/* Float 64 bits */
 
+
+/* Define tile size for the board */
+#define TILE_SIZE 40
+#define TILE_SPACING 2
+
 /* Define a 2D vector */
 typedef struct iVec2_s {
 	s32 x;

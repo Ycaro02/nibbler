@@ -65,10 +65,19 @@ typedef enum NormaliseKey {
 #define		RGBA_TO_UINT32(r, g, b, a)		((u32)((a << 24) | (r << 16) | (g << 8) | b))
 
 #define		UINT32_TO_RGBA(color, r, g, b, a)	\
+	do { \
 		r = (color >> 16) & 0xFF;				\
 		g = (color >> 8) & 0xFF;				\
 		b = color & 0xFF;						\
 		a = (color >> 24) & 0xFF;				\
+	} while (0)
+
+/* Macro to convert tile position to pixel */
+#define TILE_POSITION_TO_PIXEL(p, px, py) \
+    do { \
+        (px) = (p).x * TILE_SIZE + ((p).x + 1) * TILE_SPACING; \
+        (py) = (p).y * TILE_SIZE + ((p).y + 1) * TILE_SPACING; \
+    } while (0)
 
 /* Forward declaration of Nibbler */
 class Nibbler;
@@ -119,7 +128,7 @@ class GraphicLib {
 	void 				*dlPtr;			/* Pointer to the dynamic library */
     void				*window;		/* Pointer to the window */
 	void				*texture[4];	/* Pointer to the texture -> need to be an array */
-	std::string			texturePath;	/* Path to the texture */
+	std::string			textureExt;	/* Path to the texture */
     s32					winWidth;		/* Width of the window */
     s32					winHeight;		/* Height of the window */
     std::string			winTitle;		/* Title of the window */

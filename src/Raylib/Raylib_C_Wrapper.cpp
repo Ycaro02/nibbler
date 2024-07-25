@@ -213,8 +213,7 @@ extern "C" {
 			std::cout << "Error: Texture is null" << std::endl;
 		}
 		if (scale.x == TILE_SIZE && scale.y == TILE_SIZE) {
-			position.x = static_cast<f32>(tilePos.x * TILE_SIZE + (tilePos.x + 1) * TILE_SPACING);
-			position.y = static_cast<f32>(tilePos.y * TILE_SIZE + (tilePos.y + 1) * TILE_SPACING);
+			TILE_POSITION_TO_PIXEL(tilePos, position.x, position.y);
 		} else {
 			position.x = static_cast<f32>(tilePos.x);
 			position.y = static_cast<f32>(tilePos.y);

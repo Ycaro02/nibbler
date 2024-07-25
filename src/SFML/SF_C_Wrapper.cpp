@@ -135,8 +135,7 @@ extern "C" {
 		s32 pixel_x, pixel_y;
 
 		if (scale.x == TILE_SIZE && scale.y == TILE_SIZE) {
-			pixel_x = tilePos.x * TILE_SIZE + (tilePos.x + 1) * TILE_SPACING;
-			pixel_y = tilePos.y * TILE_SIZE + (tilePos.y + 1) * TILE_SPACING;
+			TILE_POSITION_TO_PIXEL(tilePos, pixel_x, pixel_y);
 		} else {
 			pixel_x = tilePos.x;
 			pixel_y = tilePos.y;
