@@ -9,7 +9,7 @@ source ${PWD}/rsc/sh/color.sh
 # Set up environment not mandatory if we use -rpath in the compilation
 # export LD_LIBRARY_PATH=$(pwd)/rsc/lib/SFML/build/lib:$LD_LIBRARY_PATH
 
-display_color_msg ${YELLOW} "Compiling the wrapper lib in rsc/wrapperlib"
+# display_color_msg ${YELLOW} "Compiling the wrapper lib in rsc/wrapperlib"
 mkdir -p rsc/wrapperlib
 
 # Check for errors
@@ -33,10 +33,23 @@ function wrapper_lib_compile {
 		-I./rsc/lib/install/include -L./rsc/lib/install/lib ${lib_deps} \
 		-Wl,-rpath,./rsc/lib/install/lib 
 
-	check_compile_success "${lib_name}"
+	check_compile_success "rsc/wrapperlib/${lib_name}"
 }
 
 
-wrapper_lib_compile "SFMLWrapper.so" "src/SFML/SF_C_Wrapper.cpp" "-lsfml-graphics -lsfml-window -lsfml-system"
-wrapper_lib_compile "SDL2Wrapper.so" "src/SDL2/SDL_C_Wrapper.cpp" "-lSDL2"
-wrapper_lib_compile "RaylibWrapper.so" "src/Raylib/Raylib_C_Wrapper.cpp" "-lraylib"
+function wrapper_compile_entry {
+	# Check if the wrapper lib source file exists
+	if [ ! -f "${2}" ]; then
+		display_color_msg ${RED} "The wrapper lib source file ${2} does not exist"
+		exit 1
+	fi
+
+	local wrapper_lib_name="${1}"
+	local wrapper_lib_src="${2}"
+	local wrapper_lib_deps="${3}"
+
+	wrapper_lib_compile "${wrapper_lib_name}" "${wrapper_lib_src}" "${wrapper_lib_deps}"
+}
+
+wrapper_compile_entry "${@}"
+

@@ -173,6 +173,7 @@ Nibbler::Nibbler(std::string w, std::string h) {
 	/* Initialize basic value */	
 	setIsRunning(1);
 	setCurrentLibIdx(SFML_IDX);
+	// setCurrentLibIdx(SDL2_IDX);
 
 	/* Alloc the board */
 	board = new u8*[height];
@@ -184,6 +185,7 @@ Nibbler::Nibbler(std::string w, std::string h) {
 	NibblerInitLib("SFML", "rsc/wrapperlib/SFMLWrapper.so", "png", SFML_IDX, WIN_W(width), WIN_H(height));
 	NibblerInitLib("SDL2", "rsc/wrapperlib/SDL2Wrapper.so", "bmp", SDL2_IDX, WIN_W(width), WIN_H(height));
 	NibblerInitLib("Raylib", "rsc/wrapperlib/RaylibWrapper.so", "png", RAYLIB_IDX, WIN_W(width), WIN_H(height));
+	// NibblerInitLib("SFML", "srsc/wrapperlib/SDL2Wrapper.so", "png", SFML_IDX, WIN_W(width), WIN_H(height));
 
 	/* Initialize the random seed for food spawn */
 	srand(time(NULL));

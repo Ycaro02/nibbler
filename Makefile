@@ -10,16 +10,15 @@ CFLAGS			+=	-I./rsc/lib/install/include/
 # LDLIBS			:=	-lsfml-graphics -lsfml-window -lsfml-system
 
 WRAPPER_LIB_DIR	=	./rsc/wrapperlib
+WRAPPER_COMPILE =	./rsc/sh/wrapper_compile.sh
 
 LIB_DEPS		=	./rsc/lib
 
 all:        $(NAME)
 
-$(NAME): $(LIB_DEPS) ${WRAPPER_LIB_DIR} $(OBJ_DIR) $(OBJS)
-	@$(MAKE_LIBFT)
-	@$(MAKE_LIST)
+$(NAME): $(LIB_DEPS) $(WRAPPER_LIB_DIR) $(OBJ_DIR) $(OBJS) 
 	@printf "$(CYAN)Compiling ${NAME} ...$(RESET)\n"
-	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME) $(OBJS) -lm $(LDLIBS)
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
 	@printf "$(GREEN)Compiling $(NAME) done$(RESET)\n"
 
 
@@ -37,8 +36,9 @@ endif
 
 $(WRAPPER_LIB_DIR) :
 ifeq ($(shell [ -d $(WRAPPER_LIB_DIR) ] && echo 0 || echo 1), 1)
-	@mkdir -p $(WRAPPER_LIB_DIR)
-	@./rsc/sh/wrapper_compile.sh
+	@$(WRAPPER_COMPILE) SFMLWrapper.so src/SFML/SF_C_Wrapper.cpp "-lsfml-graphics -lsfml-window -lsfml-system"
+	@$(WRAPPER_COMPILE) SDL2Wrapper.so src/SDL2/SDL_C_Wrapper.cpp "-lSDL2"
+	@$(WRAPPER_COMPILE) RaylibWrapper.so src/Raylib/Raylib_C_Wrapper.cpp "-lraylib"
 endif
 
 bonus: clear_mandatory $(NAME)

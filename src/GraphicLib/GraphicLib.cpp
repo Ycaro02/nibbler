@@ -45,7 +45,9 @@ GraphicLib::~GraphicLib() {
 	}
 	std::cout << ORANGE << " libDestructor()" << GREEN << " dlclose()" << RESET << std::endl;
 	libDestructorF();
-	dlclose(dlPtr);
+	if (dlPtr) {
+		dlclose(dlPtr);
+	}
 }
 
 
@@ -78,7 +80,8 @@ GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std
 	texturePath = textExt;
 	dlPtr = dlopen(path.c_str(), RTLD_LAZY);
 	if (!dlPtr) {
-		throw std::invalid_argument("Error: Graphic lib " + path + " not found");
+		std::cerr << "Error: " << dlerror() << std::endl;
+		throw std::invalid_argument("Error: Graphic lib |" + path + "| not found");
 	}
 	winCreateF		= (createWindowFunc)loadFuncPtr(dlPtr, "createWindowWrapper", path);
     winClearF		= (voidWinFunc)loadFuncPtr(dlPtr, "windowClearWrapper", path);
@@ -167,7 +170,7 @@ void GraphicLib::processEvents(Nibbler &ctx) {
 			ctx.setIsRunning(0);
 			break ;
 		} 
-		else if ((key == NKEY_1 || key == NKEY_2 || key == NKEY_3) && (key != libID)) {
+		else if ((key == NKEY_1 || key == NKEY_2 || key == NKEY_3) && (key != ctx.getCurrentLibIdx())) {
 			std::cout << PURPLE << "Switching to lib " << key << RESET << std::endl;
 			ctx.setCurrentLibIdx((s32)key);
 			close();
@@ -176,6 +179,8 @@ void GraphicLib::processEvents(Nibbler &ctx) {
 		else if (key == NKEY_UP || key == NKEY_DOWN || key == NKEY_LEFT || key == NKEY_RIGHT) {
 			ctx.getSnake().handleSnakeDir(key);
 			// moveStepByStep(ctx, key);
+			break ;
+		} else {
 			break ;
 		}
 	}
@@ -195,16 +200,16 @@ void GraphicLib::drawTextureTile(void *texture, u32 x, u32 y) {
 
 /* Close the graphics library and set window to null */
 void GraphicLib::close() {
-	if (window) {
-		winCloseF(window);
-		window = nullptr;
-	}
-	
 	for (u32 i = 0; i < 4; i++) {
 		if (texture[i]) {
 			unloadTexture(texture[i]);
 			texture[i] = nullptr;
 		}
+	}
+
+	if (window) {
+		winCloseF(window);
+		window = nullptr;
 	}
 }
 
