@@ -45,8 +45,6 @@ typedef void* (*loadTextFunc)(void *, const char*);
 /* Here void* is the texture to unload */
 typedef void (*unloadTextFunc)(void *);
 
-/* Here fist void* are window, second texture, u32 are x,y coordonate */
-// typedef void (*drawTextFunc)(void *, void *, u32, u32);
 /* Here first void* are window, second texture, iVec2 are x,y coordonate and second texture scaling */
 typedef void (*drawTextFunc)(void *, void *, iVec2, iVec2);
 

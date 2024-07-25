@@ -119,12 +119,12 @@ extern "C" {
 
 
 	/**
-	 * @brief Color a tile at x, y with r, g, b, a
+	 * @brief Draw a color tile with SDL2
 	 * @param window The window pointers
-	 * @param y,x The position of the tile
-	 * @param r,g,b,a The color of the tile
+	 * @param tilePos, The position of the tile
+	 * @param scale The scale of the tile
+	 * @note If scale.x/y are equal to TILE_SIZE, we use TILE_SPACING to space the tiles
 	*/
-	// void colorTileWrapper(SDL_Window* window, u32 y, u32 x, u32 color) {
 	void colorTileWrapper(SDL_Window* window, iVec2 tilePos, iVec2 scale, u32 color) {
 		SDL_Rect		tileRect = {0,0,0,0};
 		SDL_Renderer	*renderer = NULL;
@@ -159,7 +159,14 @@ extern "C" {
         SDL_RenderFillRect(renderer, &tileRect);
     }
 
-
+	/**
+	 * @brief Draw a texture tile with SDL2
+	 * @param window The window pointers
+	 * @param texture The texture pointer
+	 * @param tilePos, The position of the tile
+	 * @param scale The scale of the tile
+	 * @note If the scale is equal to TILE_SIZE, the function will draw the tile at the right position
+	*/
 	void drawTextureTileWrapper(SDL_Window *window, SDL_Texture *texture, iVec2 tilePos, iVec2 scale) {
 		SDL_Renderer *renderer = SDL_GetRenderer(window);
 		SDL_Rect 	dstRect;
@@ -185,6 +192,12 @@ extern "C" {
 		SDL_RenderCopy(renderer, texture, NULL, &dstRect);
 	}
 
+	/**
+	 * @brief Load a texture from a path with SDL2
+	 * @param window The window pointers
+	 * @param path The path of the texture
+	 * @return The texture pointer
+	*/
 	void *loadTextureWrapper(SDL_Window* window, const char* path) {
 		SDL_Renderer	*renderer = NULL;
 		SDL_Texture		*texture = NULL;
@@ -201,6 +214,10 @@ extern "C" {
 		return (texture);
 	}
 
+	/**
+	 * @brief Unload a texture with SDL2
+	 * @param texture The texture pointer
+	*/
 	void unloadTextureWrapper(SDL_Texture *texture) {
 		if (!texture) {
 			return ;

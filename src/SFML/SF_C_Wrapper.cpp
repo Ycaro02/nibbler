@@ -90,8 +90,11 @@ extern "C" {
 	}
 
 	/**
-	 * @brief Color a tile at x, y with r, g, b, a
+	 * @brief Draw a color tile with SFML
 	 * @param window The window pointers
+	 * @param tilePos, The position of the tile
+	 * @param scale The scale of the tile
+	 * @note If scale.x/y are equal to TILE_SIZE, we use TILE_SPACING to space the tiles
 	*/
 	void colorTileWrapper(sf::RenderWindow* window, iVec2 tilePos, iVec2 scale, u32 color) {
 		s32 pixel_x, pixel_y; 
@@ -117,8 +120,14 @@ extern "C" {
     }
 
 
-
-	// void drawTextureTileWrapper(sf::RenderWindow* window, sf::Texture *texture, u32 y, u32 x) {
+	/**
+	 * @brief Draw a texture tile with SFML
+	 * @param window The window pointers
+	 * @param texture The texture to draw
+	 * @param tilePos, The position of the tile
+	 * @param scale The scale of the tile
+	 * @note If scale.x/y are equal to TILE_SIZE, we use TILE_SPACING to space the tiles
+	*/
 	void drawTextureTileWrapper(sf::RenderWindow* window, sf::Texture *texture, iVec2 tilePos, iVec2 scale) {
 		if (!texture) {
 			return;
@@ -149,6 +158,12 @@ extern "C" {
 		window->draw(sprite);
 	}
 
+	/**
+	 * @brief Load a texture with SFML
+	 * @param window The window pointers
+	 * @param path The path to the texture
+	 * @return The texture pointer
+	*/
 	void *loadTextureWrapper(sf::RenderWindow* window, const char* path) {
 		sf::Texture *texture = new sf::Texture();
 	
@@ -160,6 +175,10 @@ extern "C" {
 		return (texture);
 	}
 
+	/**
+	 * @brief Unload a texture with SFML
+	 * @param texture The texture pointer
+	*/
 	void unloadTextureWrapper(sf::Texture *texture) {
 		if (texture) {
 			delete texture;

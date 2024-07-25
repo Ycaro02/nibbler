@@ -133,7 +133,8 @@ extern "C" {
 	 * @brief Color a tile with Raylib
 	 * @param window The window pointers
 	 * @param y,x The position of the tile
-	 * @param r,g,b,a The color of the tile
+	 * @param color r,g,b,a The color of the tile
+	 * @note If scale.x/y are equal to TILE_SIZE, we use TILE_SPACING to space the tiles
 	 */
     void colorTileWrapper(void* window, iVec2 tilePos, iVec2 scale, u32 color) {
 		Color	rayColor;
@@ -157,6 +158,12 @@ extern "C" {
         DrawRectangle(pixel_x, pixel_y, scale.x, scale.y, rayColor);
     }
 
+	/**
+	 * @brief Load a texture with Raylib
+	 * @param window The window pointers
+	 * @param path The path to the texture
+	 * @return The texture pointer
+	*/
 	void *loadTextureWrapper(void* window, const char* path) {
 		Texture2D	*texture = NULL;
 		Image		image = {0};
@@ -173,6 +180,11 @@ extern "C" {
 		return (texture);
 	}
 
+
+	/**
+	 * @brief Unload a texture with Raylib
+	 * @param texture The texture to unload
+	*/
 	void unloadTextureWrapper(Texture2D *texture) {
 		if (texture) {
 			UnloadTexture(*texture);
@@ -180,7 +192,17 @@ extern "C" {
 		}
 	}
 
+	/**
+	 * @brief Draw a texture tile with Raylib
+	 * @param window The window pointers
+	 * @param texture The texture to draw
+	 * @param tilePos The position of the tile
+	 * @param scale The scale of the tile
+	 * @note If scale.x/y are equal to TILE_SIZE, we use TILE_SPACING to space the tiles
+	*/
 	void drawTextureTileWrapper(void* window, Texture2D *texture, iVec2 tilePos, iVec2 scale) {
+		
+		Rectangle srcRec, destRec;
 		Vector2 position;
 		f32		scaleX, scaleY;
 
@@ -197,16 +219,15 @@ extern "C" {
 			position.x = static_cast<f32>(tilePos.x);
 			position.y = static_cast<f32>(tilePos.y);
 		}
-		// Calculate scale factors
+		/* Calculate scale factors */
 		scaleX = static_cast<f32>(scale.x) / texture->width;
 		scaleY = static_cast<f32>(scale.y) / texture->height;
-    	// Define source and destination rectangles
-		Rectangle sourceRec = { 0.0f, 0.0f, static_cast<f32>(texture->width), static_cast<f32>(texture->height) };
-		Rectangle destRec = { position.x, position.y, static_cast<f32>(texture->width) * scaleX, static_cast<f32>(texture->height) * scaleY };
-		Vector2 origin = { 0.0f, 0.0f };
+    	/* Define source and destination rectangles */
+		srcRec = { 0.0f, 0.0f, static_cast<f32>(texture->width), static_cast<f32>(texture->height) };
+		destRec = { position.x, position.y, static_cast<f32>(texture->width) * scaleX, static_cast<f32>(texture->height) * scaleY };
 
-		// Draw the texture with the calculated scale
-		DrawTexturePro(*texture, sourceRec, destRec, origin, 0.0f, WHITE);
+		/* Draw the texture with the calculated scale */
+		DrawTexturePro(*texture, srcRec, destRec, {0.0f, 0.0f}, 0.0f, WHITE);
 	}
 
 	/**
