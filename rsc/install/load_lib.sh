@@ -81,10 +81,11 @@ function load_SFML {
 			-DX11_Xext_LIB=${INSTALL_DIR}/lib/libXext.so \
 			-DX11_X11_INCLUDE_PATH=${INSTALL_DIR}/include/ \
 			-DX11_Xext_INCLUDE_PATH=${INSTALL_DIR}/include/ \
-			-DX11_Xcursor_INCLUDE_PATH=${INSTALL_DIR}/include/X11/Xcursor \
 			-DBUILD_SHARED_LIBS=ON \
          	>> $FD_OUT 2>&1
 
+		# -DX11_Xcursor_INCLUDE_PATH=${INSTALL_DIR}/include/X11/Xcursor \
+		
 		# Compile and install SFML
 		display_color_msg ${YELLOW} "Compile and install SFML in ${INSTALL_DIR}..."
 		make -s -j$(nproc) >> $FD_OUT 2>&1
@@ -186,12 +187,12 @@ function load_raylib {
 			-DX11_Xext_LIB=${INSTALL_DIR}/lib/libXext.so \
 			-DX11_X11_INCLUDE_PATH=${INSTALL_DIR}/include/ \
 			-DX11_Xext_INCLUDE_PATH=${INSTALL_DIR}/include/ \
-			-DX11_Xcursor_INCLUDE_PATH=${INSTALL_DIR}/include/ \
-			-DX11_Xinput_INCLUDE_PATH=${INSTALL_DIR}/include/ \
-			-DX11_Xrandr_INCLUDE_PATH=${INSTALL_DIR}/include/ \
-			-DX11_Xinerama_INCLUDE_PATH=${INSTALL_DIR}/include/ \
 			-DBUILD_SHARED_LIBS=ON \
 			-DBUILD_GLFW=OFF \
+
+		# -DX11_Xcursor_INCLUDE_PATH=${INSTALL_DIR}/include/ \
+		# -DX11_XInput_INCLUDE_PATH=${INSTALL_DIR}/include/ \
+		# -DX11_Xinerama_INCLUDE_PATH=${INSTALL_DIR}/include/ \
 
 		# Compile and install Raylib
 		display_color_msg ${YELLOW} "Compile and install Raylib in ${INSTALL_DIR}..."
