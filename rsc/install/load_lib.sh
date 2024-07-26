@@ -108,16 +108,23 @@ function install_sdl2_ttf {
     tar -xzf SDL2_ttf-${ttf_version}.tar.gz
     cd SDL2_ttf-${ttf_version}
 
-    # Configure, make, and install SDL2_ttf
-    ./configure --prefix=${INSTALL_DIR}
-    make
-    make install
+	mkdir build
+	cd build
+	cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
+		-DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
+		-DFREETYPE_INCLUDE_DIRS=${INSTALL_DIR}/include/freetype2 \
+		-DFREETYPE_LIBRARY=${INSTALL_DIR}/lib/libfreetype.so \
+		-DSDL2_INCLUDE_DIR=${INSTALL_DIR}/include/SDL2 \
+		>> $FD_OUT 2>&1
+
+	make -s -j$(nproc) >> $FD_OUT 2>&1
+	make -s install >> $FD_OUT 2>&1
 
     # Clean up
-    cd ..
+    cd ../..
     rm -rf SDL2_ttf-${ttf_version}.tar.gz
 
-    display_color_msg ${GREEN} "SDL2_ttf version ${ttf_version} installed successfully."
+	ls -l ${INSTALL_DIR}/lib | grep SDL2_ttf && display_color_msg ${GREEN} "SDL2_ttf version ${ttf_version} installed successfully."
 }
 
 
@@ -143,7 +150,6 @@ function load_SDL2 {
 		make -s -j$(nproc) >> $FD_OUT 2>&1
 		make -s install >> $FD_OUT 2>&1
 		display_color_msg ${GREEN} "SDL2 instalation done in ${INSTALL_DIR}."
-		install_sdl2_ttf "https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.15.tar.gz" "2.0.15"
 	fi
 
 }
@@ -178,10 +184,13 @@ function load_raylib {
     display_color_msg ${GREEN} "Raylib installation done in ${INSTALL_DIR}."
 }
 
-all_deps_install 
-load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
-load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz" "SDL2-2.30.5"
-load_raylib "https://github.com/raysan5/raylib.git" "4.5.0"
+# all_deps_install 
+# load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
+# load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz" "SDL2-2.30.5"
+# load_raylib "https://github.com/raysan5/raylib.git" "4.5.0"
+
+install_sdl2_ttf "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.22.0/SDL2_ttf-2.22.0.tar.gz" "2.22.0"
+
 
 # Old code for SFML deps
 # echo "Dowlnoading libsndfile..."
