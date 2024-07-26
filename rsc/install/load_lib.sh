@@ -65,40 +65,22 @@ function load_SFML {
 	# Clone SFML repository if it doesn't exist
 	if [ ! -d "${sfml_dir}" ]; then
 		
-		load_deps_SFML
-		
 		display_color_msg ${CYAN} "Clone SFML repo..."
 		git clone -b ${sfml_version} --depth 1 ${sfm_repo} ${sfml_dir} >> $FD_OUT 2>&1
 		# Create build directory
 		mkdir -p ${build_dir}
 		cd ${build_dir}
 		# Configure CMake with local dependencies
-		# cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
-		# 	-DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
-		# 	-DFLAC_INCLUDE_DIR=${INSTALL_DIR}/include \
-		# 	-DFLAC_LIBRARY=${INSTALL_DIR}/lib/libFLAC.so \
-		# 	-DOGG_INCLUDE_DIR=${INSTALL_DIR}/include \
-		# 	-DOGG_LIBRARY=${INSTALL_DIR}/lib/libogg.so \
-		# 	-DVORBIS_INCLUDE_DIR=${INSTALL_DIR}/include \
-		# 	-DVORBIS_LIBRARY=${INSTALL_DIR}/lib/libvorbis.so \
-		# 	-DVORBISENC_LIBRARY=${INSTALL_DIR}/lib/libvorbisenc.so \
-		# 	-DVORBISFILE_LIBRARY=${INSTALL_DIR}/lib/libvorbisfile.so \
-		# 	-DFREETYPE_INCLUDE_DIRS=${INSTALL_DIR}/include/freetype2 \
-		# 	-DFREETYPE_LIBRARY=${INSTALL_DIR}/lib/libfreetype.so \
-		# 	-DBUILD_SHARED_LIBS=ON \
-		# 	-DOPENAL_INCLUDE_DIR=${DEPS_DIR}/openal-soft-1.23.1/include/AL \
-		# 	-DOPENAL_LIBRARY=${DEPS_DIR}/openal-soft-1.23.1/build/libopenal.so \
-		# 	>> $FD_OUT 2>&1
-
-
 		cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
-         -DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
-         -DCMAKE_LIBRARY_PATH=${INSTALL_DIR}/lib \
-         -DCMAKE_INCLUDE_PATH=${INSTALL_DIR}/include \
-         -DBUILD_SHARED_LIBS=ON \
-         -DOPENAL_INCLUDE_DIR=${DEPS_DIR}/openal-soft-1.23.1/include/AL \
-         -DOPENAL_LIBRARY=${DEPS_DIR}/openal-soft-1.23.1/build/libopenal.so \
-		 >> $FD_OUT 2>&1
+			-DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
+			-DOPENAL_INCLUDE_DIR=${DEPS_DIR}/openal-soft-1.23.1/include/AL \
+			-DOPENAL_LIBRARY=${DEPS_DIR}/openal-soft-1.23.1/build/libopenal.so \
+			-DX11_X11_LIB=${INSTALL_DIR}/lib/libX11.so \
+			-DX11_Xext_LIB=${INSTALL_DIR}/lib/libXext.so \
+			-DX11_X11_INCLUDE_PATH=${INSTALL_DIR}/include \
+			-DX11_Xext_INCLUDE_PATH=${INSTALL_DIR}/include \
+			-DBUILD_SHARED_LIBS=ON \
+         	>> $FD_OUT 2>&1
 
 		# Compile and install SFML
 		display_color_msg ${YELLOW} "Compile and install SFML in ${INSTALL_DIR}..."
@@ -171,6 +153,8 @@ function load_SDL2 {
             -DCMAKE_LIBRARY_PATH=${INSTALL_DIR}/lib \
             -DBUILD_SHARED_LIBS=ON \
 			>> $FD_OUT 2>&1
+
+
 		make -s -j$(nproc) >> $FD_OUT 2>&1
 		make -s install >> $FD_OUT 2>&1
 		display_color_msg ${GREEN} "SDL2 instalation done in ${INSTALL_DIR}."
@@ -195,8 +179,11 @@ function load_raylib {
 		# Configure CMake with local dependencies (X11 and Xext)
 		cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
 			-DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
+			-DX11_X11_LIB=${INSTALL_DIR}/lib/libX11.so \
+			-DX11_Xext_LIB=${INSTALL_DIR}/lib/libXext.so \
+			-DX11_X11_INCLUDE_PATH=${INSTALL_DIR}/include \
+			-DX11_Xext_INCLUDE_PATH=${INSTALL_DIR}/include \
 			-DBUILD_SHARED_LIBS=ON \
-			>> $FD_OUT 2>&1
 
 		# Compile and install Raylib
 		display_color_msg ${YELLOW} "Compile and install Raylib in ${INSTALL_DIR}..."
@@ -209,6 +196,7 @@ function load_raylib {
 }
 
 all_deps_install 
+load_deps_SFML
 load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
 load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz" "SDL2-2.30.5"
 load_raylib "https://github.com/raysan5/raylib.git" "4.5.0"
