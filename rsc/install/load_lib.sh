@@ -34,15 +34,16 @@ function all_deps_install {
 	load_lib "https://www.x.org/archive/individual/lib/libXext-1.3.4.tar.gz"
 	# Load libXrandr
 	load_lib "https://www.x.org/archive/individual/lib/libXrandr-1.5.3.tar.gz"
+
 	# Load libXinerama
+	load_lib "https://www.x.org/archive/individual/lib/libXinerama-1.1.4.tar.gz"
 	# Load libGLU
+	load_lib "ftp://ftp.freedesktop.org/pub/mesa/glu/glu-9.0.1.tar.gz"
 	# Load freeglut
-	# load_lib "https://www.x.org/archive/individual/lib/libXinerama-1.1.4.tar.gz"
-	# load_lib "ftp://ftp.freedesktop.org/pub/mesa/glu/glu-9.0.1.tar.gz"
-	# load_lib_cmake "https://sourceforge.net/projects/freeglut/files/freeglut/3.4.0/freeglut-3.4.0.tar.gz" "freeglut-3.4.0"
+	load_lib_cmake "https://sourceforge.net/projects/freeglut/files/freeglut/3.4.0/freeglut-3.4.0.tar.gz" "freeglut-3.4.0"
 
 	
-	# Deps for Xcursor and Xi
+	# Deps for Xcursor and Xi: libXfixes, libXrender
 	load_lib "https://www.x.org/archive/individual/lib/libXfixes-5.0.3.tar.gz"
 	# Already installed on 42 computer
 
@@ -233,11 +234,11 @@ function load_raylib {
 }
 
 all_deps_install 
-# load_deps_SFML
-# load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
-# load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz" "SDL2-2.30.5"
-# load_raylib "https://github.com/raysan5/raylib.git" "4.5.0"
-# install_sdl2_ttf "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.22.0/SDL2_ttf-2.22.0.tar.gz" "2.22.0"
+load_deps_SFML
+load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
+load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz" "SDL2-2.30.5"
+load_raylib "https://github.com/raysan5/raylib.git" "4.5.0"
+install_sdl2_ttf "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.22.0/SDL2_ttf-2.22.0.tar.gz" "2.22.0"
 
 
 
