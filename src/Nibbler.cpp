@@ -5,21 +5,68 @@
 /* Needed for std::invalid_args */
 #include <stdexcept>
 
-/* Default constructor */
-Nibbler::Nibbler() 
-: width(0), height(0), board(nullptr), gameState(0), nbFood(0), emptyTileNb(0),
-lastMove(std::chrono::steady_clock::now()), lastFoodSpawn(std::chrono::steady_clock::now()), snake(Snake()) {
-	libs[0] = nullptr;
-	libs[1] = nullptr;
-	libs[2] = nullptr;
-}
-
-/* Free the board */
+/**
+ * @brief Free the board
+ * @param board Board to free
+ * @param height Height of the board
+*/
 static void freeBoard(u8 **board, s32 height) {
 	for (s32 i = 0; i < height; i++) {
 		delete[] board[i];
 	}
 	delete[] board;
+}
+
+/**
+ * @brief Create a new board
+ * @param width Width of the board
+ * @param height Height of the board
+ * @param value Value to fill the board with
+ * @param boardRef Reference to a board to copy
+ * @return u8** The new board
+ * @note If boardRef is not null, the new board will be a copy of it, otherwise it will be filled with value
+ */
+static u8** boardNew(s32 width, s32 height, u8 value, u8 **boardRef) {
+	u8 **board = new u8*[height];
+	for (s32 i = 0; i < height; i++) {
+		board[i] = new u8[width];
+		for (s32 j = 0; j < width; j++) {
+			if (boardRef) {
+				board[i][j] = boardRef[i][j];
+			} else {
+				board[i][j] = value;
+			}
+		}
+	}
+	return (board);
+}
+
+/* Parse the integer input data */
+static int parseIntegerData(const std::string &line) {
+    s32 nb = -1;
+	
+	try {
+        nb = std::stoi(line);
+    } catch (const std::exception& e) {
+		throw std::invalid_argument("Invalid integer data in Nibbler constructor: " + line);
+    }
+	if (nb <= 4) {
+		throw std::invalid_argument("Integer data in Nibbler constructor must be greater than 4");
+	} else if (nb >= 30) {
+		throw std::invalid_argument("Integer data in Nibbler constructor must be less than 30");
+	}
+
+	return (nb);
+}
+
+/* Default constructor */
+Nibbler::Nibbler()
+: width(0), height(0), board(nullptr), lastMove(std::chrono::steady_clock::now())
+, lastFoodSpawn(std::chrono::steady_clock::now()), snake(Snake())
+, nbFood(0), emptyTileNb(0), gameState(0) {
+	libs[0] = nullptr;
+	libs[1] = nullptr;
+	libs[2] = nullptr;
 }
 
 /* Destructor */
@@ -40,13 +87,13 @@ Nibbler& Nibbler::operator=(const Nibbler &ref) {
 		if (board) {
 			freeBoard(board, height);
 		}
-		board = new u8*[height];
-		for (s32 i = 0; i < height; i++) {
-			board[i] = new u8[width];
-			for (s32 j = 0; j < width; j++) {
-				board[i][j] = ref.board[i][j];
-			}
-		}
+		board = boardNew(width, height, EMPTY, ref.board);
+		lastMove = ref.lastMove;
+		lastFoodSpawn = ref.lastFoodSpawn;
+		snake = ref.snake;
+		nbFood = ref.nbFood;
+		emptyTileNb = ref.emptyTileNb;
+		gameState = ref.gameState;
 	}
 	return (*this);
 }
@@ -54,6 +101,38 @@ Nibbler& Nibbler::operator=(const Nibbler &ref) {
 /* Copy constructor */
 Nibbler::Nibbler(const Nibbler &ref) {
 	*this = ref;
+}
+
+/**	@brief Real Nibbler Constructor
+ *	@param w Width of the board
+ *	@param h Height of the board
+ *	This function can throw an exception if the input data is invalid or if we can't load any library
+*/
+Nibbler::Nibbler(std::string w, std::string h) {
+	
+	width = parseIntegerData(w);
+	height = parseIntegerData(h);
+
+	std::cout << "Width: " << width << " Height: " << height << std::endl;
+
+	/* Initialize gameState value */	
+	setIsRunning(1);
+	setCurrentLibIdx(SFML_IDX);
+	setColorMode(0);
+
+	/* Alloc the board */
+	board = boardNew(width, height, EMPTY, nullptr);
+
+	/* Load the libraries */
+	NibblerInitLib("SFML", "rsc/wrapperlib/SFMLWrapper.so", "png", SFML_IDX, WIN_W(width), WIN_H(height));
+	NibblerInitLib("SDL2", "rsc/wrapperlib/SDL2Wrapper.so", "bmp", SDL2_IDX, WIN_W(width), WIN_H(height));
+	NibblerInitLib("Raylib", "rsc/wrapperlib/RaylibWrapper.so", "png", RAYLIB_IDX, WIN_W(width), WIN_H(height));
+
+	/* Initialize the random seed for food spawn */
+	srand(time(NULL));
+
+	/* This initialise lastMove, lastfoodSpawn, snake, nbFood and emptyTileNB */
+	resetGame();
 }
 
 /* Initialize lib wrapper */
@@ -112,7 +191,7 @@ void Nibbler::resetGame() {
 	/* Initialize the snake at the center of the board */
 	snake = Snake(*this, width >> 1, height >> 1);
 
-	setEmptyTileNb((width * height) - 5);
+	setEmptyTileNb((width * height) - 4);
 
 	/* Initialize the food */
 	setNbFood(0);
@@ -129,7 +208,6 @@ void Nibbler::snakeAutoMove() {
 		snake.SnakeMove(*this, snake.getDirection());
 		lastMove = now;
 	}
-	return ;
 }
 
 void Nibbler::spawnMoreFood() {
@@ -140,71 +218,8 @@ void Nibbler::spawnMoreFood() {
 	}
 }
 
-/* Parse the integer data */
-static int parseIntegerData(const std::string &line) {
-    s32 nb = -1;
-	
-	try {
-        nb = std::stoi(line);
-    } catch (const std::exception& e) {
-		throw std::invalid_argument("Invalid integer data in Nibbler constructor: " + line);
-    }
-	if (nb <= 4) {
-		throw std::invalid_argument("Integer data in Nibbler constructor must be greater than 4");
-	} else if (nb >= 30) {
-		throw std::invalid_argument("Integer data in Nibbler constructor must be less than 30");
-	}
-
-	return (nb);
-}
-
-/**	@brief Real Nibbler Constructor
- *	@param w Width of the board
- *	@param h Height of the board
- *	This function can throw an exception if the input data is invalid or if we can't load any library
-*/
-Nibbler::Nibbler(std::string w, std::string h) {
-	
-	width = parseIntegerData(w);
-	height = parseIntegerData(h);
-
-	std::cout << "Width: " << width << " Height: " << height << std::endl;
-
-	/* Initialize basic value */	
-	setIsRunning(1);
-	setCurrentLibIdx(SFML_IDX);
-	setColorMode(0);
-
-	/* Alloc the board */
-	board = new u8*[height];
-	for (s32 i = 0; i < height; i++) {
-		board[i] = new u8[width];
-	}
-
-	/* Load the libraries */
-	NibblerInitLib("SFML", "rsc/wrapperlib/SFMLWrapper.so", "png", SFML_IDX, WIN_W(width), WIN_H(height));
-	NibblerInitLib("SDL2", "rsc/wrapperlib/SDL2Wrapper.so", "bmp", SDL2_IDX, WIN_W(width), WIN_H(height));
-	NibblerInitLib("Raylib", "rsc/wrapperlib/RaylibWrapper.so", "png", RAYLIB_IDX, WIN_W(width), WIN_H(height));
-
-	/* Initialize the random seed for food spawn */
-	srand(time(NULL));
-
-	resetGame();
-}
-
-/* Display the board in fd 0 DEBUG FUNC */
-void Nibbler::DisplayBoardFD0() {
-	for (s32 i = 0; i < height; i++) {
-		for (s32 j = 0; j < width; j++) {
-			std::cout << (u8)(board[i][j] + '0');
-		}
-		std::cout << std::endl;
-	}
-}
-
 
 /* Getters and setters */
-
 u8 &Nibbler::boardTileGet(s32 x, s32 y) {
 	return (board[y][x]);
 }
@@ -241,40 +256,34 @@ Snake &Nibbler::getSnake() {
 	return (snake);
 }
 
+/* Getters and setters for the game state using get/set bits macro */
+
 u32 Nibbler::getIsRunning() {
-	// return (isRunning);
 	return (GET_RUNNING_BIT(gameState));
 }
 
 void Nibbler::setIsRunning(u32 value) {
-	// isRunning = value;
 	SET_RUNNING_BIT(gameState, value);
 }
 
 u32 Nibbler::getCurrentLibIdx() {
-	// return (currentLib);
 	return (GET_LIB_IDX(gameState));
 }
 
 void Nibbler::setCurrentLibIdx(u32 libSwitch) {
-	// currentLib = value;
 	RESET_LIB_IDX(gameState);
 	U32_SET_BIT(gameState, libSwitch, 1);
 }
-
-
 
 GraphicLib *Nibbler::getCurrentLib() {
 	return (libs[GET_LIB_IDX(gameState)]);
 }
 
 u32 Nibbler::getColorMode() {
-	// return (colorMode);
 	return (GET_COLOR_BIT(gameState));
 }
 
 void Nibbler::setColorMode(u32 value) {
-	// colorMode = value;
 	SET_COLOR_BIT(gameState, value);
 }
 

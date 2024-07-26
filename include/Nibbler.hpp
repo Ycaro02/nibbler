@@ -45,37 +45,34 @@ class Nibbler {
 	Nibbler& operator=(const Nibbler &ref);
 	Nibbler(const Nibbler &ref);
 
-
 	/* Constructor */
 	Nibbler(std::string w, std::string h);
-	void NibblerInitLib(std::string title, std::string path, std::string textureExt, s32 libID, s32 winWidth, s32 winHeight);
-	void DisplayBoardFD0();
+	void	NibblerInitLib(std::string title, std::string path, std::string textureExt, s32 libID, s32 winWidth, s32 winHeight);
 
 	/* Food handling */
-	void spawnMoreFood();
-	void foodAdd();
+	void	spawnMoreFood();
+	void	foodAdd();
 
-	void resetGame();
-	void checkBoardFull();
+	void	resetGame();
+	void	checkBoardFull();
 
 	/* Snake handling */
-	void snakeAutoMove();
+	void	snakeAutoMove();
 
 
 	/*Getter setter*/
-	u8 &boardTileGet(s32 x, s32 y);
-	void boardTileSet(s32 x, s32 y, u8 value);
+	u8		&boardTileGet(s32 x, s32 y);
+	void	boardTileSet(s32 x, s32 y, u8 value);
 
 
-	s32 &getWidth();
-	s32 &getHeight();
+	s32		&getWidth();
+	s32		&getHeight();
 
+	s32		&getNbFood();
+	void	setNbFood(s32 value);
 
-	s32 &getNbFood();
-	void setNbFood(s32 value);
-
-	s32 &getEmptyTileNb();
-	void setEmptyTileNb(s32 value);
+	s32		&getEmptyTileNb();
+	void	setEmptyTileNb(s32 value);
 
 
 	u32		getIsRunning();
@@ -87,23 +84,28 @@ class Nibbler {
 	u32		getColorMode();
 	void	setColorMode(u32 value);
 
-	GraphicLib *getCurrentLib();
-	Snake &getSnake();
+	GraphicLib	*getCurrentLib();
+	Snake		&getSnake();
 
 	private:
 	GraphicLib			*libs[3];		/* Array of the 3 libraries */
 	s32					width;			/* Width of the board */
 	s32					height;			/* Height of the board */
 	u8					**board;		/* Board of the game */
-	// s32					currentLib;		/* Current library index */
-	// s32					isRunning;		/* Game state */
-	// s32					colorMode;		/* Width of the window */
-	u32					gameState;		/* Game state */
-	s32					nbFood;			/* Number of food */
-	s32					emptyTileNb;	/* Number of empty tile */
 	ChronoTimePoint		lastMove;		/* Last move time */
 	ChronoTimePoint		lastFoodSpawn;	/* Last auto move time */
 	Snake				snake;			/* Snake object */
+	s32					nbFood;			/* Number of food */
+	s32					emptyTileNb;	/* Number of empty tile */
+	/**
+	 * gameState is a u32 that contains the following boolean information:
+	 * - Bit 0-2: SFML, SDL2, RAYLIB
+	 * - Bit 3: Running
+	 * - Bit 4: Color mode
+	 * - Bit 5-31: Unused
+	 * @note: Use the getter and setter to access the bit
+	*/
+	u32					gameState;		/* Game state */
 };
 
 #endif /* NIBBLER_HPP */
