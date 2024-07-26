@@ -89,8 +89,6 @@ function load_SFML {
 			-DBUILD_SHARED_LIBS=ON \
 			-DOPENAL_INCLUDE_DIR=${DEPS_DIR}/openal-soft-1.23.1/include/AL \
 			-DOPENAL_LIBRARY=${DEPS_DIR}/openal-soft-1.23.1/build/libopenal.so \
-			-DX11_INCLUDE_DIR=${INSTALL_DIR}/include \
-			-DX11_LIBRARIES=${INSTALL_DIR}/lib/libX11.so \
 			>> $FD_OUT 2>&1
 
 
@@ -197,8 +195,6 @@ function load_raylib {
 		cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
 			-DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
 			-DBUILD_SHARED_LIBS=ON \
-			-DX11_INCLUDE_DIR=${INSTALL_DIR}/include \
-			-DX11_LIBRARIES=${INSTALL_DIR}/lib/libX11.so \
 			>> $FD_OUT 2>&1
 
 		# Compile and install Raylib
@@ -211,7 +207,7 @@ function load_raylib {
 
 }
 
-all_deps_install 
+# all_deps_install 
 load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
 load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz" "SDL2-2.30.5"
 load_raylib "https://github.com/raysan5/raylib.git" "4.5.0"
