@@ -29,7 +29,6 @@ function all_deps_install {
 	load_lib "ftp://ftp.freedesktop.org/pub/mesa/glu/glu-9.0.1.tar.gz"
 	load_lib_cmake "https://sourceforge.net/projects/freeglut/files/freeglut/3.4.0/freeglut-3.4.0.tar.gz" "freeglut-3.4.0"
 
-		
 	# load libX11
 	load_lib "https://www.x.org/archive/individual/lib/libX11-1.7.2.tar.gz"
 	# load libXext
@@ -65,7 +64,10 @@ function load_SFML {
 
 	# Clone SFML repository if it doesn't exist
 	if [ ! -d "${sfml_dir}" ]; then
-		load_deps_SFML
+		
+		# load_deps_SFML
+		
+		
 		display_color_msg ${CYAN} "Clone SFML repo..."
 		git clone -b ${sfml_version} --depth 1 ${sfm_repo} ${sfml_dir} >> $FD_OUT 2>&1
 		# Create build directory
@@ -87,7 +89,18 @@ function load_SFML {
 			-DBUILD_SHARED_LIBS=ON \
 			-DOPENAL_INCLUDE_DIR=${DEPS_DIR}/openal-soft-1.23.1/include/AL \
 			-DOPENAL_LIBRARY=${DEPS_DIR}/openal-soft-1.23.1/build/libopenal.so \
+			-DX11_INCLUDE_DIR=${INSTALL_DIR}/include \
+			-DX11_LIBRARIES=${INSTALL_DIR}/lib/libX11.so \
 			>> $FD_OUT 2>&1
+
+
+		# cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
+		# -DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
+		# -DCMAKE_INCLUDE_PATH=${INSTALL_DIR}/include \
+		# -DCMAKE_LIBRARY_PATH=${INSTALL_DIR}/lib \
+		# -DBUILD_SHARED_LIBS=ON \
+
+
 		# Compile and install SFML
 		display_color_msg ${YELLOW} "Compile and install SFML in ${INSTALL_DIR}..."
 		make -s -j$(nproc) >> $FD_OUT 2>&1
@@ -153,7 +166,12 @@ function load_SDL2 {
 		cd ${sdl_dir}
 		mkdir build
 		cd build
-		cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} -DCMAKE_PREFIX_PATH=${INSTALL_DIR} >> $FD_OUT 2>&1
+		cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
+			-DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
+            -DCMAKE_INCLUDE_PATH=${INSTALL_DIR}/include \
+            -DCMAKE_LIBRARY_PATH=${INSTALL_DIR}/lib \
+            -DBUILD_SHARED_LIBS=ON \
+			>> $FD_OUT 2>&1
 		make -s -j$(nproc) >> $FD_OUT 2>&1
 		make -s install >> $FD_OUT 2>&1
 		display_color_msg ${GREEN} "SDL2 instalation done in ${INSTALL_DIR}."
@@ -193,11 +211,11 @@ function load_raylib {
 
 }
 
-all_deps_install 
+# all_deps_install 
 load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
-load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz" "SDL2-2.30.5"
-load_raylib "https://github.com/raysan5/raylib.git" "4.5.0"
-install_sdl2_ttf "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.22.0/SDL2_ttf-2.22.0.tar.gz" "2.22.0"
+# load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz" "SDL2-2.30.5"
+# load_raylib "https://github.com/raysan5/raylib.git" "4.5.0"
+# install_sdl2_ttf "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.22.0/SDL2_ttf-2.22.0.tar.gz" "2.22.0"
 
 
 

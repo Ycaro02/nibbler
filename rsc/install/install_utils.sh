@@ -117,8 +117,9 @@ function load_lib {
 	local extension=$(extract_extension ${tmp_url})
 	local name=$(extract_name ${tmp_url})
 
+	
 
-	display_color_msg ${MAGENTA} "Dowlnoading ${name}..."
+	display_color_msg ${MAGENTA} "Download ${name}..."
 	install_library ${url} ${name} ${extension} ${configure_flags} >> $FD_OUT 2>&1
 	display_color_msg ${GREEN} "Done ${name}"
 }
@@ -129,7 +130,7 @@ function load_lib_cmake {
 
 	local extension=$(extract_extension ${url})
 
-	display_color_msg ${MAGENTA} "Dowlnoading ${name}..."
+	display_color_msg ${MAGENTA} "Download ${name}..."
 	cmake_install_lib ${url} ${name} ${extension} >> $FD_OUT 2>&1
 	display_color_msg ${GREEN} "Done ${name}"
 }

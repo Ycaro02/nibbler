@@ -38,7 +38,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 
 $(LIB_DEPS) :
 ifeq ($(shell [ -d $(LIB_DEPS) ] && echo 0 || echo 1), 1)
-	@./rsc/install/load_lib.sh -q
+	@./rsc/install/load_lib.sh
 endif
 
 $(SFML_LIB) :

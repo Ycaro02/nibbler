@@ -15,12 +15,12 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    # - name: X11 deps  
-    #   run: sudo apt install libxrandr-dev libxcursor-dev libxi-dev
-
-      # libxinerama for raylib
-    - name: OpenGL package (need to change)
-      run : sudo apt install libglu1-mesa-dev freeglut3-dev mesa-common-dev libudev-dev libxinerama-dev
+    # libxinerama for raylib
+    # - name: X11 deps and libglu
+    #   run: sudo apt install libxrandr-dev libxcursor-dev libxi-dev libxinerama-dev libglu1-mesa-dev freeglut3-dev 
+      
+    - name: OpenGL package (mesa), libudev-dev from systemd
+      run : sudo apt install mesa-common-dev libudev-dev
 
     - name: Run make
       run: make
