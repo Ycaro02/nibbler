@@ -115,9 +115,9 @@ function install_sdl2_ttf {
 	cd ${BASE_DIR}
 
     # Download SDL2_ttf
-    wget ${url}
+    wget ${url} >> $FD_OUT 2>&1
 
-    tar -xzf SDL2_ttf-${ttf_version}.tar.gz
+    tar -xzf SDL2_ttf-${ttf_version}.tar.gz >> $FD_OUT 2>&1
     cd SDL2_ttf-${ttf_version}
 
 	mkdir build
@@ -138,8 +138,6 @@ function install_sdl2_ttf {
 
 	display_color_msg ${GREEN} "SDL2_ttf version ${ttf_version} installed successfully."
 }
-
-
 
 function load_SDL2 {
 	local sdl_archive="${1}"

@@ -5,7 +5,7 @@ NAME            =   nibbler
 CC              =   g++
 LIB_DIR		 	=   rsc/lib
 
-CFLAGS			+=	-I./rsc/lib/install/include/
+# CFLAGS			+=	-I./rsc/lib/install/include/
 # LDFLAGS			:=	-L./rsc/lib/SFML/build/lib  -Wl,-rpath=./rsc/lib/SFML/build/lib 
 # LDLIBS			:=	-lsfml-graphics -lsfml-window -lsfml-system
 
@@ -38,7 +38,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 
 $(LIB_DEPS) :
 ifeq ($(shell [ -d $(LIB_DEPS) ] && echo 0 || echo 1), 1)
-	@./rsc/install/load_lib.sh
+	@./rsc/install/load_lib.sh -q
 endif
 
 $(SFML_LIB) :
