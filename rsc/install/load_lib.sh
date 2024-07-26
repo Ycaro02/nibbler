@@ -82,7 +82,9 @@ function load_SFML {
 		local find_xcursor=$(find ${INSTALL_DIR}/include/X11 -name Xcursor.h)
 
 		if [ -z "${find_xcursor}" ]; then
+			local ls_x11=$(ls -lR ${INSTALL_DIR}/include/X11)
 			display_color_msg ${RED} "Xcursor.h not found in ${INSTALL_DIR}/include/X11"
+			display_color_msg ${YELLOW} "Ls: ${ls_x11}"
 			display_color_msg ${RED} "Please install libXcursor and try again."
 			exit 1
 		fi
