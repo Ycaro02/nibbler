@@ -124,7 +124,7 @@ function install_sdl2_ttf {
     cd ../..
     rm -rf SDL2_ttf-${ttf_version}.tar.gz
 
-	ls -l ${INSTALL_DIR}/lib | grep SDL2_ttf && display_color_msg ${GREEN} "SDL2_ttf version ${ttf_version} installed successfully."
+	display_color_msg ${GREEN} "SDL2_ttf version ${ttf_version} installed successfully."
 }
 
 
@@ -174,6 +174,18 @@ function load_raylib {
     cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
         -DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
 		-DBUILD_SHARED_LIBS=ON \
+		-DXINERAMA_INCLUDE_DIR=${INSTALL_DIR}/include \
+		-DXINERAMA_LIBRARY=${INSTALL_DIR}/lib/libXinerama.so \
+		-DXRANDR_INCLUDE_DIR=${INSTALL_DIR}/include \
+		-DXRANDR_LIBRARY=${INSTALL_DIR}/lib/libXrandr.so \
+		-DXI_INCLUDE_DIR=${INSTALL_DIR}/include \
+		-DXI_LIBRARY=${INSTALL_DIR}/lib/libXi.so \
+		-DXCURSOR_INCLUDE_DIR=${INSTALL_DIR}/include \
+		-DXCURSOR_LIBRARY=${INSTALL_DIR}/lib/libXcursor.so \
+		-DGLU_INCLUDE_DIR=${INSTALL_DIR}/include \
+		-DGLU_LIBRARY=${INSTALL_DIR}/lib/libGLU.so \
+		-DFREETYPE_INCLUDE_DIRS=${INSTALL_DIR}/include/freetype2 \
+		-DFREETYPE_LIBRARY=${INSTALL_DIR}/lib/libfreetype.so \
         >> $FD_OUT 2>&1
 
     # Compile and install Raylib
