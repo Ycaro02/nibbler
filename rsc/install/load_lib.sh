@@ -28,6 +28,13 @@ function all_deps_install {
 	load_lib "https://www.x.org/archive/individual/lib/libXinerama-1.1.4.tar.gz"
 	load_lib "ftp://ftp.freedesktop.org/pub/mesa/glu/glu-9.0.1.tar.gz"
 	load_lib_cmake "https://sourceforge.net/projects/freeglut/files/freeglut/3.4.0/freeglut-3.4.0.tar.gz" "freeglut-3.4.0"
+
+		
+	# load libX11
+	load_lib "https://www.x.org/archive/individual/lib/libX11-1.7.2.tar.gz"
+	# load libXext
+	load_lib "https://www.x.org/archive/individual/lib/libXext-1.3.4.tar.gz"
+	
 	# Need to work on mesa (openGl open source implementation) compiling with meson
 	# load_lib "https://mesa.freedesktop.org/archive/mesa-21.2.3.tar.xz"
 	# check for libudev maybe already installed
@@ -164,44 +171,36 @@ function load_raylib {
     if [ ! -d "${raylib_dir}" ]; then
         display_color_msg ${CYAN} "Clone Raylib repo..."
         git clone -b ${raylib_version} --depth 1 ${raylib_repo} ${raylib_dir} >> $FD_OUT 2>&1
+		# Create build directory
+		mkdir -p ${build_dir}
+		cd ${build_dir}
+
+		# Configure CMake with local dependencies (X11 and Xext)
+		cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
+			-DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
+			-DBUILD_SHARED_LIBS=ON \
+			-DX11_INCLUDE_DIR=${INSTALL_DIR}/include \
+			-DX11_LIBRARIES=${INSTALL_DIR}/lib/libX11.so \
+			>> $FD_OUT 2>&1
+
+		# Compile and install Raylib
+		display_color_msg ${YELLOW} "Compile and install Raylib in ${INSTALL_DIR}..."
+		make -s -j$(nproc) >> $FD_OUT 2>&1
+		make -s install >> $FD_OUT 2>&1
+
+		display_color_msg ${GREEN} "Raylib installation done in ${INSTALL_DIR}."
     fi
 
-    # Create build directory
-    mkdir -p ${build_dir}
-    cd ${build_dir}
-
-    # Configure CMake with local dependencies
-    cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
-        -DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
-		-DBUILD_SHARED_LIBS=ON \
-		-DXINERAMA_INCLUDE_DIR=${INSTALL_DIR}/include \
-		-DXINERAMA_LIBRARY=${INSTALL_DIR}/lib/libXinerama.so \
-		-DXRANDR_INCLUDE_DIR=${INSTALL_DIR}/include \
-		-DXRANDR_LIBRARY=${INSTALL_DIR}/lib/libXrandr.so \
-		-DXI_INCLUDE_DIR=${INSTALL_DIR}/include \
-		-DXI_LIBRARY=${INSTALL_DIR}/lib/libXi.so \
-		-DXCURSOR_INCLUDE_DIR=${INSTALL_DIR}/include \
-		-DXCURSOR_LIBRARY=${INSTALL_DIR}/lib/libXcursor.so \
-		-DGLU_INCLUDE_DIR=${INSTALL_DIR}/include \
-		-DGLU_LIBRARY=${INSTALL_DIR}/lib/libGLU.so \
-		-DFREETYPE_INCLUDE_DIRS=${INSTALL_DIR}/include/freetype2 \
-		-DFREETYPE_LIBRARY=${INSTALL_DIR}/lib/libfreetype.so \
-        >> $FD_OUT 2>&1
-
-    # Compile and install Raylib
-    display_color_msg ${YELLOW} "Compile and install Raylib in ${INSTALL_DIR}..."
-    make -s -j$(nproc) >> $FD_OUT 2>&1
-    make -s install >> $FD_OUT 2>&1
-
-    display_color_msg ${GREEN} "Raylib installation done in ${INSTALL_DIR}."
 }
 
 # all_deps_install 
 # load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
 # load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz" "SDL2-2.30.5"
-# load_raylib "https://github.com/raysan5/raylib.git" "4.5.0"
+load_raylib "https://github.com/raysan5/raylib.git" "4.5.0"
 
-install_sdl2_ttf "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.22.0/SDL2_ttf-2.22.0.tar.gz" "2.22.0"
+# install_sdl2_ttf "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.22.0/SDL2_ttf-2.22.0.tar.gz" "2.22.0"
+
+
 
 
 # Old code for SFML deps

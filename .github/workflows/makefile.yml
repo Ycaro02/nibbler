@@ -15,8 +15,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: X11 deps  
-      run: sudo apt install libxrandr-dev libxcursor-dev libxi-dev
+    # - name: X11 deps  
+    #   run: sudo apt install libxrandr-dev libxcursor-dev libxi-dev
 
       # libxinerama for raylib
     - name: OpenGL package (need to change)
