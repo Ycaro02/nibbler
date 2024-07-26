@@ -16,7 +16,6 @@ SDL2_LIB		=	$(WRAPPER_LIB_DIR)/SDL2Wrapper.so
 RAYLIB_LIB		=	$(WRAPPER_LIB_DIR)/RaylibWrapper.so
 
 
-
 WRAPPER_COMPILE =	./rsc/sh/wrapper_compile.sh
 
 LIB_DEPS		=	./rsc/lib

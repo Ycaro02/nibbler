@@ -8,6 +8,7 @@ Snake::Snake() {
 	body = std::vector<iVec2>();
 	toAdd.x = -1;
 	toAdd.y = -1;
+	wasFood = false;
 	setDirection(UP);
 }
 
@@ -38,12 +39,12 @@ Snake::Snake(const Snake &ref) {
 Snake::Snake(Nibbler &ctx, s32 x, s32 y) {
 	toAdd.x = -1;
 	toAdd.y = -1;
+	wasFood = false;
 	setDirection(UP);
 	setHeadX(x);
 	setHeadY(y);
 	ctx.boardTileSet(getHeadX(), getHeadY(), SNAKE_HEAD);
 	body = std::vector<iVec2>();
-	brutExpension(ctx);
 	brutExpension(ctx);
 	brutExpension(ctx);
 	brutExpension(ctx);
@@ -59,6 +60,7 @@ void Snake::resetSnake() {
 	toAdd.x = -1;
 	toAdd.y = -1;
 	direction = UP;
+	wasFood = false;
 }
 
 /**
@@ -168,6 +170,12 @@ void Snake::SnakeMove(Nibbler &ctx, s32 direction) {
 	iVec2 old = {getHeadX(), getHeadY()};
 	iVec2 newHead = {old.x, old.y};
 
+	/* Check if the new head tile was food and grow snake body */
+	if (wasFood) {
+		SnakeEat(ctx);
+		std::cout << "Snake eat body size : " << body.size() << std::endl;
+	}
+
 	if (direction == UP) { newHead.y -= 1; }
 	else if (direction == DOWN) { newHead.y += 1; }
 	else if (direction == RIGHT) { newHead.x += 1; }
@@ -189,25 +197,24 @@ void Snake::SnakeMove(Nibbler &ctx, s32 direction) {
 		return;
 	}
 
-	/* Food boolean */
-	u8 wasFood = ctx.boardTileGet(newHead.x, newHead.y) == FOOD;
+	/* set food boolean */
+	wasFood = ctx.boardTileGet(newHead.x, newHead.y) == FOOD;
 
 	setHeadX(newHead.x);
 	setHeadY(newHead.y);
 	ctx.boardTileSet(newHead.x, newHead.y, SNAKE_HEAD);
 	/* Mark old head position empty */
 	ctx.boardTileSet(old.x, old.y, EMPTY);
-
 	bodyFollowHead(ctx, old.x, old.y);
-	
+
+	/* If new head tile was food, check if we need to add a new food */
 	if (wasFood) {
 		ctx.setNbFood(ctx.getNbFood() - 1);
-		SnakeEat(ctx);
-		// std::cout << "Snake eat body size : " << body.size() << std::endl;
 		if (ctx.getNbFood() == 0) {
 			ctx.foodAdd();
 		}
 	}
+
 }
 
 
