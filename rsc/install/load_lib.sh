@@ -65,8 +65,7 @@ function load_SFML {
 	# Clone SFML repository if it doesn't exist
 	if [ ! -d "${sfml_dir}" ]; then
 		
-		# load_deps_SFML
-		
+		load_deps_SFML
 		
 		display_color_msg ${CYAN} "Clone SFML repo..."
 		git clone -b ${sfml_version} --depth 1 ${sfm_repo} ${sfml_dir} >> $FD_OUT 2>&1
