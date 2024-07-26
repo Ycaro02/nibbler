@@ -261,10 +261,14 @@ extern "C" {
 		}
 	}
 
-	// void writeTextWrapper(void* window, const char* text, iVec2 pos, u32 fontSize, u32 color) {
-	// 	if (!raylibWindowGuard(window)) {
-	// 		return;
-	// 	}
-	// 	DrawText(text, pos.x, pos.y, fontSize, color);
-	// }
+	void writeTextWrapper(void* window, Font *font, char* text, iVec2 pos, u32 fontSize, u32 color) {
+		if (!raylibWindowGuard(window) || !font) {
+			return;
+		}
+		u8 r, g, b, a;
+		UINT32_TO_RGBA(color, r, g, b, a);
+
+		DrawTextEx(*font, text, {static_cast<f32>(pos.x), static_cast<f32>(pos.y)}, static_cast<f32>(fontSize), 0, {r, g, b, a});
+		// DrawText(text, pos.x, pos.y, fontSize, color);
+	}
 }

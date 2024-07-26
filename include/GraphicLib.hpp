@@ -138,6 +138,9 @@ class GraphicLib {
 	/* Unload a font */
 	void unloadFont(void *font);
 
+	/* Write a text */
+	void writeText(const char *text, iVec2 pos, u32 fontSize, u32 color);
+
 	/* Draw a texture */
 	// void drawTextureTile(void *texture, u32 x, u32 y);
 	void drawTextureTile(void *texture, iVec2 tilePos, iVec2 scale);
@@ -181,7 +184,7 @@ class GraphicLib {
 	drawTextFunc		drawTextF;		/* Function pointer to drawTexture tile */
 	loadFontFunc		loadFontF;		/* Function pointer to loadFont */
 	unloadFontFunc		unloadFontF;	/* Function pointer to unloadFont */
-	// writeTextFunc		writeTextF;		/* Function pointer to writeText */
+	writeTextFunc		writeTextF;		/* Function pointer to writeText */
 };
 
 

@@ -96,6 +96,7 @@ GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std
 	drawTextF		=	(drawTextFunc)loadFuncPtr(dlPtr, "drawTextureTileWrapper", path);
 	loadFontF		=	(loadFontFunc)loadFuncPtr(dlPtr, "loadFontWrapper", path);
 	unloadFontF		=	(unloadFontFunc)loadFuncPtr(dlPtr, "unloadFontWrapper", path);
+	writeTextF		=	(writeTextFunc)loadFuncPtr(dlPtr, "writeTextWrapper", path);
 }
 
 /* Initialize the graphics library and create window */
@@ -188,6 +189,10 @@ void *GraphicLib::loadFont(const char *path) {
 
 void GraphicLib::unloadFont(void *font) {
 	unloadFontF(font);
+}
+
+void GraphicLib::writeText(const char *text, iVec2 pos, u32 fontSize, u32 color) {
+	writeTextF(window, font, text, pos, fontSize, color);
 }
 
 void *GraphicLib::loadTexture(const char *path) {

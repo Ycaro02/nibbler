@@ -14,7 +14,7 @@
 #define GREEN_RGBA			(RGBA_TO_UINT32(0,255,0,255))		/* Snake head color */
 #define DARK_GREEN_RGBA		(RGBA_TO_UINT32(0,100,0,255))		/* Snake body color */
 #define YELLOW_RGBA			(RGBA_TO_UINT32(255,255,0,255))		/* Food color */
-
+#define DARL_BLUE_RGBA		(RGBA_TO_UINT32(0,0,139,255))		/* Top Band color */
 #define PINK_RGBA			(RGBA_TO_UINT32(255,0,255,255))		/* Snake head color */
 
 
@@ -33,7 +33,7 @@ void drawTopBand(GraphicLib *lib, void *texture) {
 	iVec2 pos = {0, 0};
 
 	if (!texture) {
-		lib->colorTile(pos, scale, PINK_RGBA);
+		lib->colorTile(pos, scale, DARL_BLUE_RGBA);
 		return ;
 	}
 	lib->drawTextureTile(texture, pos, scale);
@@ -97,6 +97,10 @@ static void drawGame(GraphicLib *lib, Nibbler &ctx) {
 	} else {
 		textureDisplay(lib, ctx);
 	}
+
+	s32 textStartX = (ctx.getWidth() >> 1) * TILE_SIZE - 60;
+
+	lib->writeText("NIBBLER", {textStartX, 30}, 40, WHITE_RGBA);
 }
 
 void GameLoop(Nibbler &ctx) {

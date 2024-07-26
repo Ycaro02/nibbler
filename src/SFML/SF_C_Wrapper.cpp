@@ -223,22 +223,17 @@ extern "C" {
 	 * @param text The text to write
 	 * @return The text pointer
 	*/
-	// void writeTextWrapper(sf::RenderWindow* window, const char* text, iVec2 pos, u32 fontSize, u32 color) {
-	// 	sf::Font font;
-	// 	sf::Text textObj;
+	void writeTextWrapper(sf::RenderWindow* window, sf::Font *font,char* text, iVec2 pos, u32 fontSize, u32 color) {
+		sf::Text textObj;
+		u8 r, g, b, a;
 
-	// 	/* Maybe load font before */
-	// 	if (!font.loadFromFile("assets/arial.ttf")) {
-	// 		std::cerr << "Failed to load font" << std::endl;
-	// 		return;
-	// 	}
+		UINT32_TO_RGBA(color, r, g, b, a);
 
-	// 	textObj.setFont(font);
-	// 	textObj.setString(text);
-	// 	textObj.setCharacterSize(fontSize);
-	// 	textObj.setFillColor(sf::Color::White);
-	// 	textObj.setPosition(pos.x, pos.y);
-
-	// 	window->draw(textObj);
-	// }
+		textObj.setFont(*font);
+		textObj.setString(text);
+		textObj.setCharacterSize(fontSize);
+		textObj.setFillColor(sf::Color(r, g, b, a));
+		textObj.setPosition(pos.x, pos.y);
+		window->draw(textObj);
+	}
 }

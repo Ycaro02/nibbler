@@ -256,7 +256,7 @@ extern "C" {
 	 * @return The font pointer
 	*/
 	void *loadFontWrapper(const char *path) {
-		TTF_Font *font = TTF_OpenFont(path, 20);
+		TTF_Font *font = TTF_OpenFont(path, 40);
 		if (!font) {
 			std::cerr << "TTF_OpenFont Error: " << TTF_GetError() << std::endl;
 			return (nullptr);
