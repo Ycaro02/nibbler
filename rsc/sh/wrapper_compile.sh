@@ -15,7 +15,7 @@ mkdir -p rsc/wrapperlib
 # Check for errors
 function check_compile_success {
 	local name="${1}"
-	if [ $? -ne 0 ]; then
+	if [ ! -f ${name} ]; then
 		display_color_msg ${RED} "Compilation ${name} failed"
 		exit 1
 	else

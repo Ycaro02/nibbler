@@ -81,6 +81,7 @@ function load_SFML {
 			-DX11_Xext_LIB=${INSTALL_DIR}/lib/libXext.so \
 			-DX11_X11_INCLUDE_PATH=${INSTALL_DIR}/include/ \
 			-DX11_Xext_INCLUDE_PATH=${INSTALL_DIR}/include/ \
+			-DX11_Xcursor_INCLUDE_PATH=${INSTALL_DIR}/include/ \
 			-DBUILD_SHARED_LIBS=ON \
          	>> $FD_OUT 2>&1
 
@@ -185,6 +186,7 @@ function load_raylib {
 			-DX11_Xext_LIB=${INSTALL_DIR}/lib/libXext.so \
 			-DX11_X11_INCLUDE_PATH=${INSTALL_DIR}/include/ \
 			-DX11_Xext_INCLUDE_PATH=${INSTALL_DIR}/include/ \
+			-DX11_Xcursor_INCLUDE_PATH=${INSTALL_DIR}/include/ \
 			-DBUILD_SHARED_LIBS=ON \
 			-DBUILD_GLFW=OFF \
 
