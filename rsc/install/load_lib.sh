@@ -36,9 +36,14 @@ function all_deps_install {
 	# Load freeglut
 	load_lib_cmake "https://sourceforge.net/projects/freeglut/files/freeglut/3.4.0/freeglut-3.4.0.tar.gz" "freeglut-3.4.0"
 
+	
+	load_lib "https://www.x.org/archive/individual/lib/libXfixes-5.0.3.tar.gz"
 	# Already installed on 42 computer
-	load_lib "https://www.x.org/archive/individual/lib/libXcursor-1.2.0.tar.gz"
-	load_lib "https://www.x.org/archive/individual/lib/libXi-1.7.10.tar.gz"
+
+
+
+	load_lib "https://www.x.org/archive/individual/lib/libXcursor-1.2.0.tar.gz" "CFLAGS=-I${INSTALL_DIR}/include" "LDFLAGS=-L${INSTALL_DIR}/lib"
+	load_lib "https://www.x.org/archive/individual/lib/libXi-1.7.10.tar.gz" "CFLAGS=-I${INSTALL_DIR}/include" "LDFLAGS=-L${INSTALL_DIR}/lib"
 
 	# Need to work on mesa (openGl open source implementation) compiling with meson
 	# load_lib "https://mesa.freedesktop.org/archive/mesa-21.2.3.tar.xz"
@@ -222,11 +227,11 @@ function load_raylib {
 }
 
 all_deps_install 
-load_deps_SFML
-load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
-load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz" "SDL2-2.30.5"
-load_raylib "https://github.com/raysan5/raylib.git" "4.5.0"
-install_sdl2_ttf "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.22.0/SDL2_ttf-2.22.0.tar.gz" "2.22.0"
+# load_deps_SFML
+# load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
+# load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz" "SDL2-2.30.5"
+# load_raylib "https://github.com/raysan5/raylib.git" "4.5.0"
+# install_sdl2_ttf "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.22.0/SDL2_ttf-2.22.0.tar.gz" "2.22.0"
 
 
 

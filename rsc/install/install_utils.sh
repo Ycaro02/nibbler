@@ -63,9 +63,6 @@ function cmake_install_lib {
 		cd ${DEPS_DIR}/${name}
 		sed -i '/MACRO(ADD_DEMO name)/,/ENDMACRO()/d' CMakeLists.txt
 		sed -i '/ADD_DEMO(/,/^$/d' CMakeLists.txt
-
-
-
 		mkdir -p ${DEPS_DIR}/${name}/build
 		cd ${DEPS_DIR}/${name}/build
 		echo "cmake .. DCMAKE_INCLUDE_PATH=${INSTALL_DIR}/include DCMAKE_LIBRARY_PATH=${INSTALL_DIR}/lib"
