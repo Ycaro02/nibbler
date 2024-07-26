@@ -50,10 +50,16 @@ function all_deps_install {
 	load_lib "https://www.x.org/archive/individual/lib/libXcursor-1.2.0.tar.gz"
 	load_lib "https://www.x.org/archive/individual/lib/libXi-1.7.10.tar.gz"
 
-	# Need to work on mesa (openGl open source implementation) compiling with meson
-	# load_lib "https://mesa.freedesktop.org/archive/mesa-21.2.3.tar.xz"
-	# check for libudev maybe already installed
+	# Load FreeType, needed in SFML, SDL2_ttf and Raylib
+	load_lib "https://sourceforge.net/projects/freetype/files/freetype2/2.11.0/freetype-2.11.0.tar.gz/download"
+
+	# 2 package needed for github actions, that will install :
+	# libdrm-dev libgl-dev libglx-dev libpciaccess-dev libudev-dev mesa-common-dev
+
+	# Libudev already on 42 computer but need to be install on github actions 
 	#libudev: https://www.freedesktop.org/software/systemd/systemd-248.tar.gz
+	# Try to work on mesa loading (openGl open source implementation) compiling with meson
+	# load_lib "https://mesa.freedesktop.org/archive/mesa-21.2.3.tar.xz"
 }
 
 function load_deps_SFML {
@@ -62,7 +68,6 @@ function load_deps_SFML {
 	load_lib "https://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.gz"
 	load_lib "https://downloads.xiph.org/releases/vorbis/libvorbis-1.3.7.tar.gz" "--with-ogg=${INSTALL_DIR}"
 	load_lib "https://downloads.xiph.org/releases/flac/flac-1.3.3.tar.xz" "--disable-cpplibs"
-	load_lib "https://sourceforge.net/projects/freetype/files/freetype2/2.11.0/freetype-2.11.0.tar.gz/download"
 	load_lib_cmake "https://github.com/kcat/openal-soft/archive/refs/tags/1.23.1.tar.gz" "openal-soft"
 }
 
@@ -74,38 +79,19 @@ function load_SFML {
 
 	# Clone SFML repository if it doesn't exist
 	if [ ! -d "${sfml_dir}" ]; then
-		
+		load_deps_SFML
 		display_color_msg ${CYAN} "Clone SFML repo..."
 		git clone -b ${sfml_version} --depth 1 ${sfm_repo} ${sfml_dir} >> $FD_OUT 2>&1
 		# Create build directory
 		mkdir -p ${build_dir}
 		cd ${build_dir}
 		# Configure CMake with local dependencies
-		For X11 we need to declare the DX11_X11_INCLUDE_PATH to cmake find the X11 headers
-
-		local find_xcursor=$(find ${INSTALL_DIR}/include/X11 -name Xcursor.h)
-
-		if [ -z "${find_xcursor}" ]; then
-			local ls_x11=$(ls -lR ${INSTALL_DIR}/include/X11)
-			display_color_msg ${RED} "Xcursor.h not found in ${INSTALL_DIR}/include/X11"
-			display_color_msg ${YELLOW} "Ls: ${ls_x11}"
-			display_color_msg ${RED} "Please install libXcursor and try again."
-			exit 1
-		fi
-
 		cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
 			-DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
 			-DOPENAL_INCLUDE_DIR=${DEPS_DIR}/openal-soft-1.23.1/include/AL \
 			-DOPENAL_LIBRARY=${DEPS_DIR}/openal-soft-1.23.1/build/libopenal.so \
 			-DBUILD_SHARED_LIBS=ON \
          	>> $FD_OUT 2>&1
-			# -DX11_X11_LIB=${INSTALL_DIR}/lib/libX11.so \
-			# -DX11_Xext_LIB=${INSTALL_DIR}/lib/libXext.so \
-			# -DX11_X11_INCLUDE_PATH=${INSTALL_DIR}/include/ \
-			# -DX11_Xext_INCLUDE_PATH=${INSTALL_DIR}/include/ \
-			# -DX11_Xcursor_LIB=${INSTALL_DIR}/lib/libXcursor.so \
-			# -DX11_Xcursor_INCLUDE_PATH=${INSTALL_DIR}/include/ \
-
 		
 		# Compile and install SFML
 		display_color_msg ${YELLOW} "Compile and install SFML in ${INSTALL_DIR}..."
@@ -201,20 +187,12 @@ function load_raylib {
 		mkdir -p ${build_dir}
 		cd ${build_dir}
 
-		# Configure CMake with local dependencies (X11 and Xext)
+		# Configure CMake with local dependencies
 		cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
 			-DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
 			-DBUILD_SHARED_LIBS=ON \
 			-DBUILD_GLFW=OFF \
-
-		# -DX11_X11_LIB=${INSTALL_DIR}/lib/libX11.so \
-		# -DX11_Xext_LIB=${INSTALL_DIR}/lib/libXext.so \
-		# -DX11_X11_INCLUDE_PATH=${INSTALL_DIR}/include/ \
-		# -DX11_Xext_INCLUDE_PATH=${INSTALL_DIR}/include/ \
-		# -DX11_Xcursor_LIB=${INSTALL_DIR}/lib/libXcursor.so \
-		# -DX11_Xcursor_INCLUDE_PATH=${INSTALL_DIR}/include/ \
-		# -DX11_Xinput_LIB=${INSTALL_DIR}/lib/libXi.so \
-		# -DX11_Xinput_INCLUDE_PATH=${INSTALL_DIR}/include/ \
+			>> $FD_OUT 2>&1
 
 		# Compile and install Raylib
 		display_color_msg ${YELLOW} "Compile and install Raylib in ${INSTALL_DIR}..."
@@ -227,7 +205,6 @@ function load_raylib {
 }
 
 all_deps_install 
-load_deps_SFML
 load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
 load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz" "SDL2-2.30.5"
 load_raylib "https://github.com/raysan5/raylib.git" "4.5.0"
