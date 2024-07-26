@@ -17,8 +17,6 @@ jobs:
 
     # libxinerama for raylib
     # - name: X11 deps and libglu
-    #   run: sudo apt install libxi-dev
-    #   run: sudo apt install libxcursor-dev libxi-dev
     #   run: sudo apt install libxrandr-dev libxcursor-dev libxi-dev libxinerama-dev libglu1-mesa-dev freeglut3-dev 
       
     - name: OpenGL package (mesa), libudev-dev from systemd

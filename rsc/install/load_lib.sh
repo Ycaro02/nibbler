@@ -43,12 +43,10 @@ function all_deps_install {
 	load_lib_cmake "https://sourceforge.net/projects/freeglut/files/freeglut/3.4.0/freeglut-3.4.0.tar.gz" "freeglut-3.4.0"
 
 	
-	# Deps for Xcursor and Xi: libXfixes, libXrender
+	# Deps for Xcursor and Xi: libXfixes
 	load_lib "https://www.x.org/archive/individual/lib/libXfixes-5.0.3.tar.gz"
-	# Already installed on 42 computer
 
-
-
+	# Load libXcursor and libXi
 	load_lib "https://www.x.org/archive/individual/lib/libXcursor-1.2.0.tar.gz"
 	load_lib "https://www.x.org/archive/individual/lib/libXi-1.7.10.tar.gz"
 
@@ -59,12 +57,6 @@ function all_deps_install {
 }
 
 function load_deps_SFML {
-
-
-	# set -e  # Exit immediately if a command exits with a non-zero status.
-	# Need libudev and libxrandr but they are already installed in the system (TOCHECK on 42 compute)
-	# libudev should be in systemd package, libxrandr (should be aldready installed for running minilibx)
-
 	# Download and install dependencies
 	display_double_color_msg ${BLUE} "Download and install dependencies for " ${RED} "SFML"
 	load_lib "https://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.gz"
@@ -89,7 +81,7 @@ function load_SFML {
 		mkdir -p ${build_dir}
 		cd ${build_dir}
 		# Configure CMake with local dependencies
-		# For X11 we need to declare the DX11_X11_INCLUDE_PATH to cmake find the X11 headers
+		For X11 we need to declare the DX11_X11_INCLUDE_PATH to cmake find the X11 headers
 
 		local find_xcursor=$(find ${INSTALL_DIR}/include/X11 -name Xcursor.h)
 
@@ -105,14 +97,14 @@ function load_SFML {
 			-DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
 			-DOPENAL_INCLUDE_DIR=${DEPS_DIR}/openal-soft-1.23.1/include/AL \
 			-DOPENAL_LIBRARY=${DEPS_DIR}/openal-soft-1.23.1/build/libopenal.so \
-			-DX11_X11_LIB=${INSTALL_DIR}/lib/libX11.so \
-			-DX11_Xext_LIB=${INSTALL_DIR}/lib/libXext.so \
-			-DX11_X11_INCLUDE_PATH=${INSTALL_DIR}/include/ \
-			-DX11_Xext_INCLUDE_PATH=${INSTALL_DIR}/include/ \
-			-DX11_Xcursor_LIB=${INSTALL_DIR}/lib/libXcursor.so \
-			-DX11_Xcursor_INCLUDE_PATH=${INSTALL_DIR}/include/ \
 			-DBUILD_SHARED_LIBS=ON \
          	>> $FD_OUT 2>&1
+			# -DX11_X11_LIB=${INSTALL_DIR}/lib/libX11.so \
+			# -DX11_Xext_LIB=${INSTALL_DIR}/lib/libXext.so \
+			# -DX11_X11_INCLUDE_PATH=${INSTALL_DIR}/include/ \
+			# -DX11_Xext_INCLUDE_PATH=${INSTALL_DIR}/include/ \
+			# -DX11_Xcursor_LIB=${INSTALL_DIR}/lib/libXcursor.so \
+			# -DX11_Xcursor_INCLUDE_PATH=${INSTALL_DIR}/include/ \
 
 		
 		# Compile and install SFML
@@ -212,16 +204,17 @@ function load_raylib {
 		# Configure CMake with local dependencies (X11 and Xext)
 		cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
 			-DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
-			-DX11_X11_LIB=${INSTALL_DIR}/lib/libX11.so \
-			-DX11_Xext_LIB=${INSTALL_DIR}/lib/libXext.so \
-			-DX11_X11_INCLUDE_PATH=${INSTALL_DIR}/include/ \
-			-DX11_Xext_INCLUDE_PATH=${INSTALL_DIR}/include/ \
-			-DX11_Xcursor_LIB=${INSTALL_DIR}/lib/libXcursor.so \
-			-DX11_Xcursor_INCLUDE_PATH=${INSTALL_DIR}/include/ \
-			-DX11_Xinput_LIB=${INSTALL_DIR}/lib/libXi.so \
-			-DX11_Xinput_INCLUDE_PATH=${INSTALL_DIR}/include/ \
 			-DBUILD_SHARED_LIBS=ON \
 			-DBUILD_GLFW=OFF \
+
+		# -DX11_X11_LIB=${INSTALL_DIR}/lib/libX11.so \
+		# -DX11_Xext_LIB=${INSTALL_DIR}/lib/libXext.so \
+		# -DX11_X11_INCLUDE_PATH=${INSTALL_DIR}/include/ \
+		# -DX11_Xext_INCLUDE_PATH=${INSTALL_DIR}/include/ \
+		# -DX11_Xcursor_LIB=${INSTALL_DIR}/lib/libXcursor.so \
+		# -DX11_Xcursor_INCLUDE_PATH=${INSTALL_DIR}/include/ \
+		# -DX11_Xinput_LIB=${INSTALL_DIR}/lib/libXi.so \
+		# -DX11_Xinput_INCLUDE_PATH=${INSTALL_DIR}/include/ \
 
 		# Compile and install Raylib
 		display_color_msg ${YELLOW} "Compile and install Raylib in ${INSTALL_DIR}..."
