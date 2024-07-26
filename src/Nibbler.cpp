@@ -7,7 +7,7 @@
 
 /* Default constructor */
 Nibbler::Nibbler() 
-: width(0), height(0), board(nullptr), nbFood(0), currentLib(0), isRunning(0), colorMode(0), emptyTileNb(0),
+: width(0), height(0), board(nullptr), gameState(0), nbFood(0), emptyTileNb(0),
 lastMove(std::chrono::steady_clock::now()), lastFoodSpawn(std::chrono::steady_clock::now()), snake(Snake()) {
 	libs[0] = nullptr;
 	libs[1] = nullptr;
@@ -185,7 +185,6 @@ Nibbler::Nibbler(std::string w, std::string h) {
 	NibblerInitLib("SFML", "rsc/wrapperlib/SFMLWrapper.so", "png", SFML_IDX, WIN_W(width), WIN_H(height));
 	NibblerInitLib("SDL2", "rsc/wrapperlib/SDL2Wrapper.so", "bmp", SDL2_IDX, WIN_W(width), WIN_H(height));
 	NibblerInitLib("Raylib", "rsc/wrapperlib/RaylibWrapper.so", "png", RAYLIB_IDX, WIN_W(width), WIN_H(height));
-	// NibblerInitLib("SFML", "srsc/wrapperlib/SDL2Wrapper.so", "png", SFML_IDX, WIN_W(width), WIN_H(height));
 
 	/* Initialize the random seed for food spawn */
 	srand(time(NULL));
@@ -222,22 +221,6 @@ s32 &Nibbler::getHeight() {
 	return (height);
 }
 
-s32 &Nibbler::getIsRunning() {
-	return (isRunning);
-}
-
-void Nibbler::setIsRunning(s32 value) {
-	isRunning = value;
-}
-
-s32 &Nibbler::getCurrentLibIdx() {
-	return (currentLib);
-}
-
-void Nibbler::setCurrentLibIdx(s32 value) {
-	currentLib = value;
-}
-
 s32 &Nibbler::getNbFood() {
 	return (nbFood);
 }
@@ -254,20 +237,44 @@ s32 &Nibbler::getEmptyTileNb() {
 	return (emptyTileNb);
 }
 
-
-GraphicLib *Nibbler::getCurrentLib() {
-	return (libs[currentLib]);
-}
-
-s32 &Nibbler::getColorMode() {
-	return (colorMode);
-}
-
-void Nibbler::setColorMode(s32 value) {
-	colorMode = value;
-}
-
 Snake &Nibbler::getSnake() {
 	return (snake);
+}
+
+u32 Nibbler::getIsRunning() {
+	// return (isRunning);
+	return (GET_RUNNING_BIT(gameState));
+}
+
+void Nibbler::setIsRunning(u32 value) {
+	// isRunning = value;
+	SET_RUNNING_BIT(gameState, value);
+}
+
+u32 Nibbler::getCurrentLibIdx() {
+	// return (currentLib);
+	return (GET_LIB_IDX(gameState));
+}
+
+void Nibbler::setCurrentLibIdx(u32 libSwitch) {
+	// currentLib = value;
+	RESET_LIB_IDX(gameState);
+	U32_SET_BIT(gameState, libSwitch, 1);
+}
+
+
+
+GraphicLib *Nibbler::getCurrentLib() {
+	return (libs[GET_LIB_IDX(gameState)]);
+}
+
+u32 Nibbler::getColorMode() {
+	// return (colorMode);
+	return (GET_COLOR_BIT(gameState));
+}
+
+void Nibbler::setColorMode(u32 value) {
+	// colorMode = value;
+	SET_COLOR_BIT(gameState, value);
 }
 

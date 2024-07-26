@@ -22,6 +22,8 @@ typedef enum textureIdx {
 #define SFML_IDX 0
 #define SDL2_IDX 1
 #define RAYLIB_IDX 2
+#define RUNNING_IDX 3
+#define COLOR_IDX 4
 
 /**	
  * 	Function pointer types for the dynamic library

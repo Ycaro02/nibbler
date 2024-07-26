@@ -11,8 +11,30 @@ typedef std::chrono::milliseconds ChronoMilli;
 
 
 /* Snake move MS */
-#define SNAKE_MOVE_MS 500
+#define SNAKE_MOVE_MS 300
 
+/* Macro to set bit_nb in buff to val */
+#define U32_SET_BIT(buff, bit_nb, val) \
+    ((buff) = ((buff) & ~(1 << (bit_nb))) | ((val) << (bit_nb)))
+
+/* Macro to get bit_nb in buff */
+#define U32_GET_BIT(buff, bit_nb) (((buff) >> (bit_nb)) & 1)
+
+
+/* Easy access to the bit */
+#define GET_SFML_BIT(buff) (U32_GET_BIT(buff, SFML_IDX))
+#define GET_SDL2_BIT(buff) (U32_GET_BIT(buff, SDL2_IDX))
+#define GET_RAYLIB_BIT(buff) (U32_GET_BIT(buff, RAYLIB_IDX))
+#define GET_RUNNING_BIT(buff) (U32_GET_BIT(buff, RUNNING_IDX))
+#define GET_COLOR_BIT(buff) (U32_GET_BIT(buff, COLOR_IDX))
+
+/* Special wrapper for lib idx bit */
+#define GET_LIB_IDX(buff) (GET_SFML_BIT(buff) ? SFML_IDX : GET_SDL2_BIT(buff) ? SDL2_IDX : RAYLIB_IDX)
+#define RESET_LIB_IDX(buff) (U32_SET_BIT(buff, SFML_IDX, 0), U32_SET_BIT(buff, SDL2_IDX, 0), U32_SET_BIT(buff, RAYLIB_IDX, 0))
+
+/* Special wrapper for running and color bit */
+#define SET_RUNNING_BIT(buff, val) (U32_SET_BIT(buff, RUNNING_IDX, val))
+#define SET_COLOR_BIT(buff, val) (U32_SET_BIT(buff, COLOR_IDX, val))
 
 /* Nibbler class to handle the game (context)*/
 class Nibbler {
@@ -48,11 +70,6 @@ class Nibbler {
 	s32 &getWidth();
 	s32 &getHeight();
 
-	s32 &getIsRunning();
-	void setIsRunning(s32 value);
-
-	s32 &getCurrentLibIdx();
-	void setCurrentLibIdx(s32 value);
 
 	s32 &getNbFood();
 	void setNbFood(s32 value);
@@ -60,8 +77,15 @@ class Nibbler {
 	s32 &getEmptyTileNb();
 	void setEmptyTileNb(s32 value);
 
-	s32 &getColorMode();
-	void setColorMode(s32 value);
+
+	u32		getIsRunning();
+	void	setIsRunning(u32 value);
+
+	u32		getCurrentLibIdx();
+	void	setCurrentLibIdx(u32 libSwitch);
+
+	u32		getColorMode();
+	void	setColorMode(u32 value);
 
 	GraphicLib *getCurrentLib();
 	Snake &getSnake();
@@ -71,10 +95,11 @@ class Nibbler {
 	s32					width;			/* Width of the board */
 	s32					height;			/* Height of the board */
 	u8					**board;		/* Board of the game */
+	// s32					currentLib;		/* Current library index */
+	// s32					isRunning;		/* Game state */
+	// s32					colorMode;		/* Width of the window */
+	u32					gameState;		/* Game state */
 	s32					nbFood;			/* Number of food */
-	s32					currentLib;		/* Current library index */
-	s32					isRunning;		/* Game state */
-	s32					colorMode;		/* Width of the window */
 	s32					emptyTileNb;	/* Number of empty tile */
 	ChronoTimePoint		lastMove;		/* Last move time */
 	ChronoTimePoint		lastFoodSpawn;	/* Last auto move time */

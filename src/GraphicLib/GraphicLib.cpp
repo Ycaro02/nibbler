@@ -165,7 +165,7 @@ bool GraphicLib::isOpen() {
 
 /* Process events */
 void GraphicLib::processEvents(Nibbler &ctx) {
-	s32 key = winPollEventF(window);
+	u32 key = winPollEventF(window);
 	
 	if (key == NKEY_ESC) {
 		ctx.setIsRunning(0);
