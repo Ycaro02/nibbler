@@ -71,14 +71,16 @@ function load_SFML {
 		mkdir -p ${build_dir}
 		cd ${build_dir}
 		# Configure CMake with local dependencies
+		# For X11 we need to declare the DX11_X11_INCLUDE_PATH to cmake find the X11 headers
+
 		cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
 			-DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
 			-DOPENAL_INCLUDE_DIR=${DEPS_DIR}/openal-soft-1.23.1/include/AL \
 			-DOPENAL_LIBRARY=${DEPS_DIR}/openal-soft-1.23.1/build/libopenal.so \
 			-DX11_X11_LIB=${INSTALL_DIR}/lib/libX11.so \
 			-DX11_Xext_LIB=${INSTALL_DIR}/lib/libXext.so \
-			-DX11_X11_INCLUDE_PATH=${INSTALL_DIR}/include \
-			-DX11_Xext_INCLUDE_PATH=${INSTALL_DIR}/include \
+			-DX11_X11_INCLUDE_PATH=${INSTALL_DIR}/include/ \
+			-DX11_Xext_INCLUDE_PATH=${INSTALL_DIR}/include/ \
 			-DBUILD_SHARED_LIBS=ON \
          	>> $FD_OUT 2>&1
 
@@ -181,9 +183,10 @@ function load_raylib {
 			-DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
 			-DX11_X11_LIB=${INSTALL_DIR}/lib/libX11.so \
 			-DX11_Xext_LIB=${INSTALL_DIR}/lib/libXext.so \
-			-DX11_X11_INCLUDE_PATH=${INSTALL_DIR}/include \
-			-DX11_Xext_INCLUDE_PATH=${INSTALL_DIR}/include \
+			-DX11_X11_INCLUDE_PATH=${INSTALL_DIR}/include/ \
+			-DX11_Xext_INCLUDE_PATH=${INSTALL_DIR}/include/ \
 			-DBUILD_SHARED_LIBS=ON \
+			-DBUILD_GLFW=OFF \
 
 		# Compile and install Raylib
 		display_color_msg ${YELLOW} "Compile and install Raylib in ${INSTALL_DIR}..."
