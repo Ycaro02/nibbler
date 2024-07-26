@@ -187,6 +187,8 @@ function load_raylib {
 			-DX11_Xext_LIB=${INSTALL_DIR}/lib/libXext.so \
 			-DX11_X11_INCLUDE_PATH=${INSTALL_DIR}/include/ \
 			-DX11_Xext_INCLUDE_PATH=${INSTALL_DIR}/include/ \
+			-DX11_Xcursor_INCLUDE_DIR=${INSTALL_DIR}/include/X11 \
+			-DX11_Xinput_INCLUDE_DIR=${INSTALL_DIR}/include/X11 \
 			-DBUILD_SHARED_LIBS=ON \
 			-DBUILD_GLFW=OFF \
 
