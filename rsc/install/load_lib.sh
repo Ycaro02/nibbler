@@ -19,7 +19,12 @@ handle_quiet_opt "${@}"
 # Create directories
 display_color_msg ${YELLOW} "Create directories ${DEPS_DIR} and ${INSTALL_DIR}."
 mkdir -p ${DEPS_DIR}
-mkdir -p ${INSTALL_DIR}
+mkdir -p ${INSTALL_DIR}/lib/pkgconfig ${INSTALL_DIR}/include
+
+# Set environment variables for dependencies
+export PKG_CONFIG_PATH="${INSTALL_DIR}/lib/pkgconfig"
+export CFLAGS="-I${INSTALL_DIR}/include"
+export LDFLAGS="-L${INSTALL_DIR}/lib"
 
 function all_deps_install {
 
@@ -30,20 +35,21 @@ function all_deps_install {
 	# Load libXrandr
 	load_lib "https://www.x.org/archive/individual/lib/libXrandr-1.5.3.tar.gz"
 	# Load libXinerama
-	load_lib "https://www.x.org/archive/individual/lib/libXinerama-1.1.4.tar.gz"
 	# Load libGLU
-	load_lib "ftp://ftp.freedesktop.org/pub/mesa/glu/glu-9.0.1.tar.gz"
 	# Load freeglut
-	load_lib_cmake "https://sourceforge.net/projects/freeglut/files/freeglut/3.4.0/freeglut-3.4.0.tar.gz" "freeglut-3.4.0"
+	# load_lib "https://www.x.org/archive/individual/lib/libXinerama-1.1.4.tar.gz"
+	# load_lib "ftp://ftp.freedesktop.org/pub/mesa/glu/glu-9.0.1.tar.gz"
+	# load_lib_cmake "https://sourceforge.net/projects/freeglut/files/freeglut/3.4.0/freeglut-3.4.0.tar.gz" "freeglut-3.4.0"
 
 	
+	# Deps for Xcursor and Xi
 	load_lib "https://www.x.org/archive/individual/lib/libXfixes-5.0.3.tar.gz"
 	# Already installed on 42 computer
 
 
 
-	load_lib "https://www.x.org/archive/individual/lib/libXcursor-1.2.0.tar.gz" "CFLAGS=-I${INSTALL_DIR}/include" "LDFLAGS=-L${INSTALL_DIR}/lib"
-	load_lib "https://www.x.org/archive/individual/lib/libXi-1.7.10.tar.gz" "CFLAGS=-I${INSTALL_DIR}/include" "LDFLAGS=-L${INSTALL_DIR}/lib"
+	load_lib "https://www.x.org/archive/individual/lib/libXcursor-1.2.0.tar.gz"
+	load_lib "https://www.x.org/archive/individual/lib/libXi-1.7.10.tar.gz"
 
 	# Need to work on mesa (openGl open source implementation) compiling with meson
 	# load_lib "https://mesa.freedesktop.org/archive/mesa-21.2.3.tar.xz"
