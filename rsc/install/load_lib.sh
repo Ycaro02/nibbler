@@ -22,18 +22,24 @@ mkdir -p ${DEPS_DIR}
 mkdir -p ${INSTALL_DIR}
 
 function all_deps_install {
-	load_lib "https://www.x.org/archive/individual/lib/libXcursor-1.2.0.tar.gz"
-	load_lib "https://www.x.org/archive/individual/lib/libXi-1.7.10.tar.gz"
-	load_lib "https://www.x.org/archive/individual/lib/libXrandr-1.5.3.tar.gz"
-	load_lib "https://www.x.org/archive/individual/lib/libXinerama-1.1.4.tar.gz"
-	load_lib "ftp://ftp.freedesktop.org/pub/mesa/glu/glu-9.0.1.tar.gz"
-	load_lib_cmake "https://sourceforge.net/projects/freeglut/files/freeglut/3.4.0/freeglut-3.4.0.tar.gz" "freeglut-3.4.0"
 
 	# load libX11
 	load_lib "https://www.x.org/archive/individual/lib/libX11-1.7.2.tar.gz"
 	# load libXext
 	load_lib "https://www.x.org/archive/individual/lib/libXext-1.3.4.tar.gz"
-	
+	# Load libXrandr
+	load_lib "https://www.x.org/archive/individual/lib/libXrandr-1.5.3.tar.gz"
+	# Load libXinerama
+	load_lib "https://www.x.org/archive/individual/lib/libXinerama-1.1.4.tar.gz"
+	# Load libGLU
+	load_lib "ftp://ftp.freedesktop.org/pub/mesa/glu/glu-9.0.1.tar.gz"
+	# Load freeglut
+	load_lib_cmake "https://sourceforge.net/projects/freeglut/files/freeglut/3.4.0/freeglut-3.4.0.tar.gz" "freeglut-3.4.0"
+
+	# Already installed on 42 computer
+	load_lib "https://www.x.org/archive/individual/lib/libXcursor-1.2.0.tar.gz"
+	load_lib "https://www.x.org/archive/individual/lib/libXi-1.7.10.tar.gz"
+
 	# Need to work on mesa (openGl open source implementation) compiling with meson
 	# load_lib "https://mesa.freedesktop.org/archive/mesa-21.2.3.tar.xz"
 	# check for libudev maybe already installed
@@ -73,6 +79,14 @@ function load_SFML {
 		# Configure CMake with local dependencies
 		# For X11 we need to declare the DX11_X11_INCLUDE_PATH to cmake find the X11 headers
 
+		local find_xcursor=$(find ${INSTALL_DIR}/include/X11 -name Xcursor.h)
+
+		if [ -z "${find_xcursor}" ]; then
+			display_color_msg ${RED} "Xcursor.h not found in ${INSTALL_DIR}/include/X11"
+			display_color_msg ${RED} "Please install libXcursor and try again."
+			exit 1
+		fi
+
 		cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
 			-DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
 			-DOPENAL_INCLUDE_DIR=${DEPS_DIR}/openal-soft-1.23.1/include/AL \
@@ -81,7 +95,8 @@ function load_SFML {
 			-DX11_Xext_LIB=${INSTALL_DIR}/lib/libXext.so \
 			-DX11_X11_INCLUDE_PATH=${INSTALL_DIR}/include/ \
 			-DX11_Xext_INCLUDE_PATH=${INSTALL_DIR}/include/ \
-			-DX11_Xcursor_INCLUDE_DIR=${INSTALL_DIR}/include/X11 \
+			-DX11_Xcursor_LIB=${INSTALL_DIR}/lib/libXcursor.so \
+			-DX11_Xcursor_INCLUDE_PATH=${INSTALL_DIR}/include/ \
 			-DBUILD_SHARED_LIBS=ON \
          	>> $FD_OUT 2>&1
 
@@ -187,14 +202,12 @@ function load_raylib {
 			-DX11_Xext_LIB=${INSTALL_DIR}/lib/libXext.so \
 			-DX11_X11_INCLUDE_PATH=${INSTALL_DIR}/include/ \
 			-DX11_Xext_INCLUDE_PATH=${INSTALL_DIR}/include/ \
-			-DX11_Xcursor_INCLUDE_DIR=${INSTALL_DIR}/include/X11 \
-			-DX11_Xinput_INCLUDE_DIR=${INSTALL_DIR}/include/X11 \
+			-DX11_Xcursor_LIB=${INSTALL_DIR}/lib/libXcursor.so \
+			-DX11_Xcursor_INCLUDE_PATH=${INSTALL_DIR}/include/ \
+			-DX11_Xinput_LIB=${INSTALL_DIR}/lib/libXi.so \
+			-DX11_Xinput_INCLUDE_PATH=${INSTALL_DIR}/include/ \
 			-DBUILD_SHARED_LIBS=ON \
 			-DBUILD_GLFW=OFF \
-
-		# -DX11_Xcursor_INCLUDE_PATH=${INSTALL_DIR}/include/ \
-		# -DX11_XInput_INCLUDE_PATH=${INSTALL_DIR}/include/ \
-		# -DX11_Xinerama_INCLUDE_PATH=${INSTALL_DIR}/include/ \
 
 		# Compile and install Raylib
 		display_color_msg ${YELLOW} "Compile and install Raylib in ${INSTALL_DIR}..."

@@ -11,7 +11,7 @@ typedef std::chrono::milliseconds ChronoMilli;
 
 
 /* Snake move MS */
-#define SNAKE_MOVE_MS 500
+#define SNAKE_MOVE_MS 250
 
 
 /* Nibbler class to handle the game (context)*/
