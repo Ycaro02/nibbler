@@ -192,6 +192,31 @@ extern "C" {
 		/* Nothing todo */
 	}
 
+
+	/**
+	 * @brief Load a font with SFML
+	 * @param path The path to the font
+	 * @return The font pointer
+	*/
+	void *loadFontWrapper(const char* path) {
+		sf::Font *font = new sf::Font();
+		if (!font->loadFromFile(path)) {
+			delete font;
+			return (nullptr);
+		}
+		return (font);
+	}
+
+
+	/**
+	 * @brief Unload a font with SFML
+	 * @param font The font pointer
+	*/
+	void unloadFontWrapper(sf::Font *font) {
+		if (font) {
+			delete font;
+		}
+	}
 	/**
 	 * @brief Write a text with SFML
 	 * @param window The window pointers

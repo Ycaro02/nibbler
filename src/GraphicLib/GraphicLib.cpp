@@ -83,17 +83,19 @@ GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std
 		std::cerr << "Error: " << dlerror() << std::endl;
 		throw std::invalid_argument("Error: Graphic lib |" + path + "| not found");
 	}
-	winCreateF		= (createWindowFunc)loadFuncPtr(dlPtr, "createWindowWrapper", path);
-    winClearF		= (voidWinFunc)loadFuncPtr(dlPtr, "windowClearWrapper", path);
-    winDisplayF		= (voidWinFunc)loadFuncPtr(dlPtr, "windowDisplayWrapper", path);
-    winCloseF		= (voidWinFunc)loadFuncPtr(dlPtr, "windowCloseWrapper", path);
-    winIsOpenF		= (boolWinFunc)loadFuncPtr(dlPtr, "windowIsOpenWrapper", path);
-    winPollEventF	= (winFuncPollFunc)loadFuncPtr(dlPtr, "windowPollEventWrapper", path);
-	winColorTileF	= (tileColorFunc)loadFuncPtr(dlPtr, "colorTileWrapper", path);
-	libDestructorF = (libDestructorFunc)loadFuncPtr(dlPtr, "libDestructorWrapper", path);
-	loadTextF		= (loadTextFunc)loadFuncPtr(dlPtr, "loadTextureWrapper", path);
-	unloadTextF		= (unloadTextFunc)loadFuncPtr(dlPtr, "unloadTextureWrapper", path);
-	drawTextF		= (drawTextFunc)loadFuncPtr(dlPtr, "drawTextureTileWrapper", path);
+	winCreateF		=	(createWindowFunc)loadFuncPtr(dlPtr, "createWindowWrapper", path);
+    winClearF		=	(voidWinFunc)loadFuncPtr(dlPtr, "windowClearWrapper", path);
+    winDisplayF		=	(voidWinFunc)loadFuncPtr(dlPtr, "windowDisplayWrapper", path);
+    winCloseF		=	(voidWinFunc)loadFuncPtr(dlPtr, "windowCloseWrapper", path);
+    winIsOpenF		=	(boolWinFunc)loadFuncPtr(dlPtr, "windowIsOpenWrapper", path);
+    winPollEventF	=	(winFuncPollFunc)loadFuncPtr(dlPtr, "windowPollEventWrapper", path);
+	winColorTileF	=	(tileColorFunc)loadFuncPtr(dlPtr, "colorTileWrapper", path);
+	libDestructorF	=	(libDestructorFunc)loadFuncPtr(dlPtr, "libDestructorWrapper", path);
+	loadTextF		=	(loadTextFunc)loadFuncPtr(dlPtr, "loadTextureWrapper", path);
+	unloadTextF		=	(unloadTextFunc)loadFuncPtr(dlPtr, "unloadTextureWrapper", path);
+	drawTextF		=	(drawTextFunc)loadFuncPtr(dlPtr, "drawTextureTileWrapper", path);
+	loadFontF		=	(loadFontFunc)loadFuncPtr(dlPtr, "loadFontWrapper", path);
+	unloadFontF		=	(unloadFontFunc)loadFuncPtr(dlPtr, "unloadFontWrapper", path);
 }
 
 /* Initialize the graphics library and create window */
@@ -105,16 +107,13 @@ bool GraphicLib::windowCreate() {
 	std::string empty_path = EMPTY_path + textureExt;
 	std::string food_path = FOOD_path + textureExt;
 
-	// std::cout << "Head path: " << head_path << std::endl;
-	// std::cout << "Body path: " << body_path << std::endl;
-	// std::cout << "Empty path: " << empty_path << std::endl;
-	// std::cout << "Food path: " << food_path << std::endl;
-
 	texture[HEAD_IDX] = loadTexture(head_path.c_str());
     texture[BODY_IDX] = loadTexture(body_path.c_str());
 	texture[EMPTY_IDX] = loadTexture(empty_path.c_str());
 	texture[FOOD_IDX] = loadTexture(food_path.c_str());
 	
+	font = loadFont(FONT_PATH);
+
 	return (window != nullptr);
 }
 
@@ -183,8 +182,16 @@ void GraphicLib::processEvents(Nibbler &ctx) {
 	}
 }
 
+void *GraphicLib::loadFont(const char *path) {
+	return (loadFontF(path));
+}
+
+void GraphicLib::unloadFont(void *font) {
+	unloadFontF(font);
+}
+
 void *GraphicLib::loadTexture(const char *path) {
-	return loadTextF(window, path);
+	return (loadTextF(window, path));
 }
 
 void GraphicLib::unloadTexture(void *texture) {
@@ -208,6 +215,10 @@ void GraphicLib::close() {
 	if (window) {
 		winCloseF(window);
 		window = nullptr;
+	}
+	if (font) {
+		unloadFont(font);
+		font = nullptr;
 	}
 }
 

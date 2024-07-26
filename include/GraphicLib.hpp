@@ -11,6 +11,8 @@
 #define FOOD_path "rsc/texture/orange_wool."
 #define EMPTY_path "rsc/texture/white_wool."
 
+#define FONT_PATH "rsc/font/arial.ttf"
+
 typedef enum textureIdx {
 	HEAD_IDX = 0,
 	BODY_IDX = 1,
@@ -27,11 +29,11 @@ typedef enum textureIdx {
 
 /**	
  * 	Function pointer types for the dynamic library
- *	void* is always the window pointer except for unloadTextFunc
+ *	The first void* args is always the window pointer except for unloadTextFunc, unloadFontFunc
 */
 
 /* Here u32 are width and height for the window, const char* the window title */
-typedef void* (*createWindowFunc)(u32, u32, const char*);
+typedef void *(*createWindowFunc)(u32, u32, const char*);
 typedef void (*voidWinFunc)(void*);
 typedef void (*libDestructorFunc)();
 typedef bool (*boolWinFunc)(void*);
@@ -42,13 +44,22 @@ typedef s32 (*winFuncPollFunc)(void*);
 /* Here first iVec is tilePos, second is scale, last is u32 RGBA color */
 typedef void (*tileColorFunc)(void*, iVec2, iVec2, u32);
 
-typedef void* (*loadTextFunc)(void *, const char*);
+typedef void *(*loadTextFunc)(void *, const char*);
 
 /* Here void* is the texture to unload */
 typedef void (*unloadTextFunc)(void *);
 
 /* Here first void* are window, second texture, iVec2 are x,y coordonate and second texture scaling */
 typedef void (*drawTextFunc)(void *, void *, iVec2, iVec2);
+
+/* Here const char* is the path to the font, return the allocated font loaded */
+typedef void *(*loadFontFunc)(const char*);
+
+/* Here void* is the font to unload */
+typedef void (*unloadFontFunc)(void*);
+
+/* Here first void* font, 2nd void* texture, char* text to write, iVec2 is the position, u32 font_size, u32 color */
+typedef void (*writeTextFunc)(void*, void*, const char*, iVec2, u32, u32);
 
 /* Enum for the keys normalise between lib */
 typedef enum NormaliseKey {
@@ -122,6 +133,11 @@ class GraphicLib {
 	/* Unload a texture */
 	void unloadTexture(void *texture);
 
+	/* Load a font */
+	void *loadFont(const char *path);
+	/* Unload a font */
+	void unloadFont(void *font);
+
 	/* Draw a texture */
 	// void drawTextureTile(void *texture, u32 x, u32 y);
 	void drawTextureTile(void *texture, iVec2 tilePos, iVec2 scale);
@@ -140,7 +156,6 @@ class GraphicLib {
 	private:
 
 	/* Classic attributs */
-
 	void 				*dlPtr;			/* Pointer to the dynamic library */
     void				*window;		/* Pointer to the window */
 	void				*texture[4];	/* Pointer to the texture -> need to be an array */
@@ -149,6 +164,7 @@ class GraphicLib {
     s32					winHeight;		/* Height of the window */
     std::string			winTitle;		/* Title of the window */
 	s16					libID;			/* ID of the library */
+	void				*font;			/* Pointer to the font */
 
 	/* Function pointers */
 
@@ -163,6 +179,9 @@ class GraphicLib {
 	loadTextFunc		loadTextF;		/* Function pointer to loadTexture */
 	unloadTextFunc		unloadTextF;	/* Function pointer to unloadTexture */
 	drawTextFunc		drawTextF;		/* Function pointer to drawTexture tile */
+	loadFontFunc		loadFontF;		/* Function pointer to loadFont */
+	unloadFontFunc		unloadFontF;	/* Function pointer to unloadFont */
+	// writeTextFunc		writeTextF;		/* Function pointer to writeText */
 };
 
 

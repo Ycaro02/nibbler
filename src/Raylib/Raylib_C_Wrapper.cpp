@@ -238,6 +238,29 @@ extern "C" {
 		/* Nothing todo */
 	}
 
+	/**
+	 * @brief Load a font with Raylib
+	 * @param path The path to the font
+	 * @return The font pointer
+	*/
+	void *loadFontWrapper(const char* path) {
+		Font *font = new Font();
+		 /* If load loading fail, raylib return default font instead */
+		*font = LoadFont(path);
+		return (font);
+	}
+
+	/**
+	 * @brief Unload a font with Raylib
+	 * @param font The font to unload
+	*/
+	void unloadFontWrapper(Font *font) {
+		if (font) {
+			UnloadFont(*font);
+			delete font;
+		}
+	}
+
 	// void writeTextWrapper(void* window, const char* text, iVec2 pos, u32 fontSize, u32 color) {
 	// 	if (!raylibWindowGuard(window)) {
 	// 		return;

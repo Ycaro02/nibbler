@@ -47,7 +47,7 @@ endif
 
 $(SDL2_LIB) :
 ifeq ($(shell [ -f $(SDL2_LIB) ] && echo 0 || echo 1), 1)
-	@$(WRAPPER_COMPILE) SDL2Wrapper.so src/SDL2/SDL_C_Wrapper.cpp "-lSDL2"
+	@$(WRAPPER_COMPILE) SDL2Wrapper.so src/SDL2/SDL_C_Wrapper.cpp "-lSDL2 -lSDL2_ttf"
 endif
 
 $(RAYLIB_LIB) :

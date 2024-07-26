@@ -29,11 +29,20 @@ extern "C" {
     SDL_Window* createWindowWrapper(u32 width ,u32 height, const char* title) {
         SDL_Window		*window = NULL;
 		SDL_Renderer	*renderer = NULL;
+		static			 bool isInit = false;
 		
-		if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-            std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
-            return (nullptr);
-        }
+		if (!isInit) {
+			if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+				std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
+				return (nullptr);
+			}
+			if (TTF_Init() != 0) {
+				std::cerr << "TTF_Init Error: " << TTF_GetError() << std::endl;
+				SDL_Quit();
+				return (nullptr);
+			}
+			isInit = true;
+		}
         window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN);
         if (!window) {
             std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
@@ -236,53 +245,78 @@ extern "C" {
 	 * @note This function will quit the SDL2 subsystem
 	*/
 	void libDestructorWrapper() {
-		SDL_QuitSubSystem(SDL_INIT_VIDEO);
+		TTF_Quit();
 		SDL_Quit();
 	}
 
 
-	/* TODO: need to init TTF and laod font before */
+	/**
+	 * @brief Load a font with SDL2
+	 * @param path The path of the font
+	 * @return The font pointer
+	*/
+	void *loadFontWrapper(const char *path) {
+		TTF_Font *font = TTF_OpenFont(path, 20);
+		if (!font) {
+			std::cerr << "TTF_OpenFont Error: " << TTF_GetError() << std::endl;
+			return (nullptr);
+		}
+		return (font);
+	}
+
+	/**
+	 * @brief Unload a font with SDL2
+	 * @param font The font pointer
+	*/
+	void unloadFontWrapper(TTF_Font *font) {
+		if (font) {
+			TTF_CloseFont(font);
+		}
+	}
+
 	/**
 	 * @brief Write a text with SDL2
 	 * @param window The window pointers
+	 * @param font The font pointer
 	 * @param text The text to write
 	 * @param pos The position of the text
+	 * @param fontSize The size of the text
 	 * @param color The color of the text
 	*/
-	// void writeTextWrapper(SDL_Window *window, const char *text, iVec2 pos, u32 fontSize, u32 color) {
-	// 	SDL_Renderer	*renderer = NULL;
-	// 	SDL_Surface		*textSurface = NULL;
-	// 	SDL_Texture		*textTexture = NULL;
-	// 	SDL_Rect		textRect = {0,0,0,0};
-	// 	u8 				r, g, b, a;
+	void writeTextWrapper(SDL_Window *window, TTF_Font *font, char *text, iVec2 pos, u32 fontSize, u32 color) {
+		SDL_Renderer	*renderer = NULL;
+		SDL_Surface		*textSurface = NULL;
+		SDL_Texture		*textTexture = NULL;
+		SDL_Rect		textRect = {0,0,0,0};
+		u8 				r, g, b, a;
 
-	// 	(void)fontSize;
+		(void)fontSize;
 
-	// 	renderer = SDL_GetRenderer(window);
-	// 	if (!renderer) {
-	// 		std::cerr << "SDL_GetRenderer Error: " << SDL_GetError() << std::endl;
-	// 		return;
-	// 	}
+		renderer = SDL_GetRenderer(window);
+		if (!renderer) {
+			std::cerr << "SDL_GetRenderer Error: " << SDL_GetError() << std::endl;
+			return;
+		}
 
-	// 	UINT32_TO_RGBA(color, r, g, b, a);
+		UINT32_TO_RGBA(color, r, g, b, a);
 
-	// 	textSurface = TTF_RenderText_Solid(font, text, {r, g, b, a});
-	// 	if (!textSurface) {
-	// 		std::cerr << "TTF_RenderText_Solid Error: " << TTF_GetError() << std::endl;
-	// 		return;
-	// 	}
-	// 	textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
-	// 	if (!textTexture) {
-	// 		std::cerr << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
-	// 		SDL_FreeSurface(textSurface);
-	// 		return;
-	// 	}
-	// 	textRect.x = pos.x;
-	// 	textRect.y = pos.y;
-	// 	textRect.w = textSurface->w;
-	// 	textRect.h = textSurface->h;
-	// 	SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
-	// 	SDL_DestroyTexture(textTexture);
-	// 	SDL_FreeSurface(textSurface);
-	// }
+		textSurface = TTF_RenderText_Solid(font, text, {r, g, b, a});
+		if (!textSurface) {
+			std::cerr << "TTF_RenderText_Solid Error: " << TTF_GetError() << std::endl;
+			return;
+		}
+		textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+		if (!textTexture) {
+			std::cerr << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
+			SDL_FreeSurface(textSurface);
+			return;
+		}
+		textRect.x = pos.x;
+		textRect.y = pos.y;
+		textRect.w = textSurface->w;
+		textRect.h = textSurface->h;
+		SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
+		SDL_DestroyTexture(textTexture);
+		SDL_FreeSurface(textSurface);
+	}
 }

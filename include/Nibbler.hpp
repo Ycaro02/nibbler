@@ -9,7 +9,6 @@ typedef std::chrono::steady_clock::time_point ChronoTimePoint;
 typedef std::chrono::seconds ChronoSecond;
 typedef std::chrono::milliseconds ChronoMilli;
 
-
 /* Snake move MS */
 #define SNAKE_MOVE_MS 300
 
@@ -99,7 +98,7 @@ class Nibbler {
 	s32					emptyTileNb;	/* Number of empty tile */
 	/**
 	 * gameState is a u32 that contains the following boolean information:
-	 * - Bit 0-2: SFML, SDL2, RAYLIB
+	 * - Bit 0-2: SFML, SDL2, RAYLIB current lib, 1 if active, 0 if not
 	 * - Bit 3: Running
 	 * - Bit 4: Color mode
 	 * - Bit 5-31: Unused
