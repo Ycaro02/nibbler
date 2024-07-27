@@ -10,6 +10,7 @@ Snake::Snake() {
 	toAdd.y = -1;
 	wasFood = false;
 	setDirection(UP);
+	setNextDirection(UP);
 }
 
 /* Destructor */
@@ -41,6 +42,7 @@ Snake::Snake(Nibbler &ctx, s32 x, s32 y) {
 	toAdd.y = -1;
 	wasFood = false;
 	setDirection(UP);
+	setNextDirection(UP);
 	setHeadX(x);
 	setHeadY(y);
 	ctx.boardTileSet(getHeadX(), getHeadY(), SNAKE_HEAD);
@@ -173,9 +175,13 @@ void Snake::SnakeMove(Nibbler &ctx, s32 direction) {
 	/* Check if the new head tile was food and grow snake body */
 	if (wasFood) {
 		SnakeEat(ctx);
-		std::cout << "Snake eat body size : " << body.size() << std::endl;
+		// std::cout << "Snake eat body size : " << body.size() << std::endl;
 	}
 
+	/* Update direction */
+	setDirection(getNextDirection());
+
+	/* Update head position */
 	if (direction == UP) { newHead.y -= 1; }
 	else if (direction == DOWN) { newHead.y += 1; }
 	else if (direction == RIGHT) { newHead.x += 1; }
@@ -231,18 +237,17 @@ void Snake::handleSnakeDir(s32 event) {
 
 	if (snakeDir == TOP_BOT_DIR) {
 		if (event == NKEY_LEFT) {
-			setDirection(LEFT);
+			setNextDirection(LEFT);
 		} else if (event == NKEY_RIGHT) {
-			setDirection(RIGHT);
+			setNextDirection(RIGHT);
 		}
-	} else if (snakeDir == LEFT_RIGHT_DIR) {
-		if (event == NKEY_UP) {
-			setDirection(UP);
-		} else if (event == NKEY_DOWN) {
-			setDirection(DOWN);
-		}
+		return ;
+	} 
+	if (event == NKEY_UP) {
+		setNextDirection(UP);
+	} else if (event == NKEY_DOWN) {
+		setNextDirection(DOWN);
 	}
-
 }
 
 
@@ -274,4 +279,12 @@ void Snake::setDirection(s32 dir) {
 
 s32 &Snake::getDirection() {
 	return (direction);
+}
+
+s32 &Snake::getNextDirection() {
+	return (nextDirection);
+}
+
+void Snake::setNextDirection(s32 dir) {
+	nextDirection = dir;
 }

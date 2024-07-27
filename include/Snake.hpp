@@ -63,11 +63,15 @@ class Snake {
 	s32 &getDirection();
 	void setDirection(s32 value);
 
+	s32 &getNextDirection();
+	void setNextDirection(s32 value);
+
 	private:
 	iVec2 				head;		/* Head position */
 	iVec2 				toAdd;		/* Position to add a new body part */
 	std::vector<iVec2>	body;		/* Body position */
 	s32					direction;	/* Direction of the snake */
+	s32					nextDirection;	/* Next direction of the snake */
 	u8					wasFood;	/* Last tile was food, need to grow body */
 };
 
