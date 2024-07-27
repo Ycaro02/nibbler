@@ -10,7 +10,10 @@
 #define HEAD_TEST_FILE "/HeadTest."
 #define BODY_TEST_FILE "/BodyTest." 
 
-#define HEAD_FILE "/HeadLeft."
+#define HEAD_L_FILE "/HeadLeft."
+#define HEAD_R_FILE "/HeadRight."
+#define HEAD_BOT_FILE "/HeadBot."
+#define HEAD_TOP_FILE "/HeadTop."
 #define BODY_FILE "/Body."
 #define FOOD_FILE "/Food."
 #define EMPTY_FILE "/Empty."
@@ -19,10 +22,14 @@
 #define FONT_PATH "rsc/font/arial.ttf"
 
 typedef enum textureIdx {
-	HEAD_IDX = 0,
-	BODY_IDX = 1,
-	FOOD_IDX = 2,
-	EMPTY_IDX = 3
+	HEAD_LEFT_IDX = 0,
+	HEAD_RIGHT_IDX,
+	HEAD_BOT_IDX,
+	HEAD_TOP_IDX,
+	BODY_IDX,
+	FOOD_IDX,
+	EMPTY_IDX,
+	TEXTURE_MAX
 } textureIdx;
 
 /* Define for the library ID */
@@ -159,6 +166,8 @@ class GraphicLib {
 	/* Getter for the window width height */
 	s32 getWidth() const;
 	s32 getHeight() const;
+	std::string getTitle() const;
+	std::string getTextName(std::string name) const;
 
 	void *getTexture(s32 id) const;
 
@@ -167,7 +176,7 @@ class GraphicLib {
 	/* Classic attributs */
 	void 				*dlPtr;			/* Pointer to the dynamic library */
     void				*window;		/* Pointer to the window */
-	void				*texture[4];	/* Pointer to the texture */
+	void				*texture[TEXTURE_MAX];	/* Pointer to the texture */
 	std::string			textureExt;	/* Path to the texture */
     s32					winWidth;		/* Width of the window */
     s32					winHeight;		/* Height of the window */

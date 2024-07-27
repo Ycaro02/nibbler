@@ -99,29 +99,34 @@ GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std
 	writeTextF		=	(writeTextFunc)loadFuncPtr(dlPtr, "writeTextWrapper", path);
 }
 
+// static const char *getTextureName(std::string lib, std::string name, std::string ext) {
+// 	return (std::string(TEXTURE_DIR + lib + name + ext).c_str());
+// }
+
+std::string GraphicLib::getTextName(std::string name) const {
+	return (TEXTURE_DIR + winTitle + name + textureExt);
+}
+
 /* Initialize the graphics library and create window */
 bool GraphicLib::windowCreate() {
     window = winCreateF(winWidth, winHeight, winTitle.c_str());
 
 
-	// std::string head_path = TEXTURE_DIR + textureExt + HEAD_TEST_FILE + textureExt;
-	// std::string body_path = TEXTURE_DIR + textureExt + BODY_TEST_FILE + textureExt;
+	texture[HEAD_LEFT_IDX] = loadTexture(getTextName(HEAD_L_FILE).c_str());
+	texture[HEAD_RIGHT_IDX] = loadTexture(getTextName(HEAD_R_FILE).c_str());
+	texture[HEAD_BOT_IDX] = loadTexture(getTextName(HEAD_BOT_FILE).c_str());
+	texture[HEAD_TOP_IDX] = loadTexture(getTextName(HEAD_TOP_FILE).c_str());
+	texture[BODY_IDX] = loadTexture(getTextName(BODY_FILE).c_str());
+	texture[FOOD_IDX] = loadTexture(getTextName(FOOD_FILE).c_str());
+	texture[EMPTY_IDX] = loadTexture(getTextName(EMPTY_FILE).c_str());
 
-	std::string head_path = TEXTURE_DIR + winTitle + HEAD_FILE + textureExt;
-	std::string body_path = TEXTURE_DIR + winTitle + BODY_FILE + textureExt;
-	std::string empty_path = TEXTURE_DIR + winTitle + EMPTY_FILE + textureExt;
-	std::string food_path = TEXTURE_DIR + winTitle + FOOD_FILE + textureExt;
+	for (u32 i = 0; i < TEXTURE_MAX; i++) {
+		if (!texture[i]) {
+			std::cerr << "Error: Texture " << i << " not found" << std::endl;
+			return (false);
+		}
+	}
 
-	std::cout << "head_path: " << head_path << std::endl;
-	std::cout << "body_path: " << body_path << std::endl;
-	std::cout << "empty_path: " << empty_path << std::endl;
-	std::cout << "food_path: " << food_path << std::endl;
-
-	texture[HEAD_IDX] = loadTexture(head_path.c_str());
-    texture[BODY_IDX] = loadTexture(body_path.c_str());
-	texture[EMPTY_IDX] = loadTexture(empty_path.c_str());
-	texture[FOOD_IDX] = loadTexture(food_path.c_str());
-	
 	font = loadFont(FONT_PATH);
 
 	return (window != nullptr);
@@ -237,7 +242,7 @@ void GraphicLib::close() {
 }
 
 void *GraphicLib::getTexture(s32 id) const {
-	if (id > 4) {
+	if (id > TEXTURE_MAX) {
 		return (nullptr);
 	}
 	return (texture[id]);
@@ -249,4 +254,8 @@ s32 GraphicLib::getWidth() const {
 
 s32 GraphicLib::getHeight() const {
 	return (winHeight);
+}
+
+std::string GraphicLib::getTitle() const {
+	return (winTitle);
 }
