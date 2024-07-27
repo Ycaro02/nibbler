@@ -287,3 +287,10 @@ void Nibbler::setColorMode(u32 value) {
 	SET_COLOR_BIT(gameState, value);
 }
 
+u32 Nibbler::getPause() {
+	return (GET_PAUSE_BIT(gameState));
+}
+
+void Nibbler::setPause(u32 value) {
+	SET_PAUSE_BIT(gameState, value);
+}

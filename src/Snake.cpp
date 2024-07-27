@@ -62,6 +62,7 @@ void Snake::resetSnake() {
 	toAdd.x = -1;
 	toAdd.y = -1;
 	direction = UP;
+	nextDirection = UP;
 	wasFood = false;
 }
 

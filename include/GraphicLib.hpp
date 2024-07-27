@@ -32,12 +32,13 @@ typedef enum textureIdx {
 	TEXTURE_MAX
 } textureIdx;
 
-/* Define for the library ID */
+/* Define for the library ID and game state */
 #define SFML_IDX 0
 #define SDL2_IDX 1
 #define RAYLIB_IDX 2
 #define RUNNING_IDX 3
 #define COLOR_IDX 4
+#define PAUSE_IDX 5
 
 /**	
  * 	Function pointer types for the dynamic library
@@ -84,6 +85,7 @@ typedef enum NormaliseKey {
 	NKEY_LEFT,			/* Key LEFT, move snake dir to LEFT */
 	NKEY_RIGHT,			/* Key RIGHT, move snake dir to RIGHT */
 	NKEY_A,				/* Key A, switch color mode */
+	NKEY_P,				/* Key P, pause the game */
 	NKEY_ESC,			/* Key ESC, close the window */
 } NormaliseKey;
 

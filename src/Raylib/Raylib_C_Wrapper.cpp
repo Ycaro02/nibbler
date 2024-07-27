@@ -109,25 +109,16 @@ extern "C" {
 		if (!raylibWindowGuard(window)) {
 			return (NKEY_INVALID);
 		}
-        if (WindowShouldClose()) {
-            return (NKEY_ESC);
-        } else if (IsKeyPressed(KEY_UP)) {
-            return (NKEY_UP);
-        } else if (IsKeyPressed(KEY_DOWN)) {
-            return (NKEY_DOWN);
-        } else if (IsKeyPressed(KEY_LEFT)) {
-            return (NKEY_LEFT);
-        } else if (IsKeyPressed(KEY_RIGHT)) {
-            return (NKEY_RIGHT);
-        } else if (IsKeyPressed(KEY_ONE)) {
-            return (NKEY_1);
-        } else if (IsKeyPressed(KEY_TWO)) {
-            return (NKEY_2);
-        } else if (IsKeyPressed(KEY_THREE)) {
-            return (NKEY_3);
-        } else if (IsKeyPressed(KEY_A)) {
-			return (NKEY_A);
-		}
+        if (WindowShouldClose()) { return (NKEY_ESC); }
+		else if (IsKeyPressed(KEY_UP)) { return (NKEY_UP); }
+		else if (IsKeyPressed(KEY_DOWN)) { return (NKEY_DOWN); }
+		else if (IsKeyPressed(KEY_LEFT)) { return (NKEY_LEFT); }
+		else if (IsKeyPressed(KEY_RIGHT)) { return (NKEY_RIGHT); }
+		else if (IsKeyPressed(KEY_ONE)) { return (NKEY_1); }
+		else if (IsKeyPressed(KEY_TWO)) { return (NKEY_2); }
+		else if (IsKeyPressed(KEY_THREE)) { return (NKEY_3); }
+		else if (IsKeyPressed(KEY_A)) { return (NKEY_A); }
+		else if (IsKeyPressed(KEY_P)) { return (NKEY_P); }
         return (NKEY_INVALID);
     }
 

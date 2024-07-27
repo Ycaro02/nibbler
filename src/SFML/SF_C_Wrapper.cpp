@@ -85,6 +85,7 @@ extern "C" {
 				else if (event.key.code == sf::Keyboard::Num3) { keyValue = NKEY_3 ; }
 				else if (event.key.code == sf::Keyboard::Escape) { keyValue = NKEY_ESC ; }
 				else if (event.key.code == sf::Keyboard::A) { keyValue = NKEY_A ; }
+				else if (event.key.code == sf::Keyboard::P) { keyValue = NKEY_P ; }
 			}
 		}
 		return (keyValue);

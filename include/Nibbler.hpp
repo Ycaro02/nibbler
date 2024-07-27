@@ -26,6 +26,7 @@ typedef std::chrono::milliseconds ChronoMilli;
 #define GET_RAYLIB_BIT(buff) (U32_GET_BIT(buff, RAYLIB_IDX))
 #define GET_RUNNING_BIT(buff) (U32_GET_BIT(buff, RUNNING_IDX))
 #define GET_COLOR_BIT(buff) (U32_GET_BIT(buff, COLOR_IDX))
+#define GET_PAUSE_BIT(buff) (U32_GET_BIT(buff, PAUSE_IDX))
 
 /* Special wrapper for lib idx bit */
 #define GET_LIB_IDX(buff) (GET_SFML_BIT(buff) ? SFML_IDX : GET_SDL2_BIT(buff) ? SDL2_IDX : RAYLIB_IDX)
@@ -34,6 +35,7 @@ typedef std::chrono::milliseconds ChronoMilli;
 /* Special wrapper for running and color bit */
 #define SET_RUNNING_BIT(buff, val) (U32_SET_BIT(buff, RUNNING_IDX, val))
 #define SET_COLOR_BIT(buff, val) (U32_SET_BIT(buff, COLOR_IDX, val))
+#define SET_PAUSE_BIT(buff, val) (U32_SET_BIT(buff, PAUSE_IDX, val))
 
 /* Nibbler class to handle the game (context)*/
 class Nibbler {
@@ -83,6 +85,9 @@ class Nibbler {
 	u32		getColorMode();
 	void	setColorMode(u32 value);
 
+	u32		getPause();
+	void	setPause(u32 value);
+
 	GraphicLib	*getCurrentLib();
 	Snake		&getSnake();
 
@@ -101,7 +106,8 @@ class Nibbler {
 	 * - Bit 0-2: SFML, SDL2, RAYLIB current lib, 1 if active, 0 if not
 	 * - Bit 3: Running
 	 * - Bit 4: Color mode
-	 * - Bit 5-31: Unused
+	 * - Bit 5: Pause
+	 * - Bit 6-31: Unused
 	 * @note: Use the getter and setter to access the bit
 	*/
 	u32					gameState;		/* Game state */

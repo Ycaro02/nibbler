@@ -99,10 +99,6 @@ GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std
 	writeTextF		=	(writeTextFunc)loadFuncPtr(dlPtr, "writeTextWrapper", path);
 }
 
-// static const char *getTextureName(std::string lib, std::string name, std::string ext) {
-// 	return (std::string(TEXTURE_DIR + lib + name + ext).c_str());
-// }
-
 std::string GraphicLib::getTextName(std::string name) const {
 	return (TEXTURE_DIR + winTitle + name + textureExt);
 }
@@ -194,6 +190,8 @@ void GraphicLib::processEvents(Nibbler &ctx) {
 		// moveStepByStep(ctx, key);
 	} else if (key == NKEY_A) {
 		ctx.setColorMode(!(ctx.getColorMode()));
+	} else if (key == NKEY_P) {
+		ctx.setPause(!(ctx.getPause()));
 	}
 }
 

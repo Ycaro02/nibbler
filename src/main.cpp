@@ -133,12 +133,14 @@ void GameLoop(Nibbler &ctx) {
 			ctx.setIsRunning(0);
 			throw std::runtime_error("Error: Create window");
 		}
-		/* Check if the board is full (win condition) */
-		ctx.checkBoardFull();
-		/* Spawn more food if needed */
-		ctx.spawnMoreFood();
-		/* Auto move the snake */
-		ctx.snakeAutoMove();
+		if (!ctx.getPause()) {
+			/* Check if the board is full (win condition) */
+			ctx.checkBoardFull();
+			/* Spawn more food if needed */
+			ctx.spawnMoreFood();
+			/* Auto move the snake */
+			ctx.snakeAutoMove();
+		}
 		/* Clear the window */
 		currentLib->clear();
 		/* Draw the game */
