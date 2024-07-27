@@ -104,13 +104,13 @@ bool GraphicLib::windowCreate() {
     window = winCreateF(winWidth, winHeight, winTitle.c_str());
 
 
-	std::string head_path = TEXTURE_DIR + textureExt + HEAD_TEST_FILE + textureExt;
+	// std::string head_path = TEXTURE_DIR + textureExt + HEAD_TEST_FILE + textureExt;
 	// std::string body_path = TEXTURE_DIR + textureExt + BODY_TEST_FILE + textureExt;
 
-	// std::string head_path = TEXTURE_DIR + textureExt + HEAD_FILE + textureExt;
-	std::string body_path = TEXTURE_DIR + textureExt + BODY_FILE + textureExt;
-	std::string empty_path = TEXTURE_DIR + textureExt + EMPTY_FILE + textureExt;
-	std::string food_path = TEXTURE_DIR + textureExt + FOOD_FILE + textureExt;
+	std::string head_path = TEXTURE_DIR + winTitle + HEAD_FILE + textureExt;
+	std::string body_path = TEXTURE_DIR + winTitle + BODY_FILE + textureExt;
+	std::string empty_path = TEXTURE_DIR + winTitle + EMPTY_FILE + textureExt;
+	std::string food_path = TEXTURE_DIR + winTitle + FOOD_FILE + textureExt;
 
 	std::cout << "head_path: " << head_path << std::endl;
 	std::cout << "body_path: " << body_path << std::endl;
