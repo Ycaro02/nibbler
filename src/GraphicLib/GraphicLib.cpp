@@ -103,10 +103,19 @@ GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std
 bool GraphicLib::windowCreate() {
     window = winCreateF(winWidth, winHeight, winTitle.c_str());
 
-	std::string head_path = HEAD_path + textureExt;
-	std::string body_path = BODY_path + textureExt;
-	std::string empty_path = EMPTY_path + textureExt;
-	std::string food_path = FOOD_path + textureExt;
+
+	std::string head_path = HEAD_DIR + textureExt + HEAD_TEST_FILE + textureExt;
+	// std::string body_path = BODY_DIR + textureExt + BODY_TEST_FILE + textureExt;
+
+	// std::string head_path = HEAD_DIR + textureExt + HEAD_FILE + textureExt;
+	std::string body_path = BODY_DIR + textureExt + BODY_FILE + textureExt;
+	std::string empty_path = EMPTY_DIR + textureExt + EMPTY_FILE + textureExt;
+	std::string food_path = FOOD_DIR + textureExt + FOOD_FILE + textureExt;
+
+	std::cout << "head_path: " << head_path << std::endl;
+	std::cout << "body_path: " << body_path << std::endl;
+	std::cout << "empty_path: " << empty_path << std::endl;
+	std::cout << "food_path: " << food_path << std::endl;
 
 	texture[HEAD_IDX] = loadTexture(head_path.c_str());
     texture[BODY_IDX] = loadTexture(body_path.c_str());

@@ -106,7 +106,7 @@ function load_SFML {
 
 
 # Function to download and install SDL2_ttf
-function install_sdl2_ttf {
+function load_SDL2_TTF {
 	local url="${1}"
     local ttf_version="${2}"
 
@@ -205,8 +205,8 @@ function load_raylib {
 all_deps_install 
 load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
 load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz" "SDL2-2.30.5"
+load_SDL2_TTF "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.22.0/SDL2_ttf-2.22.0.tar.gz" "2.22.0"
 load_raylib "https://github.com/raysan5/raylib.git" "4.5.0"
-install_sdl2_ttf "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.22.0/SDL2_ttf-2.22.0.tar.gz" "2.22.0"
 
 
 

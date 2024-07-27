@@ -6,10 +6,19 @@
 #include <iostream>
 #include <string>
 
-#define HEAD_path "rsc/texture/test."
-#define BODY_path "rsc/texture/green_wool."
-#define FOOD_path "rsc/texture/orange_wool."
-#define EMPTY_path "rsc/texture/white_wool."
+#define HEAD_DIR "rsc/texture/snake_"
+#define BODY_DIR "rsc/texture/snake_"
+#define FOOD_DIR "rsc/texture/food_"
+#define EMPTY_DIR "rsc/texture/empty_"
+
+#define HEAD_TEST_FILE "/HeadTest."
+#define BODY_TEST_FILE "/BodyTest." 
+
+#define HEAD_FILE "/HeadLeft."
+#define BODY_FILE "/Body."
+#define FOOD_FILE "/Food."
+#define EMPTY_FILE "/Empty."
+
 
 #define FONT_PATH "rsc/font/arial.ttf"
 
@@ -147,6 +156,7 @@ class GraphicLib {
 
 	/* Close the graphics library */
 	void close();
+
 	/* Process events */
 	void processEvents(Nibbler &ctx);
 
@@ -161,7 +171,7 @@ class GraphicLib {
 	/* Classic attributs */
 	void 				*dlPtr;			/* Pointer to the dynamic library */
     void				*window;		/* Pointer to the window */
-	void				*texture[4];	/* Pointer to the texture -> need to be an array */
+	void				*texture[4];	/* Pointer to the texture */
 	std::string			textureExt;	/* Path to the texture */
     s32					winWidth;		/* Width of the window */
     s32					winHeight;		/* Height of the window */
