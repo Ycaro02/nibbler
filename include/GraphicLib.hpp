@@ -6,11 +6,7 @@
 #include <iostream>
 #include <string>
 
-#define HEAD_DIR "rsc/texture/snake_"
-#define BODY_DIR "rsc/texture/snake_"
-#define FOOD_DIR "rsc/texture/food_"
-#define EMPTY_DIR "rsc/texture/empty_"
-
+#define TEXTURE_DIR "rsc/texture/"
 #define HEAD_TEST_FILE "/HeadTest."
 #define BODY_TEST_FILE "/BodyTest." 
 
