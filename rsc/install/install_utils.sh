@@ -120,7 +120,7 @@ function load_lib {
 	export LDFLAGS="-L${INSTALL_DIR}/lib"
 
 	if [ ! -f "${INSTALL_DIR}/include/GL/gl.h " ]; then
-		ls ${INSTALL_DIR}/include
+		ls -R ${INSTALL_DIR}/include
 		display_color_msg ${RED} "Missing GL/gl.h"
 		exit 1
 	fi
