@@ -46,15 +46,17 @@ display_color_msg ${MAGENTA} "Copy TMP lib and include files to install director
 cp -r ${TMP_LIB_DIR}/* ${INSTALL_DIR}/lib
 cp -r ${TMP_INCLUDE_DIR}/* ${INSTALL_DIR}/include
 
-
-ls -lR ${INSTALL_DIR}/lib
-exit 1
+#debug
+ls -lR ${INSTALL_DIR}
+# exit 1
 
 # Set environment variables for dependencies
 export PKG_CONFIG_PATH="${INSTALL_DIR}/lib/pkgconfig"
 export CFLAGS="-I${INSTALL_DIR}/include"
 export CXXFLAGS="-I${INSTALL_DIR}/include -L${INSTALL_DIR}/lib"
 export LDFLAGS="-L${INSTALL_DIR}/lib"
+
+export LD_LIBRARY_PATH="${INSTALL_DIR}/lib:${LD_LIBRARY_PATH}"
 
 # Cut script execution if a command fails
 set -e 
