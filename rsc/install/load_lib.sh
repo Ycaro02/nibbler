@@ -47,7 +47,7 @@ cp -r ${TMP_LIB_DIR}/* ${INSTALL_DIR}/lib
 cp -r ${TMP_INCLUDE_DIR}/* ${INSTALL_DIR}/include
 
 #debug
-ls -lR ${INSTALL_DIR}
+# ls -lR ${INSTALL_DIR}
 # exit 1
 
 # Set environment variables for dependencies
@@ -56,10 +56,18 @@ export CFLAGS="-I${INSTALL_DIR}/include"
 export CXXFLAGS="-I${INSTALL_DIR}/include -L${INSTALL_DIR}/lib"
 export LDFLAGS="-L${INSTALL_DIR}/lib"
 
-# export CXXLDFLAGS="-L${INSTALL_DIR}/lib"
-# export LD_LIBRARY_PATH="${INSTALL_DIR}/lib:${LD_LIBRARY_PATH}"
+export LD_LIBRARY_PATH="${INSTALL_DIR}/lib:${LD_LIBRARY_PATH}"
 
 # Use pkg-config to get the correct flags
+CXXFLAGS+=" $(pkg-config --cflags gl)"
+LDFLAGS+=" $(pkg-config --libs gl)"
+
+# Print the environment variables for debugging
+echo "PKG_CONFIG_PATH=${PKG_CONFIG_PATH}"
+echo "CFLAGS=${CFLAGS}"
+echo "CXXFLAGS=${CXXFLAGS}"
+echo "LDFLAGS=${LDFLAGS}"
+echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
 # Cut script execution if a command fails
 set -e 
