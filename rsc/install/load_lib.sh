@@ -3,10 +3,11 @@
 # Get the current directory
 PWD=$(pwd)
 
-
+# Tmp directories for lib and include files for deb packages
 TMP_LIB_DIR=${PWD}/tmp_lib
 TMP_INCLUDE_DIR=${PWD}/tmp_include
 
+# Load missing deb packages function
 source ${PWD}/rsc/install/install_missing_deb.sh
 
 load_missing_deb_package
@@ -45,6 +46,8 @@ display_color_msg ${MAGENTA} "Copy TMP lib and include files to install director
 cp -r ${TMP_LIB_DIR}/* ${INSTALL_DIR}/lib
 cp -r ${TMP_INCLUDE_DIR}/* ${INSTALL_DIR}/include
 
+
+ls -lR ${INSTALL_DIR}
 
 # Set environment variables for dependencies
 export PKG_CONFIG_PATH="${INSTALL_DIR}/lib/pkgconfig"
@@ -227,11 +230,11 @@ function load_raylib {
 
 }
 
-all_deps_install 
-load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
-load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz" "SDL2-2.30.5"
-load_SDL2_TTF "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.22.0/SDL2_ttf-2.22.0.tar.gz" "2.22.0"
-load_raylib "https://github.com/raysan5/raylib.git" "4.5.0"
+# all_deps_install 
+# load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
+# load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz" "SDL2-2.30.5"
+# load_SDL2_TTF "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.22.0/SDL2_ttf-2.22.0.tar.gz" "2.22.0"
+# load_raylib "https://github.com/raysan5/raylib.git" "4.5.0"
 
 
 
