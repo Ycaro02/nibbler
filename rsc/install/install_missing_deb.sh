@@ -1,18 +1,7 @@
 #!/bin/bash
 
 # Install missing deb packages
-# mesa-common-dev libgl-dev libdrm-dev libglx-dev libpciaccess-dev
-#   libudev-dev 
-
-#mesa common dev
-# wget http://security.ubuntu.com/ubuntu/pool/main/m/mesa/mesa-common-dev_24.0.5-1ubuntu1_amd64.deb -O mesa-common-dev_24.0.5-1ubuntu1_amd64.deb
-# wget http://security.ubuntu.com/ubuntu/pool/main/libg/libglvnd/libgl-dev_1.6.0-1_amd64.deb -O libgl-dev_1.6.0-1_amd64.deb
-# wget http://security.ubuntu.com/ubuntu/pool/main/libd/libdrm/libdrm-dev_2.4.101-2_amd64.deb -O libdrm-dev_2.4.101-2_amd64.deb
-# wget http://security.ubuntu.com/ubuntu/pool/main/libg/libglvnd/libglx-dev_1.7.0-1build1_amd64.deb -O libglx-dev_1.7.0-1build1_amd64.deb
-# wget https://www.ubuntuupdates.org/package/core/noble/main/base/libpciaccess-dev -O libpciaccess-dev_0.16-0ubuntu1_amd64.deb
-# wget http://security.ubuntu.com/ubuntu/pool/main/s/systemd/libudev-dev_237-3ubuntu10.44_amd64.deb -O libudev-dev_237-3ubuntu10.44_amd64.deb
-
-
+# mesa-common-dev libgl-dev libdrm-dev libglx-dev libpciaccess-dev libudev-dev 
 
 #create tmp directory
 TMP_DIR=${PWD}/tmp/deb

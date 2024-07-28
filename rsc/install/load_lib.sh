@@ -41,7 +41,7 @@ if [ ! -d ${TMP_INCLUDE_DIR} ]; then
 fi
 
 # Copy lib and include files to install directory
-display_color_msg ${YELLOW} "Copy lib and include files to install directory."
+display_color_msg ${MAGENTA} "Copy TMP lib and include files to install directory."
 cp -r ${TMP_LIB_DIR}/* ${INSTALL_DIR}/lib
 cp -r ${TMP_INCLUDE_DIR}/* ${INSTALL_DIR}/include
 
