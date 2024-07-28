@@ -8,11 +8,10 @@ TMP_LIB_DIR=${PWD}/tmp_lib
 TMP_INCLUDE_DIR=${PWD}/tmp_include
 
 # Load missing deb packages function
+# Need to declare PWD and TMP_LIB_DIR/TMP_INCLUDE_DIR before loading the script
 source ${PWD}/rsc/install/install_missing_deb.sh
 
-
-# MUTED LOAD DEB
-# load_missing_deb_package
+load_missing_deb_package
 
 # Variables
 BASE_DIR="$PWD/rsc/lib"
@@ -30,8 +29,7 @@ handle_quiet_opt "${@}"
 
 # Create directories
 display_color_msg ${YELLOW} "Create directories ${DEPS_DIR} and ${INSTALL_DIR}."
-mkdir -p ${DEPS_DIR}
-mkdir -p ${INSTALL_DIR}/lib/pkgconfig ${INSTALL_DIR}/include
+mkdir -p ${DEPS_DIR} ${INSTALL_DIR}/lib/pkgconfig ${INSTALL_DIR}/include
 
 if [ ! -d ${TMP_LIB_DIR} ]; then
 	display_color_msg ${RED} "TMP_LIB_DIR not found."
@@ -58,7 +56,7 @@ export CFLAGS="-I${INSTALL_DIR}/include"
 export CXXFLAGS="-I${INSTALL_DIR}/include -L${INSTALL_DIR}/lib"
 export LDFLAGS="-L${INSTALL_DIR}/lib"
 
-export LD_LIBRARY_PATH="${INSTALL_DIR}/lib:${LD_LIBRARY_PATH}"
+# export LD_LIBRARY_PATH="${INSTALL_DIR}/lib:${LD_LIBRARY_PATH}"
 
 # # Use pkg-config to get the correct flags
 # CXXFLAGS+=" $(pkg-config --cflags gl)"
