@@ -47,7 +47,8 @@ cp -r ${TMP_LIB_DIR}/* ${INSTALL_DIR}/lib
 cp -r ${TMP_INCLUDE_DIR}/* ${INSTALL_DIR}/include
 
 
-# ls -lR ${INSTALL_DIR}
+ls -lR ${INSTALL_DIR}/lib
+exit 1
 
 # Set environment variables for dependencies
 export PKG_CONFIG_PATH="${INSTALL_DIR}/lib/pkgconfig"
