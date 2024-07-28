@@ -2,21 +2,7 @@
 
 # Get the current directory
 PWD=$(pwd)
-
 PWD_SAVE=${PWD}
-
-# Tmp directories for lib and include files for deb packages
-TMP_DIR=${PWD}/tmp
-TMP_LIB_DIR=${PWD}/tmp_lib
-TMP_INCLUDE_DIR=${PWD}/tmp_include
-
-# Load missing deb packages function
-# Need to declare PWD and TMP_LIB_DIR/TMP_INCLUDE_DIR before loading the script
-source ${PWD}/rsc/install/install_missing_deb.sh
-
-load_missing_deb_package
-
-cd ${PWD_SAVE}
 
 # Variables
 BASE_DIR="$PWD/rsc/lib"
@@ -32,46 +18,44 @@ FD_OUT="/dev/stdout"
 # Update FD_OUT if -q option is passed
 handle_quiet_opt "${@}"
 
-# Create directories
-display_color_msg ${YELLOW} "Create directories ${DEPS_DIR} and ${INSTALL_DIR}."
-mkdir -p ${DEPS_DIR} ${INSTALL_DIR}/lib/pkgconfig ${INSTALL_DIR}/include
+function setup_deb_packages {
 
-if [ ! -d ${TMP_LIB_DIR} ]; then
-	display_color_msg ${RED} "TMP_LIB_DIR not found."
-	exit 1
-fi
+	# Tmp directories for lib and include files for deb packages
+	TMP_DIR=${PWD}/tmp
+	TMP_LIB_DIR=${PWD}/tmp_lib
+	TMP_INCLUDE_DIR=${PWD}/tmp_include
 
-if [ ! -d ${TMP_INCLUDE_DIR} ]; then
-	display_color_msg ${RED} "TMP_INCLUDE_DIR not found."
-	exit 1
-fi
+	# Load missing deb packages function
+	# Need to declare PWD and TMP_LIB_DIR/TMP_INCLUDE_DIR before loading the script
+	source ${PWD}/rsc/install/install_missing_deb.sh
 
-# Copy lib and include files to install directory
-display_color_msg ${MAGENTA} "Copy TMP lib and include files to install directory."
-cp -r ${TMP_LIB_DIR}/* ${INSTALL_DIR}/lib
-cp -r ${TMP_INCLUDE_DIR}/* ${INSTALL_DIR}/include
+	load_missing_deb_package
 
-rm -rf ${TMP_LIB_DIR} ${TMP_INCLUDE_DIR} ${TMP_DIR}
+	cd ${PWD_SAVE}
+	# Create directories
+	display_color_msg ${YELLOW} "Create directories ${DEPS_DIR} and ${INSTALL_DIR}."
+	mkdir -p ${DEPS_DIR} ${INSTALL_DIR}/lib/pkgconfig ${INSTALL_DIR}/include
+
+	if [ ! -d ${TMP_LIB_DIR} ]; then
+		display_color_msg ${RED} "TMP_LIB_DIR not found."
+		exit 1
+	fi
+
+	if [ ! -d ${TMP_INCLUDE_DIR} ]; then
+		display_color_msg ${RED} "TMP_INCLUDE_DIR not found."
+		exit 1
+	fi
+
+	# Copy lib and include files to install directory
+	display_color_msg ${MAGENTA} "Copy TMP lib and include files to install directory."
+	cp -r ${TMP_LIB_DIR}/* ${INSTALL_DIR}/lib
+	cp -r ${TMP_INCLUDE_DIR}/* ${INSTALL_DIR}/include
+
+	rm -rf ${TMP_LIB_DIR} ${TMP_INCLUDE_DIR} ${TMP_DIR}
+}
 
 
 
-# Set environment variables for dependencies
-export PKG_CONFIG_PATH="${INSTALL_DIR}/lib/pkgconfig"
-export CFLAGS="-I${INSTALL_DIR}/include"
-export CXXFLAGS="-I${INSTALL_DIR}/include -L${INSTALL_DIR}/lib"
-export LDFLAGS="-L${INSTALL_DIR}/lib"
-
-# export LD_LIBRARY_PATH="${INSTALL_DIR}/lib:${LD_LIBRARY_PATH}"
-# echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
-
-# Print the environment variables for debugging
-echo "PKG_CONFIG_PATH=${PKG_CONFIG_PATH}"
-echo "CFLAGS=${CFLAGS}"
-echo "CXXFLAGS=${CXXFLAGS}"
-echo "LDFLAGS=${LDFLAGS}"
-
-# Cut script execution if a command fails
-set -e 
 
 function all_deps_install {
 
@@ -105,11 +89,6 @@ function all_deps_install {
 
 	# 2 package needed for github actions, that will install :
 	# libdrm-dev libgl-dev libglx-dev libpciaccess-dev libudev-dev mesa-common-dev
-
-	# Libudev already on 42 computer but need to be install on github actions 
-	#libudev: https://www.freedesktop.org/software/systemd/systemd-248.tar.gz
-	# Try to work on mesa loading (openGl open source implementation) compiling with meson
-	# load_lib "https://mesa.freedesktop.org/archive/mesa-21.2.3.tar.xz"
 }
 
 function load_deps_SFML {
@@ -251,6 +230,23 @@ function load_raylib {
     fi
 
 }
+
+setup_deb_packages
+
+# Set environment variables for dependencies
+export PKG_CONFIG_PATH="${INSTALL_DIR}/lib/pkgconfig"
+export CFLAGS="-I${INSTALL_DIR}/include"
+export CXXFLAGS="-I${INSTALL_DIR}/include -L${INSTALL_DIR}/lib"
+export LDFLAGS="-L${INSTALL_DIR}/lib"
+
+# Print the environment variables for debugging
+# echo "PKG_CONFIG_PATH=${PKG_CONFIG_PATH}"
+# echo "CFLAGS=${CFLAGS}"
+# echo "CXXFLAGS=${CXXFLAGS}"
+# echo "LDFLAGS=${LDFLAGS}"
+
+# Cut script execution if a command fails
+set -e 
 
 all_deps_install 
 load_SFML "https://github.com/SFML/SFML.git" "2.6.1"

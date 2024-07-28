@@ -7,7 +7,7 @@ function handle_quiet_opt {
 	mkdir -p ${PWD}/rsc/log
 
 	if [ "$1" == "-q" ]; then
-		FD_OUT="${PWD}/rsc/log/init_sfml.log"
+		FD_OUT="${PWD}/rsc/log/load_lib.log"
 		rm -f ${FD_OUT}
 		display_color_msg ${CYAN} "Quiet mode enabled log in ${FD_OUT}."
 	else
