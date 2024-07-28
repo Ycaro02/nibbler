@@ -115,6 +115,14 @@ function load_lib {
 	local name=$(extract_name ${tmp_url})
 
 	
+	export PKG_CONFIG_PATH="${INSTALL_DIR}/lib/pkgconfig"
+	export CFLAGS="-I${INSTALL_DIR}/include"
+	export LDFLAGS="-L${INSTALL_DIR}/lib"
+
+	if [ ! -f "${INSTALL_DIR}/include/GL/gl.h " ]; then
+		display_color_msg ${RED} "Missing GL/gl.h"
+		exit 1
+	fi
 
 	display_color_msg ${MAGENTA} "Download ${name}..."
 	install_library ${url} ${name} ${extension} ${configure_flags} >> $FD_OUT 2>&1
