@@ -1,8 +1,17 @@
 #!/bin/bash
 
-# Variables
 # Get the current directory
 PWD=$(pwd)
+
+
+TMP_LIB_DIR=${PWD}/tmp_lib
+TMP_INCLUDE_DIR=${PWD}/tmp_include
+
+source ${PWD}/rsc/install/install_missing_deb.sh
+
+load_missing_deb_package
+
+# Variables
 BASE_DIR="$PWD/rsc/lib"
 DEPS_DIR="$BASE_DIR/deps"
 INSTALL_DIR="$BASE_DIR/install"
@@ -20,6 +29,22 @@ handle_quiet_opt "${@}"
 display_color_msg ${YELLOW} "Create directories ${DEPS_DIR} and ${INSTALL_DIR}."
 mkdir -p ${DEPS_DIR}
 mkdir -p ${INSTALL_DIR}/lib/pkgconfig ${INSTALL_DIR}/include
+
+if [ ! -d ${TMP_LIB_DIR} ]; then
+	display_color_msg ${RED} "TMP_LIB_DIR not found."
+	exit 1
+fi
+
+if [ ! -d ${TMP_INCLUDE_DIR} ]; then
+	display_color_msg ${RED} "TMP_INCLUDE_DIR not found."
+	exit 1
+fi
+
+# Copy lib and include files to install directory
+display_color_msg ${YELLOW} "Copy lib and include files to install directory."
+cp -r ${TMP_LIB_DIR}/* ${INSTALL_DIR}/lib
+cp -r ${TMP_INCLUDE_DIR}/* ${INSTALL_DIR}/include
+
 
 # Set environment variables for dependencies
 export PKG_CONFIG_PATH="${INSTALL_DIR}/lib/pkgconfig"
