@@ -1,23 +1,5 @@
 #!/bin/bash
 
-# Get the current directory
-PWD=$(pwd)
-PWD_SAVE=${PWD}
-
-# Variables
-BASE_DIR="$PWD/rsc/lib"
-DEPS_DIR="$BASE_DIR/deps"
-INSTALL_DIR="$BASE_DIR/install"
-
-# Load the color script and utils functions
-# Need to declare PWD and DEPS/INSTALL_DIR before loading the script
-source ${PWD}/rsc/install/install_utils.sh
-
-FD_OUT="/dev/stdout"
-
-# Update FD_OUT if -q option is passed
-handle_quiet_opt "${@}"
-
 function setup_deb_packages {
 
 	# Tmp directories for lib and include files for deb packages
@@ -54,10 +36,8 @@ function setup_deb_packages {
 	rm -rf ${TMP_LIB_DIR} ${TMP_INCLUDE_DIR} ${TMP_DIR}
 }
 
-
-
-
-function all_deps_install {
+# install dependencies
+function load_dependencies {
 
 	# load libX11
 	load_lib "https://www.x.org/archive/individual/lib/libX11-1.7.2.tar.gz"
@@ -132,7 +112,6 @@ function load_SFML {
 		display_color_msg ${GREEN} "SFML instalation done in ${INSTALL_DIR}."
 	fi
 }
-
 
 # Function to download and install SDL2_ttf
 function load_SDL2_TTF {
@@ -231,6 +210,25 @@ function load_raylib {
 
 }
 
+
+# Get the current directory
+PWD=$(pwd)
+PWD_SAVE=${PWD}
+
+# Variables
+BASE_DIR="$PWD/rsc/lib"
+DEPS_DIR="$BASE_DIR/deps"
+INSTALL_DIR="$BASE_DIR/install"
+
+# Load the color script and utils functions
+# Need to declare PWD and DEPS/INSTALL_DIR before loading the script
+source ${PWD}/rsc/install/install_utils.sh
+
+FD_OUT="/dev/stdout"
+
+# Update FD_OUT if -q option is passed
+handle_quiet_opt "${@}"
+
 setup_deb_packages
 
 # Set environment variables for dependencies
@@ -245,10 +243,10 @@ export LDFLAGS="-L${INSTALL_DIR}/lib"
 # echo "CXXFLAGS=${CXXFLAGS}"
 # echo "LDFLAGS=${LDFLAGS}"
 
-# Cut script execution if a command fails
+# Cut script execution if any command fails
 set -e 
 
-all_deps_install 
+load_dependencies
 load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
 load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz" "SDL2-2.30.5"
 load_SDL2_TTF "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.22.0/SDL2_ttf-2.22.0.tar.gz" "2.22.0"
