@@ -51,8 +51,8 @@ cp -r ${TMP_INCLUDE_DIR}/* ${INSTALL_DIR}/include
 
 # Set environment variables for dependencies
 export PKG_CONFIG_PATH="${INSTALL_DIR}/lib/pkgconfig"
-export CFLAGS="-I${INSTALL_DIR}/include -L${INSTALL_DIR}/lib"
-export CXXFLAGS="-I${INSTALL_DIR}/include"
+export CFLAGS="-I${INSTALL_DIR}/include"
+export CXXFLAGS="-I${INSTALL_DIR}/include -L${INSTALL_DIR}/lib"
 export LDFLAGS="-L${INSTALL_DIR}/lib"
 
 # Cut script execution if a command fails
