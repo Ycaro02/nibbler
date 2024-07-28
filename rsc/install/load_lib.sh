@@ -57,16 +57,9 @@ export CXXFLAGS="-I${INSTALL_DIR}/include -L${INSTALL_DIR}/lib"
 export LDFLAGS="-L${INSTALL_DIR}/lib"
 
 # export CXXLDFLAGS="-L${INSTALL_DIR}/lib"
-
-export LD_LIBRARY_PATH="${INSTALL_DIR}/lib:${LD_LIBRARY_PATH}"
+# export LD_LIBRARY_PATH="${INSTALL_DIR}/lib:${LD_LIBRARY_PATH}"
 
 # Use pkg-config to get the correct flags
-TESTC+=" $(pkg-config --cflags gl)"
-TESTLD+=" $(pkg-config --libs gl)"
-
-echo "TESTC: ${TESTC}"
-echo "TESTLD: ${TESTLD}"
-exit 1
 
 # Cut script execution if a command fails
 set -e 
@@ -82,6 +75,10 @@ function all_deps_install {
 
 	# Load libXinerama
 	load_lib "https://www.x.org/archive/individual/lib/libXinerama-1.1.4.tar.gz"
+	
+	echo "Before GLU"
+	ls -lR ${INSTALL_DIR}/lib
+	echo "\n\n"
 	# Load libGLU
 	load_lib "ftp://ftp.freedesktop.org/pub/mesa/glu/glu-9.0.1.tar.gz"
 	# Load freeglut
