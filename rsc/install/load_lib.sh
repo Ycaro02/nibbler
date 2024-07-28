@@ -10,7 +10,9 @@ TMP_INCLUDE_DIR=${PWD}/tmp_include
 # Load missing deb packages function
 source ${PWD}/rsc/install/install_missing_deb.sh
 
-load_missing_deb_package
+
+# MUTED LOAD DEB
+# load_missing_deb_package
 
 # Variables
 BASE_DIR="$PWD/rsc/lib"
