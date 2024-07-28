@@ -56,6 +56,8 @@ export CFLAGS="-I${INSTALL_DIR}/include"
 export CXXFLAGS="-I${INSTALL_DIR}/include -L${INSTALL_DIR}/lib"
 export LDFLAGS="-L${INSTALL_DIR}/lib"
 
+export CXXLDFLAGS="-L${INSTALL_DIR}/lib"
+
 export LD_LIBRARY_PATH="${INSTALL_DIR}/lib:${LD_LIBRARY_PATH}"
 
 # Cut script execution if a command fails
