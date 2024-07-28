@@ -40,6 +40,11 @@ function load_missing_deb_package {
 	load_deb_package http://security.ubuntu.com/ubuntu/pool/main/libp/libpciaccess/libpciaccess-dev_0.17-3build1_amd64.deb libpciaccess-dev_0.16-0ubuntu1_amd64.deb libpciaccess-dev
 	load_deb_package http://security.ubuntu.com/ubuntu/pool/main/s/systemd/libudev-dev_255.4-1ubuntu8.2_amd64.deb libudev-dev_237-3ubuntu10.44_amd64.deb libudev-dev
 
+	load_deb_package http://archive.ubuntu.com/ubuntu/pool/main/m/mesa/libgl1-mesa-glx_22.2.5-0ubuntu0.1_amd64.deb libgl1-mesa-glx_22.2.5-0ubuntu0.1_amd64.deb libgl1-mesa-glx
+	load_deb_package http://archive.ubuntu.com/ubuntu/pool/main/m/mesa/libgl1-mesa-dri_22.2.5-0ubuntu0.1_amd64.deb libgl1-mesa-dri_22.2.5-0ubuntu0.1_amd64.deb libgl1-mesa-dri
+	load_deb_package http://archive.ubuntu.com/ubuntu/pool/main/m/mesa/libglx-mesa0_22.2.5-0ubuntu0.1_amd64.deb libglx-mesa0_22.2.5-0ubuntu0.1_amd64.deb libglx-mesa0
+
+
 	cd ../..
 
 	install_deb_package mesa-common-dev
@@ -48,6 +53,10 @@ function load_missing_deb_package {
 	install_deb_package libglx-dev
 	install_deb_package libpciaccess-dev
 	install_deb_package libudev-dev
+
+	install_deb_package libgl1-mesa-glx
+	install_deb_package libgl1-mesa-dri
+	install_deb_package libglx-mesa0
 
 	rm -rf tmp
 }
