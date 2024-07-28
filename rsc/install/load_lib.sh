@@ -58,9 +58,9 @@ export LDFLAGS="-L${INSTALL_DIR}/lib"
 
 export LD_LIBRARY_PATH="${INSTALL_DIR}/lib:${LD_LIBRARY_PATH}"
 
-# Use pkg-config to get the correct flags
-CXXFLAGS+=" $(pkg-config --cflags gl)"
-LDFLAGS+=" $(pkg-config --libs gl)"
+# # Use pkg-config to get the correct flags
+# CXXFLAGS+=" $(pkg-config --cflags gl)"
+# LDFLAGS+=" $(pkg-config --libs gl)"
 
 # Print the environment variables for debugging
 echo "PKG_CONFIG_PATH=${PKG_CONFIG_PATH}"
