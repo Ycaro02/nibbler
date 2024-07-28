@@ -6,7 +6,6 @@
 #create tmp directory
 # PWD=$(pwd)
 
-TMP_DIR=${PWD}/tmp
 # TMP_LIB_DIR=${PWD}/tmp_lib
 # TMP_INCLUDE_DIR=${PWD}/tmp_include
 

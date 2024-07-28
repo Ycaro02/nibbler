@@ -6,6 +6,7 @@ PWD=$(pwd)
 PWD_SAVE=${PWD}
 
 # Tmp directories for lib and include files for deb packages
+TMP_DIR=${PWD}/tmp
 TMP_LIB_DIR=${PWD}/tmp_lib
 TMP_INCLUDE_DIR=${PWD}/tmp_include
 
@@ -49,6 +50,8 @@ fi
 display_color_msg ${MAGENTA} "Copy TMP lib and include files to install directory."
 cp -r ${TMP_LIB_DIR}/* ${INSTALL_DIR}/lib
 cp -r ${TMP_INCLUDE_DIR}/* ${INSTALL_DIR}/include
+
+rm -rf ${TMP_LIB_DIR} ${TMP_INCLUDE_DIR} ${TMP_DIR}
 
 
 
