@@ -9,6 +9,8 @@
 # TMP_LIB_DIR=${PWD}/tmp_lib
 # TMP_INCLUDE_DIR=${PWD}/tmp_include
 
+# Thanks https://www.ubuntuupdates.org/ for the deb packages
+
 
 # Include and lib directory options
 ONLY_INC="0"

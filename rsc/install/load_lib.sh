@@ -85,16 +85,9 @@ function all_deps_install {
 	# Load libXinerama
 	load_lib "https://www.x.org/archive/individual/lib/libXinerama-1.1.4.tar.gz"
 	
-	echo "Before GLU"
-	ls -lR ${INSTALL_DIR}/lib
-	echo "\n\n\nldd deps\n"
-	ldd ${INSTALL_DIR}/lib/libGL.so
-	echo "\n\n"
 	# Load libGLU
 	load_lib "ftp://ftp.freedesktop.org/pub/mesa/glu/glu-9.0.1.tar.gz"
-	# Load freeglut
-	load_lib_cmake "https://sourceforge.net/projects/freeglut/files/freeglut/3.4.0/freeglut-3.4.0.tar.gz" "freeglut-3.4.0"
-
+	
 	
 	# Deps for Xcursor and Xi: libXfixes
 	load_lib "https://www.x.org/archive/individual/lib/libXfixes-5.0.3.tar.gz"
@@ -105,6 +98,10 @@ function all_deps_install {
 
 	# Load FreeType, needed in SFML, SDL2_ttf and Raylib
 	load_lib "https://sourceforge.net/projects/freetype/files/freetype2/2.11.0/freetype-2.11.0.tar.gz/download"
+
+	# Load freeglut (Need Xinput)
+	load_lib_cmake "https://sourceforge.net/projects/freeglut/files/freeglut/3.4.0/freeglut-3.4.0.tar.gz" "freeglut-3.4.0"
+
 
 	# 2 package needed for github actions, that will install :
 	# libdrm-dev libgl-dev libglx-dev libpciaccess-dev libudev-dev mesa-common-dev
