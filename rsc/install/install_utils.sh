@@ -112,9 +112,6 @@ function load_lib {
 	local extension=$(extract_extension ${tmp_url})
 	local name=$(extract_name ${tmp_url})
 
-	
-
-	export CXXFLAGS="-I${INSTALL_DIR}/include"
 
 	display_color_msg ${MAGENTA} "Download ${name}..."
 	install_library ${url} ${name} ${extension} ${configure_flags} >> $FD_OUT 2>&1
