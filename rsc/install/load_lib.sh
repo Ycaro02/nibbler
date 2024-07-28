@@ -86,6 +86,8 @@ function all_deps_install {
 	
 	echo "Before GLU"
 	ls -lR ${INSTALL_DIR}/lib
+	echo "\n\n\nldd deps\n"
+	ldd ${INSTALL_DIR}/lib/libGL.so
 	echo "\n\n"
 	# Load libGLU
 	load_lib "ftp://ftp.freedesktop.org/pub/mesa/glu/glu-9.0.1.tar.gz"
