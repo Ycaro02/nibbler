@@ -91,8 +91,10 @@ function load_missing_deb_package {
 	load_deb_package http://security.ubuntu.com/ubuntu/pool/main/s/systemd/libudev1_255.4-1ubuntu8.2_amd64.deb libudev1_237-3ubuntu10.44_amd64.deb libudev1 ${ONLY_LIB}
 
 
-	cd ../..
-	rm -rf ${TMP_DIR}
+	# cd ..
+	# echo "\n\nDONE\n\n"
+	# echo "PWD in load missing $(pwd)"
+	# rm -rf ${TMP_DIR}
 }
 
 load_missing_deb_package

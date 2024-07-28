@@ -3,6 +3,8 @@
 # Get the current directory
 PWD=$(pwd)
 
+PWD_SAVE=${PWD}
+
 # Tmp directories for lib and include files for deb packages
 TMP_LIB_DIR=${PWD}/tmp_lib
 TMP_INCLUDE_DIR=${PWD}/tmp_include
@@ -12,6 +14,8 @@ TMP_INCLUDE_DIR=${PWD}/tmp_include
 source ${PWD}/rsc/install/install_missing_deb.sh
 
 load_missing_deb_package
+
+cd ${PWD_SAVE}
 
 # Variables
 BASE_DIR="$PWD/rsc/lib"
@@ -46,9 +50,7 @@ display_color_msg ${MAGENTA} "Copy TMP lib and include files to install director
 cp -r ${TMP_LIB_DIR}/* ${INSTALL_DIR}/lib
 cp -r ${TMP_INCLUDE_DIR}/* ${INSTALL_DIR}/include
 
-#debug
-# ls -lR ${INSTALL_DIR}
-# exit 1
+
 
 # Set environment variables for dependencies
 export PKG_CONFIG_PATH="${INSTALL_DIR}/lib/pkgconfig"
@@ -57,17 +59,13 @@ export CXXFLAGS="-I${INSTALL_DIR}/include -L${INSTALL_DIR}/lib"
 export LDFLAGS="-L${INSTALL_DIR}/lib"
 
 # export LD_LIBRARY_PATH="${INSTALL_DIR}/lib:${LD_LIBRARY_PATH}"
-
-# # Use pkg-config to get the correct flags
-# CXXFLAGS+=" $(pkg-config --cflags gl)"
-# LDFLAGS+=" $(pkg-config --libs gl)"
+# echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
 # Print the environment variables for debugging
 echo "PKG_CONFIG_PATH=${PKG_CONFIG_PATH}"
 echo "CFLAGS=${CFLAGS}"
 echo "CXXFLAGS=${CXXFLAGS}"
 echo "LDFLAGS=${LDFLAGS}"
-echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
 # Cut script execution if a command fails
 set -e 
