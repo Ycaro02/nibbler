@@ -62,7 +62,7 @@ function load_SFML {
 	# Clone SFML repository if it doesn't exist
 	if [ ! -d "${sfml_dir}" ]; then
 		load_deps_SFML
-		display_color_msg ${CYAN} "Clone SFML repo..."
+		display_color_msg ${CYAN} "Get SFML repo..."
 		git clone -b ${sfml_version} --depth 1 ${sfm_repo} ${sfml_dir} >> $FD_OUT 2>&1
 		# Create build directory
 		mkdir -p ${build_dir}
@@ -128,13 +128,15 @@ function load_SDL2 {
 	cd ${BASE_DIR}
 
 	if [ ! -d "${sdl_dir}" ]; then
-		display_color_msg ${YELLOW} "Download and install SDL2..."
+        display_color_msg ${CYAN} "Get SDL2 repo..."
+
 		# Download and install SDL2
 		wget ${sdl_archive} >> $FD_OUT 2>&1
 		tar -xvf ${sdl_dir_version}.tar.gz >> $FD_OUT 2>&1
 		rm -rf ${sdl_dir_version}.tar.gz
 		mv ${sdl_dir_version} ${sdl_dir}
 		cd ${sdl_dir}
+		display_color_msg ${YELLOW} "Compile and install SDL2 in ${INSTALL_DIR}..."
 		mkdir build
 		cd build
 		cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
@@ -144,10 +146,9 @@ function load_SDL2 {
             -DBUILD_SHARED_LIBS=ON \
 			>> $FD_OUT 2>&1
 
-
 		make -s -j$(nproc) >> $FD_OUT 2>&1
 		make -s install >> $FD_OUT 2>&1
-		display_color_msg ${GREEN} "SDL2 instalation done in ${INSTALL_DIR}."
+		display_color_msg ${GREEN} "SDL2 installation done in ${INSTALL_DIR}."
 	fi
 
 }
@@ -160,7 +161,7 @@ function load_raylib {
 
     # Clone Raylib repository if it doesn't exist
     if [ ! -d "${raylib_dir}" ]; then
-        display_color_msg ${CYAN} "Clone Raylib repo..."
+        display_color_msg ${CYAN} "Get Raylib repo..."
         git clone -b ${raylib_version} --depth 1 ${raylib_repo} ${raylib_dir} >> $FD_OUT 2>&1
 		# Create build directory
 		mkdir -p ${build_dir}
@@ -218,12 +219,3 @@ load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
 load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz" "SDL2-2.30.5"
 load_SDL2_TTF "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.22.0/SDL2_ttf-2.22.0.tar.gz" "2.22.0"
 load_raylib "https://github.com/raysan5/raylib.git" "4.5.0"
-
-
-
-
-# Old code for SFML deps
-# echo "Dowlnoading libsndfile..."
-# install_library "https://github.com/libsndfile/libsndfile/releases/download/1.2.2/libsndfile-1.2.2.tar.xz" "libsndfile" "tar.xz" >> $FD_OUT 2>&1
-#   -DSNDFILE_INCLUDE_DIR=$INSTALL_DIR/include \
-#   -DSNDFILE_LIBRARY=$INSTALL_DIR/lib/libsndfile.so ..

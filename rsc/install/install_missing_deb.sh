@@ -73,8 +73,9 @@ function load_deb_package {
 
 
 function load_missing_deb_package {
-	echo "Installing missing deb packages $(pwd)"
 	local ubuntu_url="http://security.ubuntu.com/ubuntu/pool/"
+
+	display_color_msg ${YELLOW} "Installing missing deb packages from ${ubuntu_url} "
 
 	# Mesa common dev and his dependencies (libgl, libGLU)
 	load_deb_package ${ubuntu_url}/main/m/mesa/mesa-common-dev_24.0.5-1ubuntu1_amd64.deb mesa-common-dev ${INC_AND_LIB}
