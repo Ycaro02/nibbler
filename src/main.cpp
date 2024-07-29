@@ -16,6 +16,7 @@
 #define YELLOW_RGBA			(RGBA_TO_UINT32(255,255,0,255))		/* Food color */
 #define DARL_BLUE_RGBA		(RGBA_TO_UINT32(0,0,139,255))		/* Top Band color */
 #define PINK_RGBA			(RGBA_TO_UINT32(255,0,255,255))		/* Snake head color */
+#define DARK_RGBA			(RGBA_TO_UINT32(0,0,0,255))			/* Base color */
 
 
 static bool checkCreateWin(GraphicLib *lib) {
@@ -110,17 +111,18 @@ void textureDisplay(GraphicLib *lib, Nibbler &ctx) {
 }
 
 static void drawGame(GraphicLib *lib, Nibbler &ctx) {
+	std::string	libName = lib->getTitle();
+	s32			textStartX = (ctx.getWidth() >> 1) * TILE_SIZE - 60;
+	
 	if (ctx.getColorMode()) {
 		colorDisplay(lib, ctx);
 	} else {
 		textureDisplay(lib, ctx);
 	}
-
-	s32 textStartX = (ctx.getWidth() >> 1) * TILE_SIZE - 60;
-
-	std::string libName = lib->getTitle();
-
 	lib->writeText(libName.c_str(), {textStartX, 30}, 40, WHITE_RGBA);
+	if (ctx.getPause()) {
+		lib->writeText("PAUSE", {textStartX - 60, ((ctx.getHeight() >> 1) * TILE_SIZE)}, 80, DARK_RGBA);
+	}
 }
 
 void GameLoop(Nibbler &ctx) {
