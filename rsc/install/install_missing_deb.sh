@@ -88,9 +88,10 @@ function load_missing_deb_package {
 	load_deb_package ${ubuntu_url}/main/libg/libglvnd/libgl1_1.7.0-1build1_amd64.deb libgl1 ${ONLY_LIB}
 
 	# Lib glx and his dependencies
-	load_deb_package ${ubuntu_url}/main/libg/libglvnd/libglx-dev_1.7.0-1build1_amd64.deb libglx-dev ${INC_AND_LIB}
-	load_deb_package ${ubuntu_url}/main/libg/libglvnd/libglx0_1.7.0-1build1_amd64.deb libglx0 ${ONLY_LIB}
-
+	# load_deb_package ${ubuntu_url}/main/libg/libglvnd/libglx-dev_1.7.0-1build1_amd64.deb libglx-dev ${INC_AND_LIB}
+	# load_deb_package ${ubuntu_url}/main/libg/libglvnd/libglx0_1.7.0-1build1_amd64.deb libglx0 ${ONLY_LIB}
+	load_deb_package http://security.ubuntu.com/ubuntu/pool/main/libg/libglvnd/libglx-dev_1.6.0-1_amd64.deb libglx-dev ${INC_AND_LIB}
+	load_deb_package http://security.ubuntu.com/ubuntu/pool/main/libg/libglvnd/libglx0_1.6.0-1_amd64.deb libglx0 ${ONLY_LIB}
 
 	# Lib drm and his dependencies
 	load_deb_package ${ubuntu_url}/main/libd/libdrm/libdrm-dev_2.4.101-2_amd64.deb libdrm-dev ${INC_AND_LIB}
