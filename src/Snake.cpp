@@ -179,9 +179,6 @@ void Snake::SnakeMove(Nibbler &ctx, s32 direction) {
 		// std::cout << "Snake eat body size : " << body.size() << std::endl;
 	}
 
-	/* Update direction */
-	setDirection(getNextDirection());
-
 	/* Update head position */
 	if (direction == UP) { newHead.y -= 1; }
 	else if (direction == DOWN) { newHead.y += 1; }

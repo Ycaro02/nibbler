@@ -205,6 +205,9 @@ void Nibbler::snakeAutoMove() {
 	ChronoTimePoint now = std::chrono::steady_clock::now();
 	ChronoMilli diff = std::chrono::duration_cast<ChronoMilli>(now - lastMove);
 	if (diff.count() >= SNAKE_MOVE_MS) {
+		/* Update direction */
+		snake.setDirection(snake.getNextDirection());
+		/* Move the snake */
 		snake.SnakeMove(*this, snake.getDirection());
 		lastMove = now;
 	}
