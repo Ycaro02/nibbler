@@ -115,7 +115,8 @@ Nibbler::Nibbler(std::string w, std::string h) {
 
 	std::cout << "Width: " << width << " Height: " << height << std::endl;
 
-	/* Initialize gameState value */	
+	/* Initialize gameState value */
+	gameState = 0;	
 	setIsRunning(1);
 	setCurrentLibIdx(SFML_IDX);
 	setColorMode(0);
