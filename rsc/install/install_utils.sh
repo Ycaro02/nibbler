@@ -65,7 +65,6 @@ function cmake_install_lib {
 		sed -i '/ADD_DEMO(/,/^$/d' CMakeLists.txt
 		mkdir -p ${DEPS_DIR}/${name}/build
 		cd ${DEPS_DIR}/${name}/build
-		echo "cmake .. DCMAKE_INCLUDE_PATH=${INSTALL_DIR}/include DCMAKE_LIBRARY_PATH=${INSTALL_DIR}/lib"
 		cmake .. -DCMAKE_C_FLAGS="-I${INSTALL_DIR}/include" -DCMAKE_LIBRARY_PATH="${INSTALL_DIR}/lib" -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}
 		make -s -j$(nproc)
 		make install
@@ -127,3 +126,29 @@ function load_lib_cmake {
 	cmake_install_lib ${url} ${name} ${extension} >> $FD_OUT 2>&1
 	display_color_msg ${GREEN} "Done ${name}"
 }
+
+# install dependencies (old version now using debian packages)
+# function load_dependencies {
+	# load libX11
+	# load_lib "https://www.x.org/archive/individual/lib/libX11-1.7.2.tar.gz"
+	# load libXext
+	# load_lib "https://www.x.org/archive/individual/lib/libXext-1.3.4.tar.gz"
+	# Load libXrandr
+	# load_lib "https://www.x.org/archive/individual/lib/libXrandr-1.5.3.tar.gz"
+
+	# Load libXinerama
+	# load_lib "https://www.x.org/archive/individual/lib/libXinerama-1.1.4.tar.gz"
+	
+	# Load libGLU
+	# load_lib "ftp://ftp.freedesktop.org/pub/mesa/glu/glu-9.0.1.tar.gz"
+	
+	# Deps for Xcursor and Xi: libXfixes
+	# load_lib "https://www.x.org/archive/individual/lib/libXfixes-5.0.3.tar.gz"
+
+	# Load libXcursor and libXi
+	# load_lib "https://www.x.org/archive/individual/lib/libXcursor-1.2.0.tar.gz"
+	# load_lib "https://www.x.org/archive/individual/lib/libXi-1.7.10.tar.gz"
+	
+	# Load freeglut (Need Xinput)
+	# load_lib_cmake "https://sourceforge.net/projects/freeglut/files/freeglut/3.4.0/freeglut-3.4.0.tar.gz" "freeglut-3.4.0"
+# }

@@ -17,6 +17,8 @@
 
 # Thanks https://www.ubuntuupdates.org/ for the deb packages
 
+source ${PWD}/rsc/sh/color.sh
+
 # Include and lib directory options
 ONLY_INC="0"
 ONLY_LIB="1"
@@ -46,19 +48,16 @@ function install_deb_package {
 
 function load_deb_package {
 	local deb_url="${1}"
-	# local deb_file="${2}"
-	# local package_name="${3}"
-	# local include_lib_dir="${4}"
-
 	local package_name="${2}"
 	local include_lib_dir="${3}"
 	
 	local deb_file="${package_name}.deb"
 
+	display_color_msg ${MAGENTA} "Download deb package ${package_name}..."
 
-	wget ${deb_url} -O ${deb_file}
+	wget ${deb_url} -O ${deb_file} >> $FD_OUT 2>&1
 
-	dpkg-deb -x ${deb_file} ${package_name}
+	dpkg-deb -x ${deb_file} ${package_name} >> $FD_OUT 2>&1
 
 	if [ $? -ne 0 ]; then
 		echo "Failed to install ${package_name}"
@@ -66,6 +65,9 @@ function load_deb_package {
 	fi
 	rm ${deb_file}
 	install_deb_package ${package_name} ${include_lib_dir}
+
+	display_color_msg ${GREEN} "Download deb package ${package_name}"
+
 }
 
 

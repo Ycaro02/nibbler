@@ -3,6 +3,7 @@
 function setup_deb_packages {
 
 	# Tmp directories for lib and include files for deb packages
+	local pwd_save=${PWD}
 	TMP_DIR=${PWD}/tmp
 	TMP_LIB_DIR=${PWD}/tmp_lib
 	TMP_INCLUDE_DIR=${PWD}/tmp_include
@@ -11,9 +12,12 @@ function setup_deb_packages {
 	# Need to declare PWD and TMP_LIB_DIR/TMP_INCLUDE_DIR before loading the script
 	source ${PWD}/rsc/install/install_missing_deb.sh
 
+	# Load and install deb packages
 	load_missing_deb_package
 
-	cd ${PWD_SAVE}
+	# Go back to the original directory
+	cd ${pwd_save}
+
 	# Create directories
 	display_color_msg ${YELLOW} "Create directories ${DEPS_DIR} and ${INSTALL_DIR}."
 	mkdir -p ${DEPS_DIR} ${INSTALL_DIR}/lib/pkgconfig ${INSTALL_DIR}/include
@@ -36,48 +40,17 @@ function setup_deb_packages {
 	rm -rf ${TMP_LIB_DIR} ${TMP_INCLUDE_DIR} ${TMP_DIR}
 }
 
-# install dependencies
-function load_dependencies {
-
-	# load libX11
-	# load_lib "https://www.x.org/archive/individual/lib/libX11-1.7.2.tar.gz"
-	# load libXext
-	# load_lib "https://www.x.org/archive/individual/lib/libXext-1.3.4.tar.gz"
-	# Load libXrandr
-	# load_lib "https://www.x.org/archive/individual/lib/libXrandr-1.5.3.tar.gz"
-
-	# Load libXinerama
-	# load_lib "https://www.x.org/archive/individual/lib/libXinerama-1.1.4.tar.gz"
-	
-	# Load libGLU
-	# load_lib "ftp://ftp.freedesktop.org/pub/mesa/glu/glu-9.0.1.tar.gz"
-	
-	# Deps for Xcursor and Xi: libXfixes
-	# load_lib "https://www.x.org/archive/individual/lib/libXfixes-5.0.3.tar.gz"
-
-	# Load libXcursor and libXi
-	# load_lib "https://www.x.org/archive/individual/lib/libXcursor-1.2.0.tar.gz"
-	# load_lib "https://www.x.org/archive/individual/lib/libXi-1.7.10.tar.gz"
-	
-	# Load freeglut (Need Xinput)
-	# load_lib_cmake "https://sourceforge.net/projects/freeglut/files/freeglut/3.4.0/freeglut-3.4.0.tar.gz" "freeglut-3.4.0"
-
-
-	# Load FreeType, needed in SFML, SDL2_ttf and Raylib
-	load_lib "https://sourceforge.net/projects/freetype/files/freetype2/2.11.0/freetype-2.11.0.tar.gz/download"
-
-
-
-}
-
-# Load SFML sound dependencies
+# Download and install dependencies
 function load_deps_SFML {
-	# Download and install dependencies
+	# Load SFML sound dependencies
 	display_double_color_msg ${BLUE} "Download and install dependencies for " ${RED} "SFML"
 	load_lib "https://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.gz"
 	load_lib "https://downloads.xiph.org/releases/vorbis/libvorbis-1.3.7.tar.gz" "--with-ogg=${INSTALL_DIR}"
 	load_lib "https://downloads.xiph.org/releases/flac/flac-1.3.3.tar.xz" "--disable-cpplibs"
 	load_lib_cmake "https://github.com/kcat/openal-soft/archive/refs/tags/1.23.1.tar.gz" "openal-soft"
+	
+	# Load FreeType, needed in SFML, SDL2_ttf and Raylib (for text rendering)
+	load_lib "https://sourceforge.net/projects/freetype/files/freetype2/2.11.0/freetype-2.11.0.tar.gz/download"
 }
 
 function load_SFML {
@@ -213,7 +186,6 @@ function load_raylib {
 
 # Get the current directory
 PWD=$(pwd)
-PWD_SAVE=${PWD}
 
 # Variables
 BASE_DIR="$PWD/rsc/lib"
@@ -241,7 +213,7 @@ export LDFLAGS="-L${INSTALL_DIR}/lib"
 # Cut script execution if any command fails
 set -e 
 
-load_dependencies
+# load_dependencies
 load_SFML "https://github.com/SFML/SFML.git" "2.6.1"
 load_SDL2 "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz" "SDL2-2.30.5"
 load_SDL2_TTF "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.22.0/SDL2_ttf-2.22.0.tar.gz" "2.22.0"
