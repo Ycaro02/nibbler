@@ -52,19 +52,21 @@ function load_dependencies {
 	# Load libGLU
 	# load_lib "ftp://ftp.freedesktop.org/pub/mesa/glu/glu-9.0.1.tar.gz"
 	
-	
 	# Deps for Xcursor and Xi: libXfixes
 	# load_lib "https://www.x.org/archive/individual/lib/libXfixes-5.0.3.tar.gz"
 
 	# Load libXcursor and libXi
 	# load_lib "https://www.x.org/archive/individual/lib/libXcursor-1.2.0.tar.gz"
 	# load_lib "https://www.x.org/archive/individual/lib/libXi-1.7.10.tar.gz"
+	
+	# Load freeglut (Need Xinput)
+	# load_lib_cmake "https://sourceforge.net/projects/freeglut/files/freeglut/3.4.0/freeglut-3.4.0.tar.gz" "freeglut-3.4.0"
+
 
 	# Load FreeType, needed in SFML, SDL2_ttf and Raylib
 	load_lib "https://sourceforge.net/projects/freetype/files/freetype2/2.11.0/freetype-2.11.0.tar.gz/download"
 
-	# Load freeglut (Need Xinput)
-	# load_lib_cmake "https://sourceforge.net/projects/freeglut/files/freeglut/3.4.0/freeglut-3.4.0.tar.gz" "freeglut-3.4.0"
+
 
 }
 

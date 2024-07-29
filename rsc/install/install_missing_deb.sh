@@ -106,8 +106,10 @@ function load_missing_deb_package {
 	load_deb_package ${ubuntu_url}/main/s/systemd/libudev1_255.4-1ubuntu8.2_amd64.deb libudev1 ${ONLY_LIB}
 
 	# x11 
-	load_deb_package ${ubuntu_url}/main/libx/libx11/libx11-dev_1.8.7-1build1_amd64.deb libx11-dev ${INC_AND_LIB}
-	load_deb_package ${ubuntu_url}/main/libx/libx11/libx11-6_1.8.7-1build1_amd64.deb libx11-6 ${ONLY_LIB}
+	# load_deb_package ${ubuntu_url}/main/libx/libx11/libx11-dev_1.8.7-1build1_amd64.deb libx11-dev ${INC_AND_LIB}
+	# load_deb_package ${ubuntu_url}/main/libx/libx11/libx11-6_1.8.7-1build1_amd64.deb libx11-6 ${ONLY_LIB}
+	load_deb_package ${ubuntu_url}/main/libx/libx11/libx11-dev_1.7.5-1ubuntu0.3_amd64.deb libx11-dev ${INC_AND_LIB}
+	load_deb_package ${ubuntu_url}/main/libx/libx11/libx11-6_1.7.5-1ubuntu0.3_amd64.deb libx11-6 ${ONLY_LIB}
 
 	# load libxext
 	load_deb_package ${ubuntu_url}/main/libx/libxi/libxi-dev_1.8.1-1build1_amd64.deb libxi-dev ${INC_AND_LIB}
@@ -132,6 +134,7 @@ function load_missing_deb_package {
 	# xFixe
 	load_deb_package ${ubuntu_url}/main/libx/libxfixes/libxfixes-dev_6.0.0-2build1_amd64.deb libxfixes-dev ${INC_AND_LIB}
 	load_deb_package ${ubuntu_url}/main/libx/libxfixes/libxfixes3_6.0.0-2build1_amd64.deb libxfixes3 ${ONLY_LIB}
+	
 	# Xi
 	load_deb_package ${ubuntu_url}/main/libx/libxi/libxi-dev_1.8.1-1build1_amd64.deb libxi-dev ${INC_AND_LIB}
 	load_deb_package ${ubuntu_url}/main/libx/libxi/libxi6_1.8.1-1build1_amd64.deb libxi6 ${ONLY_LIB}
