@@ -40,37 +40,35 @@ function setup_deb_packages {
 function load_dependencies {
 
 	# load libX11
-	load_lib "https://www.x.org/archive/individual/lib/libX11-1.7.2.tar.gz"
+	# load_lib "https://www.x.org/archive/individual/lib/libX11-1.7.2.tar.gz"
 	# load libXext
-	load_lib "https://www.x.org/archive/individual/lib/libXext-1.3.4.tar.gz"
+	# load_lib "https://www.x.org/archive/individual/lib/libXext-1.3.4.tar.gz"
 	# Load libXrandr
-	load_lib "https://www.x.org/archive/individual/lib/libXrandr-1.5.3.tar.gz"
+	# load_lib "https://www.x.org/archive/individual/lib/libXrandr-1.5.3.tar.gz"
 
 	# Load libXinerama
-	load_lib "https://www.x.org/archive/individual/lib/libXinerama-1.1.4.tar.gz"
+	# load_lib "https://www.x.org/archive/individual/lib/libXinerama-1.1.4.tar.gz"
 	
 	# Load libGLU
-	load_lib "ftp://ftp.freedesktop.org/pub/mesa/glu/glu-9.0.1.tar.gz"
+	# load_lib "ftp://ftp.freedesktop.org/pub/mesa/glu/glu-9.0.1.tar.gz"
 	
 	
 	# Deps for Xcursor and Xi: libXfixes
-	load_lib "https://www.x.org/archive/individual/lib/libXfixes-5.0.3.tar.gz"
+	# load_lib "https://www.x.org/archive/individual/lib/libXfixes-5.0.3.tar.gz"
 
 	# Load libXcursor and libXi
-	load_lib "https://www.x.org/archive/individual/lib/libXcursor-1.2.0.tar.gz"
-	load_lib "https://www.x.org/archive/individual/lib/libXi-1.7.10.tar.gz"
+	# load_lib "https://www.x.org/archive/individual/lib/libXcursor-1.2.0.tar.gz"
+	# load_lib "https://www.x.org/archive/individual/lib/libXi-1.7.10.tar.gz"
 
 	# Load FreeType, needed in SFML, SDL2_ttf and Raylib
 	load_lib "https://sourceforge.net/projects/freetype/files/freetype2/2.11.0/freetype-2.11.0.tar.gz/download"
 
 	# Load freeglut (Need Xinput)
-	load_lib_cmake "https://sourceforge.net/projects/freeglut/files/freeglut/3.4.0/freeglut-3.4.0.tar.gz" "freeglut-3.4.0"
+	# load_lib_cmake "https://sourceforge.net/projects/freeglut/files/freeglut/3.4.0/freeglut-3.4.0.tar.gz" "freeglut-3.4.0"
 
-
-	# 2 package needed for github actions, that will install :
-	# libdrm-dev libgl-dev libglx-dev libpciaccess-dev libudev-dev mesa-common-dev
 }
 
+# Load SFML sound dependencies
 function load_deps_SFML {
 	# Download and install dependencies
 	display_double_color_msg ${BLUE} "Download and install dependencies for " ${RED} "SFML"
@@ -229,6 +227,7 @@ FD_OUT="/dev/stdout"
 # Update FD_OUT if -q option is passed
 handle_quiet_opt "${@}"
 
+# Setup deb packages (openGL lib and libudev)
 setup_deb_packages
 
 # Set environment variables for dependencies
@@ -236,12 +235,6 @@ export PKG_CONFIG_PATH="${INSTALL_DIR}/lib/pkgconfig"
 export CFLAGS="-I${INSTALL_DIR}/include"
 export CXXFLAGS="-I${INSTALL_DIR}/include -L${INSTALL_DIR}/lib"
 export LDFLAGS="-L${INSTALL_DIR}/lib"
-
-# Print the environment variables for debugging
-# echo "PKG_CONFIG_PATH=${PKG_CONFIG_PATH}"
-# echo "CFLAGS=${CFLAGS}"
-# echo "CXXFLAGS=${CXXFLAGS}"
-# echo "LDFLAGS=${LDFLAGS}"
 
 # Cut script execution if any command fails
 set -e 
