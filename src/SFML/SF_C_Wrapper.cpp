@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include "../../include/GraphicLib.hpp"
-#include "../../include/short_type.hpp"
+#include "../../include/BasicDefine.hpp"
 #include "../../include/Nibbler.hpp"
 
 extern "C" {

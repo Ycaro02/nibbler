@@ -1,7 +1,7 @@
 #include <raylib.h>
 #include <iostream>
 #include <cstring>
-#include "../../include/short_type.hpp"
+#include "../../include/BasicDefine.hpp"
 #include "../../include/Nibbler.hpp"
 
 

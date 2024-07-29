@@ -1,5 +1,5 @@
-#ifndef SHORT_TYPE_HPP
-#define SHORT_TYPE_HPP
+#ifndef BASIC_DEFINE_HPP
+#define BASIC_DEFINE_HPP
 
 #include <stdint.h>
 #include <sys/types.h>
@@ -34,4 +34,4 @@ typedef struct iVec2_s {
 	s32 y;
 } iVec2;
 
-#endif /* SHORT_TYPE_HPP */
+#endif /* BASIC_DEFINE_HPP */

@@ -1,6 +1,6 @@
 #include <assert.h>
 #include <iostream>
-#include "include/short_type.hpp"
+#include "include/BasicDefine.hpp"
 
 // Inclure les macros
 #define RGBA_TO_UINT32(r, g, b, a) ((u32)((a << 24) | (r << 16) | (g << 8) | b))

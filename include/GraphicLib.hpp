@@ -1,7 +1,7 @@
 #ifndef GraphicLib_HPP
 #define GraphicLib_HPP
 
-#include "short_type.hpp"
+#include "BasicDefine.hpp"
 #include "dlfcn.h"
 #include <iostream>
 #include <string>

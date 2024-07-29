@@ -1,7 +1,7 @@
 #ifndef SNAKE_HPP
 #define SNAKE_HPP
 
-#include "short_type.hpp"
+#include "BasicDefine.hpp"
 #include <vector>
 
 /* Define the board state */

@@ -14,7 +14,7 @@
 
 /* C++ include */
 #include <iostream>
-#include "../../include/short_type.hpp"
+#include "../../include/BasicDefine.hpp"
 #include "../../include/Nibbler.hpp"
 
 extern "C" {
