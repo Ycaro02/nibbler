@@ -29,7 +29,7 @@ function wrapper_lib_compile {
 	local wrapper_path="${2}"
 	local lib_deps="${3}"
 
-	clang++ -shared -o rsc/wrapperlib/${lib_name} ${wrapper_path} -fPIC \
+	clang++ -O3 -shared -o rsc/wrapperlib/${lib_name} ${wrapper_path} -fPIC \
 		-I./rsc/lib/install/include -L./rsc/lib/install/lib ${lib_deps} \
 		-Wl,-rpath,./rsc/lib/install/lib 
 

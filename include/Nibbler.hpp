@@ -60,7 +60,6 @@ class Nibbler {
 	/* Snake handling */
 	void	snakeAutoMove();
 
-
 	/*Getter setter*/
 	u8		&boardTileGet(s32 x, s32 y);
 	void	boardTileSet(s32 x, s32 y, u8 value);

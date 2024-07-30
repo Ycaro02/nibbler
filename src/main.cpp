@@ -112,7 +112,9 @@ void textureDisplay(GraphicLib *lib, Nibbler &ctx) {
 
 static void drawGame(GraphicLib *lib, Nibbler &ctx) {
 	std::string	libName = lib->getTitle();
-	s32			textStartX = (ctx.getWidth() >> 1) * TILE_SIZE - 60;
+	s32			textStartX = ((ctx.getWidth() >> 1) * TILE_SIZE);
+
+	textStartX -= (libName.size() * 5);
 	
 	if (ctx.getColorMode()) {
 		colorDisplay(lib, ctx);
