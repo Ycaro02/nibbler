@@ -125,22 +125,21 @@ static void drawGame(GraphicLib *lib, Nibbler &ctx) {
 }
 
 void drawPauseMenu(GraphicLib *lib) {
-	iVec2 start , scale;
+	iVec2 		start , scale, text;
+	std::string	pause = "PAUSE";
+	
 	scale.x = lib->getWidth() >> 1;
 	scale.y = (lib->getHeight() - TOP_BAND_HEIGHT) >> 1;
-	start.x = ((scale.x) >> 1);
-	start.y = ((scale.y) >> 1) + TOP_BAND_HEIGHT;
+	start.x = scale.x >> 1;
+	start.y = (scale.y >> 1) + TOP_BAND_HEIGHT;
 	lib->colorTile(start, scale, DARK_RGBA);
 
 
-	// s32 textX = start.x + scale.x;
-	std::string pause = "PAUSE";
-	s32 textX = scale.x - start.x;
-	textX = start.x + textX - (pause.size() * 12);
-	// s32 textY = (start.y + (scale.y / 8) - ((scale.y / 16) * 2));
+	text.x = start.x + (scale.x - start.x) - (pause.size() * 12);
 
-	s32 textY = (start.y + (scale.y >> 3) - ((scale.y >> 4) << 1));
-	lib->writeText(pause.c_str(), {textX, textY}, 40, WHITE_RGBA);
+	/* (start.y + (scale.y / 8) - ((scale.y / 16) * 2)) */
+	text.y = (start.y + (scale.y >> 3) - ((scale.y >> 4) << 1));
+	lib->writeText(pause.c_str(), {text.x, text.y}, 40, WHITE_RGBA);
 }
 
 void GameLoop(Nibbler &ctx) {
