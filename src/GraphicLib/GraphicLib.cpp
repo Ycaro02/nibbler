@@ -109,8 +109,7 @@ GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std
 	startMenu.y = (sizeMenu.y >> 1) + TOP_BAND_HEIGHT;
 
 	textPause.x = startMenu.x + (sizeMenu.x - startMenu.x) - (pause.size() * FONT_MULT);
-	/* (startMenu.y + (sizeMenu.y / 8) - ((sizeMenu.y / 16) * 2)) */
-	textPause.y = (startMenu.y + (sizeMenu.y >> 3) - ((sizeMenu.y >> 4) << 1));
+	textPause.y = startMenu.y;
 
 	menu = new Menu(startMenu, sizeMenu, textPause, 3, winTitle);
 }
