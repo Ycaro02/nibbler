@@ -1,4 +1,12 @@
+/**
+ * @file Raylib_C_Wrapper.cpp
+ * @brief Implementation of the Raylib wrapper in extern C to avoid name mangling
+*/
+
+/* Basic Raylib include */
 #include <raylib.h>
+
+/* C++ include */
 #include <iostream>
 #include <cstring>
 #include "../../include/BasicDefine.hpp"

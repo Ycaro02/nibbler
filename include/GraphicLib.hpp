@@ -190,7 +190,7 @@ class GraphicLib {
 	void 				*dlPtr;			/* Pointer to the dynamic library */
     void				*window;		/* Pointer to the window */
 	void				*texture[TEXTURE_MAX];	/* Pointer to the texture */
-	std::string			textureExt;	/* Path to the texture */
+	std::string			textureExt;		/* Texture extension to the texture */
     s32					winWidth;		/* Width of the window */
     s32					winHeight;		/* Height of the window */
     std::string			winTitle;		/* Title of the window */

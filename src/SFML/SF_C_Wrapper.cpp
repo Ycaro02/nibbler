@@ -1,6 +1,13 @@
+/**
+ * @file SF_C_Wrapper.cpp
+ * @brief Implementation of the SFML wrapper in extern C to avoid name mangling
+*/
+
+/* Basic SFML include */
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-#include "../../include/GraphicLib.hpp"
+
+/* C++ include */
 #include "../../include/BasicDefine.hpp"
 #include "../../include/Nibbler.hpp"
 

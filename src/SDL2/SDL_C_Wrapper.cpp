@@ -1,7 +1,6 @@
-
 /**
  * @file SDL_C_Wrapper.cpp
- * @brief Implementation of the SDL2 wrapper in C
+ * @brief Implementation of the SDL2 wrapper in extern C to avoid name mangling
 */
 
 /* Basic SDL include */
@@ -31,6 +30,7 @@ extern "C" {
 		SDL_Renderer	*renderer = NULL;
 		static			 bool isInit = false;
 		
+		/* Init SDL2 and TTF if not already done */
 		if (!isInit) {
 			if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 				std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
