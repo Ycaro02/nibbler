@@ -112,9 +112,9 @@ void textureDisplay(GraphicLib *lib, Nibbler &ctx) {
 
 static void drawGame(GraphicLib *lib, Nibbler &ctx) {
 	std::string	libName = lib->getTitle();
-	s32			textStartX = ((ctx.getWidth() >> 1) * TILE_SIZE);
+	s32			textStartX = lib->getWidth() >> 1;
 
-	textStartX -= (libName.size() * 5);
+	textStartX -= (libName.size() * 12);
 	
 	if (ctx.getColorMode()) {
 		colorDisplay(lib, ctx);
@@ -122,18 +122,33 @@ static void drawGame(GraphicLib *lib, Nibbler &ctx) {
 		textureDisplay(lib, ctx);
 	}
 	lib->writeText(libName.c_str(), {textStartX, 30}, 40, WHITE_RGBA);
-	if (ctx.getPause()) {
-		lib->writeText("PAUSE", {textStartX - 60, ((ctx.getHeight() >> 1) * TILE_SIZE)}, 80, DARK_RGBA);
-	}
+}
+
+void drawPauseMenu(GraphicLib *lib) {
+	iVec2 start , scale;
+	scale.x = lib->getWidth() >> 1;
+	scale.y = (lib->getHeight() - TOP_BAND_HEIGHT) >> 1;
+	start.x = ((scale.x) >> 1);
+	start.y = ((scale.y) >> 1) + TOP_BAND_HEIGHT;
+	lib->colorTile(start, scale, DARK_RGBA);
+
+
+	// s32 textX = start.x + scale.x;
+	std::string pause = "PAUSE";
+	s32 textX = scale.x - start.x;
+	textX = start.x + textX - (pause.size() * 12);
+	// s32 textY = (start.y + (scale.y / 8) - ((scale.y / 16) * 2));
+
+	s32 textY = (start.y + (scale.y >> 3) - ((scale.y >> 4) << 1));
+	lib->writeText(pause.c_str(), {textX, textY}, 40, WHITE_RGBA);
 }
 
 void GameLoop(Nibbler &ctx) {
-	GraphicLib *currentLib = nullptr;
+	GraphicLib *lib = nullptr;
 	
-
 	while (ctx.getIsRunning()) {
-		currentLib = ctx.getCurrentLib();
-		if (!checkCreateWin(currentLib)) {
+		lib = ctx.getCurrentLib();
+		if (!checkCreateWin(lib)) {
 			ctx.setIsRunning(0);
 			throw std::runtime_error("Error: Create window");
 		}
@@ -146,12 +161,18 @@ void GameLoop(Nibbler &ctx) {
 			ctx.snakeAutoMove();
 		}
 		/* Clear the window */
-		currentLib->clear();
+		lib->clear();
 		/* Draw the game */
-		drawGame(currentLib, ctx);
-		currentLib->display();
+		drawGame(lib, ctx);
+
+
+		if (ctx.getPause()) {
+			drawPauseMenu(lib);
+		}
+
+		lib->display();
 		/* Process events */
-		currentLib->processEvents(ctx);
+		lib->processEvents(ctx);
 	}
 }
 
