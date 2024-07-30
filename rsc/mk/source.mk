@@ -6,6 +6,7 @@ ALL_SRC_DIR 	=	obj\
 					$(OBJ_DIR)/SFML\
 					$(OBJ_DIR)/SDL2\
 					$(OBJ_DIR)/GraphicLib\
+					$(OBJ_DIR)/Menu\
 
 SRC_DIR 		=	src
 
@@ -14,6 +15,8 @@ MAIN_MANDATORY 	=	main.cpp
 SRCS			=	GraphicLib/GraphicLib.cpp\
 					Nibbler.cpp \
 					Snake.cpp \
+					Menu/Menu.cpp \
+					Menu/Button.cpp \
 
 # SRCS_BONUS		=	main_bonus.cpp
 

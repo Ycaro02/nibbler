@@ -24,6 +24,24 @@ typedef		float		f32;		/* Float 32 bits */
 typedef		double		f64;		/* Float 64 bits */
 
 
+
+#define BLAK_COLOR			0,0,0,255			/* Base color */
+#define WHITE_COLOR			255,255,255,255		/* Empty color */
+#define GREEN_COLOR			0,255,0,255			/* Snake head color */
+#define DARK_GREEN_COLOR	0,100,0,255			/* Snake body color */
+#define YELLOW_COLOR		255,255,0,255		/* Food color */
+#define PINK_COLOR			255,0,255,255		/* Snake head color */
+
+
+#define WHITE_RGBA			(RGBA_TO_UINT32(255,255,255,255))	/* Empty color */
+#define GREEN_RGBA			(RGBA_TO_UINT32(0,255,0,255))		/* Snake head color */
+#define DARK_GREEN_RGBA		(RGBA_TO_UINT32(0,100,0,255))		/* Snake body color */
+#define YELLOW_RGBA			(RGBA_TO_UINT32(255,255,0,255))		/* Food color */
+#define DARL_BLUE_RGBA		(RGBA_TO_UINT32(0,0,139,255))		/* Top Band color */
+#define PINK_RGBA			(RGBA_TO_UINT32(255,0,255,255))		/* Snake head color */
+#define DARK_RGBA			(RGBA_TO_UINT32(0,0,0,255))			/* Base color */
+#define LIGHT_DARK_RGBA		(RGBA_TO_UINT32(50,50,50,150))		/* Base color */
+
 /* Define tile size for the board */
 #define TILE_SIZE 40
 #define TILE_SPACING 2

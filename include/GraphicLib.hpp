@@ -126,8 +126,9 @@ typedef enum NormaliseKey {
     } while (0)
 
 
-/* Forward declaration of Nibbler */
+/* Forward declaration of Nibbler and Menu */
 class Nibbler;
+class Menu;
 
 /* GraphicLib class to handle multiple lib */
 class GraphicLib { 
@@ -183,6 +184,7 @@ class GraphicLib {
 	std::string getTextName(std::string name) const;
 
 	void *getTexture(s32 id) const;
+	void drawPauseMenu();
 
 	private:
 
@@ -196,6 +198,7 @@ class GraphicLib {
     std::string			winTitle;		/* Title of the window */
 	s16					libID;			/* ID of the library */
 	void				*font;			/* Pointer to the font */
+	Menu				*menu;			/* Menu object */
 
 	/* Function pointers */
 

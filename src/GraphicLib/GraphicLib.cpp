@@ -2,6 +2,7 @@
 #include "../../include/Nibbler.hpp"
 #include "../../include/Snake.hpp"
 #include "../../include/Color.hpp"
+#include "../../include/Menu.hpp"
 
 /* Default constructor */
 GraphicLib::GraphicLib() 
@@ -97,6 +98,21 @@ GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std
 	loadFontF		=	(loadFontFunc)loadFuncPtr(dlPtr, "loadFontWrapper", path);
 	unloadFontF		=	(unloadFontFunc)loadFuncPtr(dlPtr, "unloadFontWrapper", path);
 	writeTextF		=	(writeTextFunc)loadFuncPtr(dlPtr, "writeTextWrapper", path);
+
+
+	iVec2 startMenu, sizeMenu, textPause;
+	std::string pause = "PAUSE";
+
+	sizeMenu.x = this->getWidth() >> 1;
+	sizeMenu.y = (this->getHeight() - TOP_BAND_HEIGHT) >> 1;
+	startMenu.x = sizeMenu.x >> 1;
+	startMenu.y = (sizeMenu.y >> 1) + TOP_BAND_HEIGHT;
+
+	textPause.x = startMenu.x + (sizeMenu.x - startMenu.x) - (pause.size() * FONT_MULT);
+	/* (startMenu.y + (sizeMenu.y / 8) - ((sizeMenu.y / 16) * 2)) */
+	textPause.y = (startMenu.y + (sizeMenu.y >> 3) - ((sizeMenu.y >> 4) << 1));
+
+	menu = new Menu(startMenu, sizeMenu, textPause, 3, winTitle);
 }
 
 std::string GraphicLib::getTextName(std::string name) const {
@@ -237,6 +253,10 @@ void GraphicLib::close() {
 		unloadFont(font);
 		font = nullptr;
 	}
+}
+
+void GraphicLib::drawPauseMenu() {
+	menu->displayMenu(this);
 }
 
 void *GraphicLib::getTexture(s32 id) const {

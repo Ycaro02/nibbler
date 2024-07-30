@@ -2,23 +2,6 @@
 #include "../include/Color.hpp"
 #include <iostream>
 
-#define BLAK_COLOR			0,0,0,255			/* Base color */
-#define WHITE_COLOR			255,255,255,255		/* Empty color */
-#define GREEN_COLOR			0,255,0,255			/* Snake head color */
-#define DARK_GREEN_COLOR	0,100,0,255			/* Snake body color */
-#define YELLOW_COLOR		255,255,0,255		/* Food color */
-#define PINK_COLOR			255,0,255,255		/* Snake head color */
-
-
-#define WHITE_RGBA			(RGBA_TO_UINT32(255,255,255,255))	/* Empty color */
-#define GREEN_RGBA			(RGBA_TO_UINT32(0,255,0,255))		/* Snake head color */
-#define DARK_GREEN_RGBA		(RGBA_TO_UINT32(0,100,0,255))		/* Snake body color */
-#define YELLOW_RGBA			(RGBA_TO_UINT32(255,255,0,255))		/* Food color */
-#define DARL_BLUE_RGBA		(RGBA_TO_UINT32(0,0,139,255))		/* Top Band color */
-#define PINK_RGBA			(RGBA_TO_UINT32(255,0,255,255))		/* Snake head color */
-#define DARK_RGBA			(RGBA_TO_UINT32(0,0,0,255))			/* Base color */
-#define LIGHT_DARK_RGBA		(RGBA_TO_UINT32(50,50,50,150))		/* Base color */
-
 
 static bool checkCreateWin(GraphicLib *lib) {
 	if (!lib->isOpen()) {
@@ -125,24 +108,6 @@ static void drawGame(GraphicLib *lib, Nibbler &ctx) {
 	lib->writeText(libName.c_str(), {textStartX, 30}, FONT_SIZE, WHITE_RGBA);
 }
 
-void drawPauseMenu(GraphicLib *lib) {
-	iVec2 		start , scale, text;
-	std::string	pause = "PAUSE";
-	
-	scale.x = lib->getWidth() >> 1;
-	scale.y = (lib->getHeight() - TOP_BAND_HEIGHT) >> 1;
-	start.x = scale.x >> 1;
-	start.y = (scale.y >> 1) + TOP_BAND_HEIGHT;
-	lib->colorTile(start, scale, LIGHT_DARK_RGBA);
-
-
-	text.x = start.x + (scale.x - start.x) - (pause.size() * FONT_MULT);
-
-	/* (start.y + (scale.y / 8) - ((scale.y / 16) * 2)) */
-	text.y = (start.y + (scale.y >> 3) - ((scale.y >> 4) << 1));
-	lib->writeText(pause.c_str(), {text.x, text.y}, FONT_SIZE, WHITE_RGBA);
-}
-
 void GameLoop(Nibbler &ctx) {
 	GraphicLib *lib = nullptr;
 	
@@ -167,7 +132,7 @@ void GameLoop(Nibbler &ctx) {
 
 
 		if (ctx.getPause()) {
-			drawPauseMenu(lib);
+			lib->drawPauseMenu();
 		}
 
 		lib->display();
