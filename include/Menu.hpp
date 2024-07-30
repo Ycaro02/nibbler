@@ -21,6 +21,15 @@ class Menu {
 	Menu(iVec2 startMenu, iVec2 sizeMenu, iVec2 txtPause, s32 nbBtn, std::string btnTextDir);
 	void displayMenu(GraphicLib *lib);
 
+	/* Setter */
+	void setTextureBtnPress(void *texture);
+	void setTextureBtnUnpress(void *texture);
+
+	/* Getter */
+	void *getTextureBtnPress();
+	void *getTextureBtnUnpress();
+	Button *getButton();
+
 	private:
 
 	iVec2	start;

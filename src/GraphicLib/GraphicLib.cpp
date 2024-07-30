@@ -40,6 +40,11 @@ GraphicLib::~GraphicLib() {
 	std::string name = libID == SDL2_IDX ? "SDL2" : libID == SFML_IDX ? "SFML" : "Raylib";
 
 	std::cout << YELLOW << "GraphicLib Destructor for " + name + " with :";
+	
+	if (menu) {
+		delete menu;
+		std::cout << RED << " menu delete()";
+	}
 	if (window) {
 		std::cout << RED << " window close()";
 		close();
@@ -112,6 +117,8 @@ GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std
 	textPause.y = startMenu.y;
 
 	menu = new Menu(startMenu, sizeMenu, textPause, 3, winTitle);
+
+
 }
 
 std::string GraphicLib::getTextName(std::string name) const {
@@ -137,6 +144,16 @@ bool GraphicLib::windowCreate() {
 			return (false);
 		}
 	}
+
+	std::string btnUnpress = TEXTURE_DIR + winTitle + "/buttonUnpress." + textureExt;
+	std::string btnPress = TEXTURE_DIR + winTitle + "/buttonPress." + textureExt;
+	menu->setTextureBtnPress(loadTexture(btnPress.c_str()));
+	menu->setTextureBtnUnpress(loadTexture(btnUnpress.c_str()));
+	if (menu->getTextureBtnPress() == nullptr || menu->getTextureBtnUnpress() == nullptr) {
+		std::cerr << "Error: Button texture not found press : " << btnUnpress << " Unpress : " << btnPress <<  std::endl;
+		throw std::invalid_argument("Error: Button texture not found");
+	}
+
 
 	font = loadFont(FONT_PATH);
 
@@ -241,6 +258,15 @@ void GraphicLib::close() {
 		if (texture[i]) {
 			unloadTexture(texture[i]);
 			texture[i] = nullptr;
+		}
+	}
+
+	if (menu) {
+		if (menu->getTextureBtnPress()) {
+			unloadTexture(menu->getTextureBtnPress());
+		}
+		if (menu->getTextureBtnUnpress()) {
+			unloadTexture(menu->getTextureBtnUnpress());
 		}
 	}
 

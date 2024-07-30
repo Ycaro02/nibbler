@@ -38,7 +38,6 @@ Menu::Menu(iVec2 startMenu, iVec2 sizeMenu, iVec2 txtPause, s32 nbBtn, std::stri
 	txtPausePos = txtPause;
 	btnNumber = nbBtn;
 
-	
 	// btn = new Button[btnNumber];
 	// for (s32 i = 0; i < btnNumber; i++) {
 	// 	btn[i] = Button(startBtn, sizeBtn, btnTextDir);
@@ -49,4 +48,24 @@ Menu::Menu(iVec2 startMenu, iVec2 sizeMenu, iVec2 txtPause, s32 nbBtn, std::stri
 void Menu::displayMenu(GraphicLib *lib) {
 	lib->colorTile(start, size, LIGHT_DARK_RGBA);
 	lib->writeText("PAUSE", txtPausePos, FONT_SIZE, WHITE_RGBA);
+}
+
+void Menu::setTextureBtnPress(void *texture) {
+	textBtnPress = texture;
+}
+
+void Menu::setTextureBtnUnpress(void *texture) {
+	textBtnUnpress = texture;
+}
+
+void *Menu::getTextureBtnPress() {
+	return (textBtnPress);
+}
+
+void *Menu::getTextureBtnUnpress() {
+	return (textBtnUnpress);
+}
+
+Button *Menu::getButton() {
+	return (btn);
 }
