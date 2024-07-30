@@ -17,6 +17,7 @@
 #define DARL_BLUE_RGBA		(RGBA_TO_UINT32(0,0,139,255))		/* Top Band color */
 #define PINK_RGBA			(RGBA_TO_UINT32(255,0,255,255))		/* Snake head color */
 #define DARK_RGBA			(RGBA_TO_UINT32(0,0,0,255))			/* Base color */
+#define LIGHT_DARK_RGBA		(RGBA_TO_UINT32(50,50,50,150))		/* Base color */
 
 
 static bool checkCreateWin(GraphicLib *lib) {
@@ -114,14 +115,14 @@ static void drawGame(GraphicLib *lib, Nibbler &ctx) {
 	std::string	libName = lib->getTitle();
 	s32			textStartX = lib->getWidth() >> 1;
 
-	textStartX -= (libName.size() * 12);
+	textStartX -= (libName.size() * FONT_MULT);
 	
 	if (ctx.getColorMode()) {
 		colorDisplay(lib, ctx);
 	} else {
 		textureDisplay(lib, ctx);
 	}
-	lib->writeText(libName.c_str(), {textStartX, 30}, 40, WHITE_RGBA);
+	lib->writeText(libName.c_str(), {textStartX, 30}, FONT_SIZE, WHITE_RGBA);
 }
 
 void drawPauseMenu(GraphicLib *lib) {
@@ -132,14 +133,14 @@ void drawPauseMenu(GraphicLib *lib) {
 	scale.y = (lib->getHeight() - TOP_BAND_HEIGHT) >> 1;
 	start.x = scale.x >> 1;
 	start.y = (scale.y >> 1) + TOP_BAND_HEIGHT;
-	lib->colorTile(start, scale, DARK_RGBA);
+	lib->colorTile(start, scale, LIGHT_DARK_RGBA);
 
 
-	text.x = start.x + (scale.x - start.x) - (pause.size() * 12);
+	text.x = start.x + (scale.x - start.x) - (pause.size() * FONT_MULT);
 
 	/* (start.y + (scale.y / 8) - ((scale.y / 16) * 2)) */
 	text.y = (start.y + (scale.y >> 3) - ((scale.y >> 4) << 1));
-	lib->writeText(pause.c_str(), {text.x, text.y}, 40, WHITE_RGBA);
+	lib->writeText(pause.c_str(), {text.x, text.y}, FONT_SIZE, WHITE_RGBA);
 }
 
 void GameLoop(Nibbler &ctx) {

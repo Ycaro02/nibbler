@@ -6,10 +6,14 @@
 #include <iostream>
 #include <string>
 
-#define TEXTURE_DIR "rsc/texture/"
-#define HEAD_TEST_FILE "/HeadTest."
-#define BODY_TEST_FILE "/BodyTest." 
 
+/*	
+	* Define the texture path use as follow:
+	* TEXTURE_DIR + libName + TEXTURE_NAME + TEXTURE_EXT
+ */
+#define TEXTURE_DIR "rsc/texture/"
+
+/* Define the TEXTURE_NAME without extension */
 #define HEAD_L_FILE "/HeadLeft."
 #define HEAD_R_FILE "/HeadRight."
 #define HEAD_BOT_FILE "/HeadBot."
@@ -18,8 +22,16 @@
 #define FOOD_FILE "/Food."
 #define EMPTY_FILE "/Empty."
 
+// #define HEAD_TEST_FILE "/HeadTest."
+// #define BODY_TEST_FILE "/BodyTest." 
 
+/* Define height for top band info */
+#define TOP_BAND_HEIGHT 100
+
+/* Define font info : path, size, mult per char for align/center text */
 #define FONT_PATH "rsc/font/arial.ttf"
+#define FONT_SIZE 40
+#define FONT_MULT 12
 
 typedef enum textureIdx {
 	HEAD_LEFT_IDX = 0,
@@ -57,6 +69,7 @@ typedef s32 (*winFuncPollFunc)(void*);
 /* Here first iVec is tilePos, second is scale, last is u32 RGBA color */
 typedef void (*tileColorFunc)(void*, iVec2, iVec2, u32);
 
+/* Here const char* is the path to the texture, return the allocated texture loaded */
 typedef void *(*loadTextFunc)(void *, const char*);
 
 /* Here void* is the texture to unload */
@@ -89,6 +102,11 @@ typedef enum NormaliseKey {
 	NKEY_ESC,			/* Key ESC, close the window */
 } NormaliseKey;
 
+/* Macro to Compute the window Height, width */
+#define WIN_W(w) (s32)((w * TILE_SIZE) + (w * TILE_SPACING) + TILE_SPACING)
+#define WIN_H(h) (s32)((h * TILE_SIZE) + (h * TILE_SPACING) + TILE_SPACING + TOP_BAND_HEIGHT)
+
+
 /* Macro to convert RGBA to UINT32 and UINT32 to RGBA */
 #define		RGBA_TO_UINT32(r, g, b, a)		((u32)((a << 24) | (r << 16) | (g << 8) | b))
 
@@ -100,19 +118,12 @@ typedef enum NormaliseKey {
 		a = (color >> 24) & 0xFF;				\
 	} while (0)
 
-/* Define height for top band info */
-#define TOP_BAND_HEIGHT 100
-
 /* Macro to convert tile position to pixel */
 #define TILE_POSITION_TO_PIXEL(p, px, py) \
     do { \
         (px) = (p).x * TILE_SIZE + ((p).x + 1) * TILE_SPACING; \
         (py) = ((p).y * TILE_SIZE + ((p).y + 1) * TILE_SPACING) + TOP_BAND_HEIGHT; \
     } while (0)
-
-/* Compute the window Height, width */
-#define WIN_W(w) (s32)((w * TILE_SIZE) + (w * TILE_SPACING) + TILE_SPACING)
-#define WIN_H(h) (s32)((h * TILE_SIZE) + (h * TILE_SPACING) + TILE_SPACING + TOP_BAND_HEIGHT)
 
 
 /* Forward declaration of Nibbler */
