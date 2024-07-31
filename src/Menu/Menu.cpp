@@ -46,9 +46,12 @@ Menu::Menu(iVec2 startMenu, iVec2 sizeMenu, iVec2 txtPause, s32 nbBtn, std::stri
 	startBtn.y = start.y + sizeBtn.y + (sizeBtn.y >> 2);
 	btn = new Button[btnNumber];
 	for (s32 i = 0; i < btnNumber; i++) {
-		btn[i] = Button(startBtn, sizeBtn);
+		btn[i] = Button(startBtn, sizeBtn, "test", i);
 		startBtn.y += sizeBtn.y + (sizeBtn.y >> 1);
+	
 	}
+		
+	// std::cout << "Btn start text Y: " << btn[0].nameStart.y << " x: "  << btn[0].nameStart.x << std::endl;
 	(void)btnTextDir;
 }
 
