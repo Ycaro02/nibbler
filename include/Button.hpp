@@ -6,6 +6,9 @@
 #define BTN_UNPRESS		0U
 #define BTN_PRESSED		1U
 
+/* Forward declaration */
+class GraphicLib;
+
 /* Menu class to handle menu */
 class Button {
 	public:
@@ -22,6 +25,8 @@ class Button {
 	u8 getState() const;
 	iVec2 getStart() const;
 	iVec2 getSize() const;
+
+	void drawButton(GraphicLib *lib, void *texture) const;
 
 	/* Setter */
 	void setState(u8 newState);

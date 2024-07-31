@@ -1,4 +1,5 @@
 #include "../../include/Button.hpp"
+#include "../../include/GraphicLib.hpp"
 
 Button::Button() {
 	start = {0, 0};
@@ -26,6 +27,10 @@ Button::Button(iVec2 startBtn, iVec2 sizeBtn) {
 	start = startBtn;
 	size = sizeBtn;
 	state = BTN_UNPRESS;
+}
+
+void Button::drawButton(GraphicLib *lib, void *texture) const {
+	lib->drawTextureTile(texture, start, size);
 }
 
 u8 Button::getState() const {

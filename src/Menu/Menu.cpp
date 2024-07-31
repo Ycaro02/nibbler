@@ -38,16 +38,27 @@ Menu::Menu(iVec2 startMenu, iVec2 sizeMenu, iVec2 txtPause, s32 nbBtn, std::stri
 	txtPausePos = txtPause;
 	btnNumber = nbBtn;
 
-	// btn = new Button[btnNumber];
-	// for (s32 i = 0; i < btnNumber; i++) {
-	// 	btn[i] = Button(startBtn, sizeBtn, btnTextDir);
-	// }
+	iVec2 startBtn, sizeBtn;
+
+	sizeBtn.x = size.x >> 1;
+	sizeBtn.y = size.y >> 3;
+	startBtn.x = start.x + (size.x >> 2);
+	startBtn.y = start.y + sizeBtn.y + (sizeBtn.y >> 2);
+	btn = new Button[btnNumber];
+	for (s32 i = 0; i < btnNumber; i++) {
+		btn[i] = Button(startBtn, sizeBtn);
+		startBtn.y += sizeBtn.y + (sizeBtn.y >> 1);
+	}
 	(void)btnTextDir;
 }
 
 void Menu::displayMenu(GraphicLib *lib) {
 	lib->colorTile(start, size, LIGHT_DARK_RGBA);
 	lib->writeText("PAUSE", txtPausePos, FONT_SIZE, WHITE_RGBA);
+
+	for (s32 i = 0; i < btnNumber; i++) {
+		btn[i].drawButton(lib, textBtnUnpress);
+	}
 }
 
 void Menu::setTextureBtnPress(void *texture) {

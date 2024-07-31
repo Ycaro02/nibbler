@@ -116,9 +116,7 @@ GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std
 	textPause.x = startMenu.x + (sizeMenu.x - startMenu.x) - (pause.size() * FONT_MULT);
 	textPause.y = startMenu.y;
 
-	menu = new Menu(startMenu, sizeMenu, textPause, 3, winTitle);
-
-
+	menu = new Menu(startMenu, sizeMenu, textPause, 4, winTitle);
 }
 
 std::string GraphicLib::getTextName(std::string name) const {
