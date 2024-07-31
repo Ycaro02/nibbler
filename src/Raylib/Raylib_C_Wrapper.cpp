@@ -127,6 +127,7 @@ extern "C" {
 		else if (IsKeyPressed(KEY_THREE)) { return (NKEY_3); }
 		else if (IsKeyPressed(KEY_A)) { return (NKEY_A); }
 		else if (IsKeyPressed(KEY_P)) { return (NKEY_P); }
+		else if (IsKeyPressed(KEY_ENTER)) { return (NKEY_ENTER); }
         return (NKEY_INVALID);
     }
 

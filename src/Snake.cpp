@@ -20,9 +20,12 @@ Snake::~Snake() {}
 Snake& Snake::operator=(const Snake &ref) {
 	head.x = ref.head.x;
 	head.y = ref.head.y;
-	body = ref.body;
 	toAdd.x = ref.toAdd.x;
 	toAdd.y = ref.toAdd.y;
+	body = ref.body;
+	setDirection(ref.direction);
+	setNextDirection(ref.nextDirection);
+	wasFood = ref.wasFood;
 	return (*this);
 }
 

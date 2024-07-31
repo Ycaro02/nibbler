@@ -211,7 +211,7 @@ void GraphicLib::processEvents(Nibbler &ctx) {
 	if (key == NKEY_ESC) {
 		ctx.setIsRunning(0);
 	} 
-	else if ((key == NKEY_1 || key == NKEY_2 || key == NKEY_3) && (key != ctx.getCurrentLibIdx())) {
+	else if (key != ctx.getCurrentLibIdx() && (key == NKEY_1 || key == NKEY_2 || key == NKEY_3)) {
 		std::cout << PURPLE << "Switching to lib " << key << RESET << std::endl;
 		ctx.setCurrentLibIdx((s32)key);
 		close();
@@ -220,8 +220,8 @@ void GraphicLib::processEvents(Nibbler &ctx) {
 		ctx.getSnake().handleSnakeDir(key);
 		// moveStepByStep(ctx, key);
 	}
-	else if (ctx.getPause() && (key == NKEY_UP || key == NKEY_DOWN)) {
-		ctx.getCurrentLib()->getMenu()->handleMenu(key);
+	else if (ctx.getPause() && (key == NKEY_UP || key == NKEY_DOWN || key == NKEY_ENTER)) {
+		ctx.getCurrentLib()->getMenu()->handleMenu(ctx, key);
 	}
 	else if (key == NKEY_A) {
 		ctx.setColorMode(!(ctx.getColorMode()));

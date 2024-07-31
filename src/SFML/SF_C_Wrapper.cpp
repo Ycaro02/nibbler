@@ -93,6 +93,7 @@ extern "C" {
 				else if (event.key.code == sf::Keyboard::Escape) { keyValue = NKEY_ESC ; }
 				else if (event.key.code == sf::Keyboard::A) { keyValue = NKEY_A ; }
 				else if (event.key.code == sf::Keyboard::P) { keyValue = NKEY_P ; }
+				else if (event.key.code == sf::Keyboard::Return) { keyValue = NKEY_ENTER ; }
 			}
 		}
 		return (keyValue);

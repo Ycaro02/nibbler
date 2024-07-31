@@ -7,6 +7,7 @@
 
 /* Forward declaration */
 class Button;
+class Nibbler;
 class GraphicLib;
 
 /* Menu class to handle menu */
@@ -22,7 +23,7 @@ class Menu {
 	Menu(iVec2 startMenu, iVec2 sizeMenu, iVec2 txtPause, s32 nbBtn, std::string btnTextDir);
 
 	void displayMenu(GraphicLib *lib);
-	void handleMenu(u32 key);
+	void handleMenu(Nibbler &ctx, u32 key);
 
 
 	/* Setter */

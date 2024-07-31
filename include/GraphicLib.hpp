@@ -98,6 +98,7 @@ typedef enum NormaliseKey {
 	NKEY_RIGHT,			/* Key RIGHT, move snake dir to RIGHT */
 	NKEY_A,				/* Key A, switch color mode */
 	NKEY_P,				/* Key P, pause the game */
+	NKEY_ENTER,			/* Key ENTER, validate btn in the menu */
 	NKEY_ESC,			/* Key ESC, close the window */
 } NormaliseKey;
 

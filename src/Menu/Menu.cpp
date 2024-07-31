@@ -1,7 +1,10 @@
 #include "../../include/Menu.hpp"
 #include "../../include/Button.hpp"
 #include "../../include/GraphicLib.hpp"
+#include "../../include/Nibbler.hpp"
 
+
+/* Default constructor */
 Menu::Menu() {
 	start = {0, 0};
 	size = {0, 0};
@@ -13,8 +16,15 @@ Menu::Menu() {
 	currentBtn = 0;
 }
 
+/* Destructor */
 Menu::~Menu() {
+	if (btn) {
+		delete[] btn;
+		btn = nullptr;
+	}
+	/* Button texture are unloaded when lib close a window */
 }
+
 
 Menu& Menu::operator=(const Menu &ref) {
 	if (this != &ref) {
@@ -75,7 +85,7 @@ void Menu::displayMenu(GraphicLib *lib) {
 	}
 }
 
-void Menu::handleMenu(u32 key) {
+void Menu::handleMenu(Nibbler &ctx, u32 key) {
 	if (key == NKEY_UP) {
 		btn[currentBtn].setState(BTN_UNPRESS);
 		currentBtn = (currentBtn == 0) ? btnNumber - 1 : currentBtn - 1;
@@ -85,6 +95,17 @@ void Menu::handleMenu(u32 key) {
 		btn[currentBtn].setState(BTN_UNPRESS);
 		currentBtn = (currentBtn == btnNumber - 1) ? 0 : currentBtn + 1;
 		btn[currentBtn].setState(BTN_PRESSED);
+	} else if (key == NKEY_ENTER) {
+		if (currentBtn == BTN_RESUME) {
+			ctx.setPause(false);
+		} else if (currentBtn == BTN_RESTART) {
+			ctx.resetGame();
+			ctx.setPause(false);
+		} else if (currentBtn == BTN_MODE) {
+			std::cout << "Mode need to be implemented" << std::endl;
+		} else if (currentBtn == BTN_QUIT) {
+			ctx.setIsRunning(0);
+		}
 	}
 }
 
