@@ -37,11 +37,11 @@ class Button {
 
 	private:
 
-	iVec2		start;
-	iVec2		size;
-	u8			id;	
-	u8			state;
-	std::string name;
+	iVec2		start;		/* Start x and y position of the button */
+	iVec2		size;		/* Size x and y of the button */
+	u8			id;			/* Id of the button */
+	u8			state;		/* State of the button (press, unpress) */
+	std::string name;		/* Name of the button (Displayed text) */
 };
 
 

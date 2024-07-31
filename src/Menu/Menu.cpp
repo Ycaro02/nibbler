@@ -18,14 +18,14 @@ Menu::Menu() {
 
 /* Destructor */
 Menu::~Menu() {
+	/* Button texture are unloaded when lib close a window */
 	if (btn) {
 		delete[] btn;
 		btn = nullptr;
 	}
-	/* Button texture are unloaded when lib close a window */
 }
 
-
+/* Assignment operator */
 Menu& Menu::operator=(const Menu &ref) {
 	if (this != &ref) {
 		start = ref.start;
@@ -38,11 +38,19 @@ Menu& Menu::operator=(const Menu &ref) {
 	return (*this);
 }
 
+/* Copy constructor */
 Menu::Menu(const Menu &ref) {
 	*this = ref;
 }
 
-Menu::Menu(iVec2 startMenu, iVec2 sizeMenu, iVec2 txtPause, s32 nbBtn, std::string btnTextDir)  {
+/** 
+ * @brief Constructor
+ * @startMenu Start position of the menu
+ * @sizeMenu Size of the menu
+ * @txtPause Position of the pause text
+ * @nbBtn Number of button in the menu
+*/
+Menu::Menu(iVec2 startMenu, iVec2 sizeMenu, iVec2 txtPause, s32 nbBtn)  {
 	start = startMenu;
 	size = sizeMenu;
 	txtPausePos = txtPause;
@@ -67,9 +75,12 @@ Menu::Menu(iVec2 startMenu, iVec2 sizeMenu, iVec2 txtPause, s32 nbBtn, std::stri
 
 	currentBtn = BTN_RESUME;
 	btn[BTN_RESUME].setState(BTN_PRESSED);
-	(void)btnTextDir;
 }
 
+/**
+ * @brief Display the menu
+ * @lib GraphicLib pointer
+*/
 void Menu::displayMenu(GraphicLib *lib) {
 	u8 btnState;
 	lib->colorTile(start, size, LIGHT_DARK_RGBA);
@@ -85,6 +96,11 @@ void Menu::displayMenu(GraphicLib *lib) {
 	}
 }
 
+/**
+ * @brief Handle the menu
+ * @ctx Nibbler reference
+ * @key Key pressed
+*/
 void Menu::handleMenu(Nibbler &ctx, u32 key) {
 	if (key == NKEY_UP) {
 		btn[currentBtn].setState(BTN_UNPRESS);
@@ -108,6 +124,8 @@ void Menu::handleMenu(Nibbler &ctx, u32 key) {
 		}
 	}
 }
+
+/* Getter/Setter */
 
 void Menu::setTextureBtnPress(void *texture) {
 	textBtnPress = texture;

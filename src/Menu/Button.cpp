@@ -1,6 +1,7 @@
 #include "../../include/Button.hpp"
 #include "../../include/GraphicLib.hpp"
 
+/* Default constructor */
 Button::Button() {
 	start = {0, 0};
 	size = {0, 0};
@@ -9,28 +10,45 @@ Button::Button() {
 	name = "None";
 }
 
+/* Destructor */
 Button::~Button() {
 }
 
+/* Assignment operator */
 Button& Button::operator=(const Button &ref) {
 	if (this != &ref) {
 		start = ref.start;
 		size = ref.size;
 		state = ref.state;
+		id = ref.id;
+		name = ref.name;
 	}
 	return (*this);
 }
 
+/* Copy constructor */
 Button::Button(const Button &ref) {
 	*this = ref;
 }
 
+/**
+ * @brief Constructor
+ * @startBtn Start position of the button
+ * @sizeBtn Size of the button
+ */
 Button::Button(iVec2 startBtn, iVec2 sizeBtn) {
 	start = startBtn;
 	size = sizeBtn;
 	state = BTN_UNPRESS;
+	id = 0;
+	name = "None";
 }
 
+/**
+ * @brief Draw the button
+ * @lib GraphicLib pointer
+ * @texture Texture of the button
+*/
 void Button::drawButton(GraphicLib *lib, void *texture) {
 	iVec2	nameStart;
 
@@ -40,6 +58,7 @@ void Button::drawButton(GraphicLib *lib, void *texture) {
 	lib->writeText(name.c_str(), nameStart, FONT_SIZE, WHITE_RGBA);
 }
 
+/* Setter */
 void Button::setState(u8 newState) {
 	state = newState;
 }
@@ -59,6 +78,7 @@ void Button::setId(u8 newId) {
 	id = newId;
 }
 
+/* Getter */
 u8 Button::getId() const {
 	return (id);
 }

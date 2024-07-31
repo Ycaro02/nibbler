@@ -20,7 +20,7 @@ class Menu {
 	Menu(const Menu &ref);
 
 	/* Constructor */
-	Menu(iVec2 startMenu, iVec2 sizeMenu, iVec2 txtPause, s32 nbBtn, std::string btnTextDir);
+	Menu(iVec2 startMenu, iVec2 sizeMenu, iVec2 txtPause, s32 nbBtn);
 
 	void displayMenu(GraphicLib *lib);
 	void handleMenu(Nibbler &ctx, u32 key);
@@ -37,14 +37,14 @@ class Menu {
 
 	private:
 
-	iVec2	start;
-	iVec2	size;
-	iVec2	txtPausePos;
-	void 	*textBtnPress;
-	void 	*textBtnUnpress;
-	s32		btnNumber;
-	Button	*btn;
-	u8		currentBtn;
+	iVec2	start;				/* Start x and y position of the menu */
+	iVec2	size;				/* Size x and y of the menu */
+	iVec2	txtPausePos;		/* Position of the pause text */
+	void 	*textBtnPress;		/* Texture of the button pressed */
+	void 	*textBtnUnpress;	/* Texture of the button unpressed */
+	s32		btnNumber;			/* Number of button in the menu */
+	Button	*btn;				/* Array of button */
+	u8		currentBtn;			/* Current button selected */
 };
 
 

@@ -66,6 +66,20 @@ static void *loadFuncPtr(void *dlPtr, const std::string &name, const std::string
 	return funcPtr;
 }
 
+static Menu *initMenu(s32 windowWidth, s32 windowHeight) {
+	iVec2 startMenu, sizeMenu, textPause;
+	std::string pause = "PAUSE";
+
+	sizeMenu.x = windowWidth >> 1;
+	sizeMenu.y = (windowHeight - TOP_BAND_HEIGHT) >> 1;
+	startMenu.x = sizeMenu.x >> 1;
+	startMenu.y = (sizeMenu.y >> 1) + TOP_BAND_HEIGHT;
+	textPause.x = startMenu.x + (sizeMenu.x - startMenu.x) - (pause.size() * FONT_MULT);
+	textPause.y = startMenu.y;
+
+	return (new Menu(startMenu, sizeMenu, textPause, 4));
+}
+
 /**	@brief Graphic lib Constructor 
  *	@param width width of the window
  *	@param height height of the window
@@ -105,19 +119,8 @@ GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std
 	unloadFontF		=	(unloadFontFunc)loadFuncPtr(dlPtr, "unloadFontWrapper", path);
 	writeTextF		=	(writeTextFunc)loadFuncPtr(dlPtr, "writeTextWrapper", path);
 
+	menu = initMenu(getWidth(), getHeight());
 
-	iVec2 startMenu, sizeMenu, textPause;
-	std::string pause = "PAUSE";
-
-	sizeMenu.x = this->getWidth() >> 1;
-	sizeMenu.y = (this->getHeight() - TOP_BAND_HEIGHT) >> 1;
-	startMenu.x = sizeMenu.x >> 1;
-	startMenu.y = (sizeMenu.y >> 1) + TOP_BAND_HEIGHT;
-
-	textPause.x = startMenu.x + (sizeMenu.x - startMenu.x) - (pause.size() * FONT_MULT);
-	textPause.y = startMenu.y;
-
-	menu = new Menu(startMenu, sizeMenu, textPause, 4, winTitle);
 }
 
 std::string GraphicLib::getTextName(std::string name) const {
