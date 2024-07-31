@@ -4,10 +4,10 @@
 Button::Button() {
 	start = {0, 0};
 	size = {0, 0};
-	nameStart = {0, 0};
 	state = BTN_UNPRESS;
 	id = 0;
 	name = "None";
+	std::cout << "Default btn constructor call\n";
 }
 
 Button::~Button() {
@@ -26,20 +26,49 @@ Button::Button(const Button &ref) {
 	*this = ref;
 }
 
-Button::Button(iVec2 startBtn, iVec2 sizeBtn, std::string nameBtn, u8 idBtn) {
+Button::Button(iVec2 startBtn, iVec2 sizeBtn, u8 idBtn) {
 	start = startBtn;
 	size = sizeBtn;
 	state = BTN_UNPRESS;
 	id = idBtn;
-	name = nameBtn;
-	nameStart.x = start.x + (size.x >> 2);
-	nameStart.y = start.y;
-	std::cout << "Btn start text Y: " << nameStart.y << " x: "  << nameStart.x << std::endl;
 }
 
-void Button::drawButton(GraphicLib *lib, void *texture) const {
+void Button::drawButton(GraphicLib *lib, void *texture) {
+	iVec2 nameStart;
 	lib->drawTextureTile(texture, start, size);
+	nameStart.x = start.x + (size.x >> 2);
+	nameStart.y = start.y;
 	lib->writeText(name.c_str(), nameStart, FONT_SIZE, WHITE_RGBA);
+	// std::cout << "Btn start text Y: " << nameStart.y << " x: "  << nameStart.x;
+	// std::cout << "--> Start Y: " << start.y << " x: "  << start.x << std::endl;
+
+}
+
+void Button::setState(u8 newState) {
+	state = newState;
+}
+
+void Button::setStart(iVec2 newStart) {
+	start = newStart;
+}
+
+void Button::setSize(iVec2 newSize) {
+	size = newSize;
+}
+
+void Button::setName(std::string newName) {
+	name = newName;
+}
+void Button::setId(u8 newId) {
+	id = newId;
+}
+
+u8 Button::getId() const {
+	return (id);
+}
+
+std::string Button::getName() const {
+	return (name);
 }
 
 u8 Button::getState() const {
@@ -53,16 +82,4 @@ iVec2 Button::getStart() const {
 
 iVec2 Button::getSize() const {
 	return (size);
-}
-
-void Button::setState(u8 newState) {
-	state = newState;
-}
-
-void Button::setStart(iVec2 newStart) {
-	start = newStart;
-}
-
-void Button::setSize(iVec2 newSize) {
-	size = newSize;
 }

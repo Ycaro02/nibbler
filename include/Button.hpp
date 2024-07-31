@@ -20,25 +20,28 @@ class Button {
 	Button(const Button &ref);
 
 	/* Constructor */
-	Button(iVec2 start, iVec2 size, std::string nameBtn, u8 idBtn);
-
-	/* Getter */
-	u8 getState() const;
-	iVec2 getStart() const;
-	iVec2 getSize() const;
-
-	void drawButton(GraphicLib *lib, void *texture) const;
+	Button(iVec2 start, iVec2 size, u8 idBtn);
+	void drawButton(GraphicLib *lib, void *texture);
 
 	/* Setter */
 	void setState(u8 newState);
 	void setStart(iVec2 newStart);
 	void setSize(iVec2 newSize);
+	void setName(std::string newName);
+	void setId(u8 newId);
+
+	/* Getter */
+	u8 getId() const;
+	std::string getName() const;
+	iVec2 getStart() const;
+	iVec2 getSize() const ;
+	u8 getState() const ;
+
 
 	private:
 
 	iVec2		start;
 	iVec2		size;
-	iVec2		nameStart;
 	u8			id;	
 	u8			state;
 	std::string name;
