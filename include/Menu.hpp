@@ -1,8 +1,9 @@
 #ifndef MENU_HPP
-#define MENU
+#define MENU_HPP
 
 #include "BasicDefine.hpp"
 #include <string>
+
 
 /* Forward declaration */
 class Button;
@@ -19,7 +20,10 @@ class Menu {
 
 	/* Constructor */
 	Menu(iVec2 startMenu, iVec2 sizeMenu, iVec2 txtPause, s32 nbBtn, std::string btnTextDir);
+
 	void displayMenu(GraphicLib *lib);
+	void handleMenu(u32 key);
+
 
 	/* Setter */
 	void setTextureBtnPress(void *texture);
@@ -39,6 +43,7 @@ class Menu {
 	void 	*textBtnUnpress;
 	s32		btnNumber;
 	Button	*btn;
+	u8		currentBtn;
 };
 
 

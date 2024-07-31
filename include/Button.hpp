@@ -4,9 +4,6 @@
 #include "BasicDefine.hpp"
 #include <string>
 
-#define BTN_UNPRESS		0U
-#define BTN_PRESSED		1U
-
 /* Forward declaration */
 class GraphicLib;
 
@@ -20,7 +17,7 @@ class Button {
 	Button(const Button &ref);
 
 	/* Constructor */
-	Button(iVec2 start, iVec2 size, u8 idBtn);
+	Button(iVec2 start, iVec2 size);
 	void drawButton(GraphicLib *lib, void *texture);
 
 	/* Setter */

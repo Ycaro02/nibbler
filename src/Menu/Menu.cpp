@@ -10,7 +10,7 @@ Menu::Menu() {
 	textBtnUnpress = nullptr;
 	btnNumber = 0;
 	btn = nullptr;
-	
+	currentBtn = 0;
 }
 
 Menu::~Menu() {
@@ -46,27 +46,45 @@ Menu::Menu(iVec2 startMenu, iVec2 sizeMenu, iVec2 txtPause, s32 nbBtn, std::stri
 	startBtn.y = start.y + sizeBtn.y + (sizeBtn.y >> 2);
 	btn = new Button[btnNumber];
 	for (s32 i = 0; i < btnNumber; i++) {
-		btn[i] = Button(startBtn, sizeBtn, i);
+		btn[i] = Button(startBtn, sizeBtn);
 		startBtn.y += sizeBtn.y + (sizeBtn.y >> 1);
+		btn[i].setId(i);
 	}
-	btn[0].setName("resume");
-	btn[1].setName("restart");
-	btn[2].setName("mode");
-	btn[3].setName("quit");
+	btn[BTN_RESUME].setName("resume");
+	btn[BTN_RESTART].setName("restart");
+	btn[BTN_MODE].setName("mode");
+	btn[BTN_QUIT].setName("quit");
 
-
+	currentBtn = BTN_RESUME;
+	btn[BTN_RESUME].setState(BTN_PRESSED);
 	(void)btnTextDir;
 }
 
 void Menu::displayMenu(GraphicLib *lib) {
+	u8 btnState;
 	lib->colorTile(start, size, LIGHT_DARK_RGBA);
 	lib->writeText("PAUSE", txtPausePos, FONT_SIZE, WHITE_RGBA);
-
 	for (s32 i = 0; i < btnNumber; i++) {
-		btn[i].drawButton(lib, textBtnUnpress);
-		// std::cout << "Btn start text Y: " << btn[i].nameStart.y << " x: "  << btn[i].nameStart.x << std::endl;
-		// std::cout << "Btn start Y: " << btn[i].start.y << " x: "  << btn[i].start.x << std::endl;
+		btnState = btn[i].getState();
+		if (btnState == BTN_PRESSED) {
+			btn[i].drawButton(lib, textBtnPress);
+		}
+		else {
+			btn[i].drawButton(lib, textBtnUnpress);
+		}
+	}
+}
 
+void Menu::handleMenu(u32 key) {
+	if (key == NKEY_UP) {
+		btn[currentBtn].setState(BTN_UNPRESS);
+		currentBtn = (currentBtn == 0) ? btnNumber - 1 : currentBtn - 1;
+		btn[currentBtn].setState(BTN_PRESSED);
+	}
+	else if (key == NKEY_DOWN) {
+		btn[currentBtn].setState(BTN_UNPRESS);
+		currentBtn = (currentBtn == btnNumber - 1) ? 0 : currentBtn + 1;
+		btn[currentBtn].setState(BTN_PRESSED);
 	}
 }
 

@@ -6,7 +6,6 @@
 #include <iostream>
 #include <string>
 
-
 /*	
 	* Define the texture path use as follow:
 	* TEXTURE_DIR + libName + TEXTURE_NAME + TEXTURE_EXT
@@ -106,26 +105,6 @@ typedef enum NormaliseKey {
 #define WIN_W(w) (s32)((w * TILE_SIZE) + (w * TILE_SPACING) + TILE_SPACING)
 #define WIN_H(h) (s32)((h * TILE_SIZE) + (h * TILE_SPACING) + TILE_SPACING + TOP_BAND_HEIGHT)
 
-
-/* Macro to convert RGBA to UINT32 and UINT32 to RGBA */
-#define		RGBA_TO_UINT32(r, g, b, a)		((u32)((a << 24) | (r << 16) | (g << 8) | b))
-
-#define		UINT32_TO_RGBA(color, r, g, b, a)	\
-	do { \
-		r = (color >> 16) & 0xFF;				\
-		g = (color >> 8) & 0xFF;				\
-		b = color & 0xFF;						\
-		a = (color >> 24) & 0xFF;				\
-	} while (0)
-
-/* Macro to convert tile position to pixel */
-#define TILE_POSITION_TO_PIXEL(p, px, py) \
-    do { \
-        (px) = (p).x * TILE_SIZE + ((p).x + 1) * TILE_SPACING; \
-        (py) = ((p).y * TILE_SIZE + ((p).y + 1) * TILE_SPACING) + TOP_BAND_HEIGHT; \
-    } while (0)
-
-
 /* Forward declaration of Nibbler and Menu */
 class Nibbler;
 class Menu;
@@ -185,6 +164,7 @@ class GraphicLib {
 
 	void *getTexture(s32 id) const;
 	void drawPauseMenu();
+	Menu *getMenu();
 
 	private:
 

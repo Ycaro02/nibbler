@@ -43,6 +43,7 @@ GraphicLib::~GraphicLib() {
 	
 	if (menu) {
 		delete menu;
+		menu = nullptr;
 		std::cout << RED << " menu delete()";
 	}
 	if (window) {
@@ -215,10 +216,14 @@ void GraphicLib::processEvents(Nibbler &ctx) {
 		ctx.setCurrentLibIdx((s32)key);
 		close();
 	} 
-	else if (key == NKEY_UP || key == NKEY_DOWN || key == NKEY_LEFT || key == NKEY_RIGHT) {
+	else if (!ctx.getPause() && (key == NKEY_UP || key == NKEY_DOWN || key == NKEY_LEFT || key == NKEY_RIGHT)) {
 		ctx.getSnake().handleSnakeDir(key);
 		// moveStepByStep(ctx, key);
-	} else if (key == NKEY_A) {
+	}
+	else if (ctx.getPause() && (key == NKEY_UP || key == NKEY_DOWN)) {
+		ctx.getCurrentLib()->getMenu()->handleMenu(key);
+	}
+	else if (key == NKEY_A) {
 		ctx.setColorMode(!(ctx.getColorMode()));
 	} else if (key == NKEY_P) {
 		ctx.setPause(!(ctx.getPause()));
@@ -299,4 +304,8 @@ s32 GraphicLib::getHeight() const {
 
 std::string GraphicLib::getTitle() const {
 	return (winTitle);
+}
+
+Menu *GraphicLib::getMenu() {
+	return (menu);
 }
