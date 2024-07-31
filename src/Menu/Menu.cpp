@@ -48,9 +48,12 @@ Menu::Menu(iVec2 startMenu, iVec2 sizeMenu, iVec2 txtPause, s32 nbBtn, std::stri
 	for (s32 i = 0; i < btnNumber; i++) {
 		btn[i] = Button(startBtn, sizeBtn, i);
 		startBtn.y += sizeBtn.y + (sizeBtn.y >> 1);
-		btn[i].setName("TEST");
 	}
-	
+	btn[0].setName("resume");
+	btn[1].setName("restart");
+	btn[2].setName("mode");
+	btn[3].setName("quit");
+
 
 	(void)btnTextDir;
 }

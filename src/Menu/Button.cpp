@@ -34,7 +34,9 @@ Button::Button(iVec2 startBtn, iVec2 sizeBtn, u8 idBtn) {
 }
 
 void Button::drawButton(GraphicLib *lib, void *texture) {
-	iVec2 nameStart;
+	iVec2	nameStart;
+	// s32		textLen = name.length();
+
 	lib->drawTextureTile(texture, start, size);
 	nameStart.x = start.x + (size.x >> 2);
 	nameStart.y = start.y;
