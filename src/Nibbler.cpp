@@ -75,6 +75,7 @@ Nibbler::~Nibbler() {
 	if (board) {
 		freeBoard(board, height);
 	}
+	delete action;
 	delete libs[0];
 	delete libs[1];
 	delete libs[2];
