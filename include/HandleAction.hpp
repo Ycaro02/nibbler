@@ -28,8 +28,7 @@ class HandleAction {
 		void actionProcess(u32 key);
 		void setNewAction(keyAction actNew);
 		u32 getActionNb() const;
-
-
+	private:
 		/*  List of conditions */
 		bool isKeyChangeLib(u32 key);
 		bool isKeyPause(u32 key);
@@ -46,9 +45,6 @@ class HandleAction {
 		void actionMenu(u32 key);
 		void actionChangeColor(u32 key);
 		void actionExit(u32 key);
-
-
-	private:
 
 		Nibbler 				&ctx;	/* Nibbler reference */
 		std::list<keyAction>	act;	/* List of keyAction */
