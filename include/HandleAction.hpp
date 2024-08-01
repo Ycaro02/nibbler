@@ -36,6 +36,8 @@ class HandleAction {
 		bool isMoveKey(u32 key);
 		bool isMenuKey(u32 key);
 		bool isChangeColor(u32 key);
+		bool isExit(u32 key);
+
 
 		/*  List of actions */
 		void actionChangeLib(u32 key);
@@ -43,6 +45,7 @@ class HandleAction {
 		void actionMove(u32 key);
 		void actionMenu(u32 key);
 		void actionChangeColor(u32 key);
+		void actionExit(u32 key);
 
 
 	private:

@@ -30,6 +30,7 @@ HandleAction& HandleAction::operator=(const HandleAction& ref) {
  *	@note This constructor set the action list
 */
 HandleAction::HandleAction(Nibbler &ctxNib) : ctx(ctxNib) {
+	setNewAction({&HandleAction::isExit, &HandleAction::actionExit});
 	setNewAction({&HandleAction::isKeyPause, &HandleAction::actionPause});
 	setNewAction({&HandleAction::isKeyChangeLib, &HandleAction::actionChangeLib});
 	setNewAction({&HandleAction::isMoveKey, &HandleAction::actionMove});
@@ -64,8 +65,12 @@ void HandleAction::setNewAction(keyAction actNew) {
 
 /* Function to handle condition */
 
+bool HandleAction::isExit(u32 key) {
+	return (key == NKEY_ESC);
+}
+
 bool HandleAction::isKeyPause(u32 key) {
-	return (key == NKEY_ESC || key == NKEY_P);
+	return (key == NKEY_P);
 }
 
 bool HandleAction::isKeyChangeLib(u32 key) {
@@ -109,4 +114,10 @@ void HandleAction::actionMenu(u32 key) {
 void HandleAction::actionChangeColor(u32 key) {
 	(void)key;
 	ctx.setColorMode(!(ctx.getColorMode()));
+}
+
+void HandleAction::actionExit(u32 key) {
+	(void)key;
+	std::cout << "Act Exit\n";
+	ctx.setIsRunning(0);
 }
