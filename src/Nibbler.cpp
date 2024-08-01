@@ -1,6 +1,7 @@
 #include "../include/Nibbler.hpp"
 #include "../include/Snake.hpp"
 #include "../include/Color.hpp"
+#include "../include/HandleAction.hpp"
 
 /* Needed for std::invalid_args */
 #include <stdexcept>
@@ -61,7 +62,7 @@ static int parseIntegerData(const std::string &line) {
 
 /* Default constructor */
 Nibbler::Nibbler()
-: width(0), height(0), board(nullptr), lastMove(std::chrono::steady_clock::now())
+: action(nullptr), width(0), height(0), board(nullptr), lastMove(std::chrono::steady_clock::now())
 , lastFoodSpawn(std::chrono::steady_clock::now()), snake(Snake())
 , nbFood(0), emptyTileNb(0), gameState(0) {
 	libs[0] = nullptr;
@@ -94,6 +95,10 @@ Nibbler& Nibbler::operator=(const Nibbler &ref) {
 		nbFood = ref.nbFood;
 		emptyTileNb = ref.emptyTileNb;
 		gameState = ref.gameState;
+		action = ref.action;
+		libs[0] = ref.libs[0];
+		libs[1] = ref.libs[1];
+		libs[2] = ref.libs[2];
 	}
 	return (*this);
 }
@@ -134,6 +139,9 @@ Nibbler::Nibbler(std::string w, std::string h) {
 
 	/* This initialise lastMove, lastfoodSpawn, snake, nbFood and emptyTileNB */
 	resetGame();
+
+	/* Initialize the action handler */
+	action = new HandleAction(*this);
 }
 
 /* Initialize lib wrapper */
@@ -297,4 +305,8 @@ u32 Nibbler::getPause() {
 
 void Nibbler::setPause(u32 value) {
 	SET_PAUSE_BIT(gameState, value);
+}
+
+HandleAction *Nibbler::getActionHandler() {
+	return (action);
 }

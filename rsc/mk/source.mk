@@ -15,6 +15,7 @@ MAIN_MANDATORY 	=	main.cpp
 SRCS			=	GraphicLib/GraphicLib.cpp\
 					Nibbler.cpp \
 					Snake.cpp \
+					HandleAction.cpp \
 					Menu/Menu.cpp \
 					Menu/Button.cpp \
 

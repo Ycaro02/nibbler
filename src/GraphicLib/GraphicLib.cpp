@@ -3,6 +3,7 @@
 #include "../../include/Snake.hpp"
 #include "../../include/Color.hpp"
 #include "../../include/Menu.hpp"
+#include "../../include/HandleAction.hpp"
 
 /* Default constructor */
 GraphicLib::GraphicLib() 
@@ -210,27 +211,7 @@ bool GraphicLib::isOpen() {
 /* Process events */
 void GraphicLib::processEvents(Nibbler &ctx) {
 	u32 key = winPollEventF(window);
-	
-	if (key == NKEY_ESC) {
-		ctx.setIsRunning(0);
-	} 
-	else if (key != ctx.getCurrentLibIdx() && (key == NKEY_1 || key == NKEY_2 || key == NKEY_3)) {
-		std::cout << PURPLE << "Switching to lib " << key << RESET << std::endl;
-		ctx.setCurrentLibIdx((s32)key);
-		close();
-	} 
-	else if (!ctx.getPause() && (key == NKEY_UP || key == NKEY_DOWN || key == NKEY_LEFT || key == NKEY_RIGHT)) {
-		ctx.getSnake().handleSnakeDir(key);
-		// moveStepByStep(ctx, key);
-	}
-	else if (ctx.getPause() && (key == NKEY_UP || key == NKEY_DOWN || key == NKEY_ENTER)) {
-		ctx.getCurrentLib()->getMenu()->handleMenu(ctx, key);
-	}
-	else if (key == NKEY_A) {
-		ctx.setColorMode(!(ctx.getColorMode()));
-	} else if (key == NKEY_P) {
-		ctx.setPause(!(ctx.getPause()));
-	}
+	ctx.getActionHandler()->actionProcess(key);
 }
 
 void *GraphicLib::loadFont(const char *path) {
@@ -312,3 +293,27 @@ std::string GraphicLib::getTitle() const {
 Menu *GraphicLib::getMenu() {
 	return (menu);
 }
+
+
+/* Old code to handle action */
+// if (key == NKEY_ESC) {
+// 	ctx.setPause(!(ctx.getPause()));
+// 	// ctx.setIsRunning(0);
+// } 
+// else if (key != ctx.getCurrentLibIdx() && (key == NKEY_1 || key == NKEY_2 || key == NKEY_3)) {
+// 	std::cout << PURPLE << "Switching to lib " << key << RESET << std::endl;
+// 	ctx.setCurrentLibIdx((s32)key);
+// 	close();
+// } 
+// else if (!ctx.getPause() && (key == NKEY_UP || key == NKEY_DOWN || key == NKEY_LEFT || key == NKEY_RIGHT)) {
+// 	ctx.getSnake().handleSnakeDir(key);
+// 	// moveStepByStep(ctx, key);
+// }
+// else if (ctx.getPause() && (key == NKEY_UP || key == NKEY_DOWN || key == NKEY_ENTER)) {
+// 	ctx.getCurrentLib()->getMenu()->handleMenu(ctx, key);
+// }
+// else if (key == NKEY_A) {
+// 	ctx.setColorMode(!(ctx.getColorMode()));
+// } else if (key == NKEY_P) {
+// 	ctx.setPause(!(ctx.getPause()));
+// }

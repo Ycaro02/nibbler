@@ -37,6 +37,8 @@ typedef std::chrono::milliseconds ChronoMilli;
 #define SET_COLOR_BIT(buff, val) (U32_SET_BIT(buff, COLOR_IDX, val))
 #define SET_PAUSE_BIT(buff, val) (U32_SET_BIT(buff, PAUSE_IDX, val))
 
+class HandleAction;
+
 /* Nibbler class to handle the game (context)*/
 class Nibbler {
 	public:
@@ -87,11 +89,13 @@ class Nibbler {
 	u32		getPause();
 	void	setPause(u32 value);
 
-	GraphicLib	*getCurrentLib();
-	Snake		&getSnake();
+	HandleAction	*getActionHandler();
+	GraphicLib		*getCurrentLib();
+	Snake			&getSnake();
 
 	private:
 	GraphicLib			*libs[3];		/* Array of the 3 libraries */
+	HandleAction		*action;		/* Handle action object */
 	s32					width;			/* Width of the board */
 	s32					height;			/* Height of the board */
 	u8					**board;		/* Board of the game */

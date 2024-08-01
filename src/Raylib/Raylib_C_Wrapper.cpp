@@ -58,6 +58,18 @@ extern "C" {
             return (nullptr);
         }
 		SetTargetFPS(60);
+
+		/* Center the window 0 for the primary monitor (dual screen setup) */
+		Vector2 monitor = GetMonitorPosition(0);
+		s32 screenWidth = GetMonitorWidth(0);
+		s32 screenHeight = GetMonitorHeight(0);
+		
+		if (screenWidth <= 0 || screenHeight <= 0) {
+        	std::cerr << "Failed to get primary monitor dimensions" << std::endl;
+        	CloseWindow();
+			return (nullptr);
+    	}
+		SetWindowPosition(monitor.x + (screenWidth - width) / 2, monitor.y + (screenHeight - height) / 2);
         return (RAYLIB_WINPTR);
     }
 
