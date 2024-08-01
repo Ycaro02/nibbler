@@ -3,17 +3,21 @@
 #include "../include/Nibbler.hpp"
 #include "../include/Menu.hpp"
 
+/* Default Constructor */
 HandleAction::HandleAction() : ctx(*(Nibbler *)nullptr) {
 	act.clear();
 }
 
+/* Destructor */
 HandleAction::~HandleAction() {
 }
 
+/* Copy Constructor */
 HandleAction::HandleAction(const HandleAction& ref) : ctx(ref.ctx) {
 	*this = ref;
 }
 
+/* Assignment operator */
 HandleAction& HandleAction::operator=(const HandleAction& ref) {
 	if (this != &ref) {
 		act = ref.act;
@@ -21,6 +25,10 @@ HandleAction& HandleAction::operator=(const HandleAction& ref) {
 	return (*this);
 }
 
+/** @briefReal Constructor 
+ *	@param ctxNib Nibbler reference
+ *	@note This constructor set the action list
+*/
 HandleAction::HandleAction(Nibbler &ctxNib) : ctx(ctxNib) {
 	setNewAction({&HandleAction::isKeyPause, &HandleAction::actionPause});
 	setNewAction({&HandleAction::isKeyChangeLib, &HandleAction::actionChangeLib});
@@ -29,6 +37,10 @@ HandleAction::HandleAction(Nibbler &ctxNib) : ctx(ctxNib) {
 	setNewAction({&HandleAction::isChangeColor, &HandleAction::actionChangeColor});
 }
 
+/** @brief Process the action list
+ *	@param key The key to process
+ *	@note This function will process the action list and call the corresponding action
+*/
 void HandleAction::actionProcess(u32 key) {
     std::list<keyAction>::iterator it = act.begin();
 
@@ -40,11 +52,12 @@ void HandleAction::actionProcess(u32 key) {
     }
 }
 
+/* Getter for the action number */
 u32 HandleAction::getActionNb() const {
 	return (act.size());
 }
 
-
+/* Setter for a new action */
 void HandleAction::setNewAction(keyAction actNew) {
 	act.push_back(actNew);
 }

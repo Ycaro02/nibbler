@@ -11,8 +11,8 @@ class HandleAction;
 
 /* Structure to store a key and its action */
 typedef struct keyAction_s {
-    bool (HandleAction::*condition)(u32 key);
-    void (HandleAction::*action)(u32 key);
+    bool (HandleAction::*condition)(u32 key);	/* Condition to check */
+    void (HandleAction::*action)(u32 key);		/* Action to do */
 } keyAction;
 
 /*  Class to handle the actions */
@@ -24,7 +24,6 @@ class HandleAction {
 		HandleAction& operator=(const HandleAction& ref);
 
 		HandleAction(Nibbler &ctx);
-
 
 		void actionProcess(u32 key);
 		void setNewAction(keyAction actNew);
@@ -48,11 +47,8 @@ class HandleAction {
 
 	private:
 
-
-
-
-		Nibbler 				&ctx;
-		std::list<keyAction>	act;
+		Nibbler 				&ctx;	/* Nibbler reference */
+		std::list<keyAction>	act;	/* List of keyAction */
 
 };
 
