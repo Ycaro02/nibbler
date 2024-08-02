@@ -28,8 +28,13 @@ function wrapper_lib_compile {
 	local lib_name="${1}"
 	local wrapper_path="${2}"
 	local lib_deps="${3}"
+	local cflags="${4}"
 
-	clang++ -O3 -shared -o rsc/wrapperlib/${lib_name} ${wrapper_path} -fPIC \
+	# Compile the wrapper lib
+
+	display_color_msg ${YELLOW} "Compiling the wrapper lib ${lib_name} with flags: ${cflags}"
+
+	clang++ ${cflags} -shared -o rsc/wrapperlib/${lib_name} ${wrapper_path} -fPIC \
 		-I./rsc/lib/install/include -L./rsc/lib/install/lib ${lib_deps} \
 		-Wl,-rpath,./rsc/lib/install/lib 
 
@@ -48,7 +53,7 @@ function wrapper_compile_entry {
 	local wrapper_lib_src="${2}"
 	local wrapper_lib_deps="${3}"
 
-	wrapper_lib_compile "${wrapper_lib_name}" "${wrapper_lib_src}" "${wrapper_lib_deps}"
+	wrapper_lib_compile "${wrapper_lib_name}" "${wrapper_lib_src}" "${wrapper_lib_deps}" "${4}"
 }
 
 wrapper_compile_entry "${@}"

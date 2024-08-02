@@ -125,7 +125,12 @@ extern "C" {
     s32 windowPollEventWrapper(SDL_Window* window) {
         SDL_Event event;
 
-		SDL_PollEvent(&event);
+		if (!window) {
+			return (NKEY_INVALID);
+		} else if (!SDL_PollEvent(&event)) {
+			return (NKEY_INVALID);
+		}
+		
 		if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)) {
 			return (NKEY_ESC);
 		} else if (event.type == SDL_KEYDOWN) {
@@ -297,6 +302,10 @@ extern "C" {
 
 		(void)fontSize;
 
+		if (!window || !font) {
+			return;
+		}
+
 		renderer = SDL_GetRenderer(window);
 		if (!renderer) {
 			std::cerr << "SDL_GetRenderer Error: " << SDL_GetError() << std::endl;
@@ -316,12 +325,13 @@ extern "C" {
 			SDL_FreeSurface(textSurface);
 			return;
 		}
+
 		textRect.x = pos.x;
 		textRect.y = pos.y;
 		textRect.w = textSurface->w;
 		textRect.h = textSurface->h;
 		SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
-		SDL_DestroyTexture(textTexture);
 		SDL_FreeSurface(textSurface);
+		SDL_DestroyTexture(textTexture);
 	}
 }

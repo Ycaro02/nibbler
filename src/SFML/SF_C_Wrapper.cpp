@@ -175,8 +175,11 @@ extern "C" {
 	void *loadTextureWrapper(sf::RenderWindow* window, const char* path) {
 		sf::Texture *texture = new sf::Texture();
 	
-		if (!texture->loadFromFile(path)) {
-			// std::cerr << "Failed to load texture" << std::endl;
+		if (!window) {
+			delete texture;
+			return (nullptr);
+		} else if (!texture->loadFromFile(path)) {
+			std::cerr << "Failed to load texture" << std::endl;
 			delete texture;
 			return (nullptr);
 		}

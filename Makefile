@@ -42,17 +42,17 @@ endif
 
 $(SFML_LIB) :
 ifeq ($(shell [ -f $(SFML_LIB) ] && echo 0 || echo 1), 1)
-	@$(WRAPPER_COMPILE) SFMLWrapper.so src/SFML/SF_C_Wrapper.cpp "-lsfml-graphics -lsfml-window -lsfml-system"
+	@$(WRAPPER_COMPILE) SFMLWrapper.so src/SFML/SF_C_Wrapper.cpp "-lsfml-graphics -lsfml-window -lsfml-system" "${CFLAGS}"
 endif
 
 $(SDL2_LIB) :
 ifeq ($(shell [ -f $(SDL2_LIB) ] && echo 0 || echo 1), 1)
-	@$(WRAPPER_COMPILE) SDL2Wrapper.so src/SDL2/SDL_C_Wrapper.cpp "-lSDL2 -lSDL2_ttf"
+	@$(WRAPPER_COMPILE) SDL2Wrapper.so src/SDL2/SDL_C_Wrapper.cpp "-lSDL2 -lSDL2_ttf" "${CFLAGS}"
 endif
 
 $(RAYLIB_LIB) :
 ifeq ($(shell [ -f $(RAYLIB_LIB) ] && echo 0 || echo 1), 1)	
-	@$(WRAPPER_COMPILE) RaylibWrapper.so src/Raylib/Raylib_C_Wrapper.cpp "-lraylib"
+	@$(WRAPPER_COMPILE) RaylibWrapper.so src/Raylib/Raylib_C_Wrapper.cpp "-lraylib" "${CFLAGS}"
 endif
 
 bonus: clear_mandatory $(NAME)

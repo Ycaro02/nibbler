@@ -20,15 +20,6 @@
 #define RAYLIB_WINPTR ((void *)0x42)
 
 /** 
- * @brief Check if a key is pressed or down
- * @param key The key to check
- * @return true if the key is pressed or down, false otherwise
-*/
-static bool IsKeyPressedOrDown(int key) {
-	return (IsKeyDown(key) || IsKeyPressed(key));
-}
-
-/** 
  * @brief Check if the window pointer is valid
  * @param win The window pointer to check
  * @return true if the window pointer is valid, false otherwise
@@ -179,7 +170,7 @@ extern "C" {
 	*/
 	void *loadTextureWrapper(void* window, const char* path) {
 		Texture2D	*texture = NULL;
-		Image		image = {0};
+		Image		image = {0, 0, 0, 0, 0};
 		if (!raylibWindowGuard(window)) {
 			return (nullptr);
 		}
