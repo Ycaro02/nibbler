@@ -4,10 +4,8 @@
 
 
 static bool checkCreateWin(GraphicLib *lib) {
-	if (!lib->isOpen()) {
-		if (!lib->windowCreate()) {
-			return (false);
-		}
+	if (!lib->isOpen() && !lib->windowCreate()) {
+		return (false);
 	}
 	return (true);
 }
