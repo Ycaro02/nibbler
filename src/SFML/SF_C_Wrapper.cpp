@@ -183,6 +183,7 @@ extern "C" {
 			delete texture;
 			return (nullptr);
 		}
+		// std::cout << "Texture loaded: " << (void*)texture << std::endl;
 		return (texture);
 	}
 
@@ -192,6 +193,7 @@ extern "C" {
 	*/
 	void unloadTextureWrapper(sf::Texture *texture) {
 		if (texture) {
+			// std::cout << "Texture unloaded: " << (void*)texture << std::endl;
 			delete texture;
 		}
 	}

@@ -42,14 +42,14 @@ GraphicLib::~GraphicLib() {
 
 	std::cout << YELLOW << "GraphicLib Destructor for " + name + " with :";
 	
+	if (window) {
+		std::cout << RED << " window close()";
+		close();
+	}
 	if (menu) {
 		delete menu;
 		menu = nullptr;
 		std::cout << RED << " menu delete()";
-	}
-	if (window) {
-		std::cout << RED << " window close()";
-		close();
 	}
 	std::cout << ORANGE << " libDestructor()" << GREEN << " dlclose()" << RESET << std::endl;
 	libDestructorF();
@@ -241,7 +241,7 @@ void GraphicLib::drawTextureTile(void *texture, iVec2 tilePos, iVec2 scale) {
 
 /* Close the graphics library and set window to null */
 void GraphicLib::close() {
-	for (u32 i = 0; i < 4; i++) {
+	for (u32 i = 0; i < TEXTURE_MAX; i++) {
 		if (texture[i]) {
 			unloadTexture(texture[i]);
 			texture[i] = nullptr;
