@@ -25,15 +25,18 @@ class Menu {
 	void displayMenu(GraphicLib *lib);
 	void handleMenu(Nibbler &ctx, u32 key);
 
+	void resetBtnState();
 
 	/* Setter */
 	void setTextureBtnPress(void *texture);
 	void setTextureBtnUnpress(void *texture);
+	void setCurrentBtn(u8 newBtn);
 
 	/* Getter */
-	void *getTextureBtnPress();
-	void *getTextureBtnUnpress();
-	Button *getButton();
+	void 	*getTextureBtnPress();
+	void 	*getTextureBtnUnpress();
+	Button	*getButton();
+	u8		getCurrentBtn();
 
 	private:
 

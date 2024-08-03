@@ -49,13 +49,18 @@ Button::Button(iVec2 startBtn, iVec2 sizeBtn) {
  * @lib GraphicLib pointer
  * @texture Texture of the button
 */
-void Button::drawButton(GraphicLib *lib, void *texture) {
+void Button::drawButton(GraphicLib *lib, void *texture, u32 color) {
 	iVec2	nameStart;
+	s32 	fontMult = lib->getFontMult();
+	s32 	fontSize = lib->getFontSize();
 
 	lib->drawTextureTile(texture, start, size);
 	nameStart.x = start.x + (size.x >> 2);
-	nameStart.y = start.y - (size.y >> 4);
-	lib->writeText(name.c_str(), nameStart, FONT_SIZE, WHITE_RGBA);
+	nameStart.y = start.y;
+	if (fontSize + fontMult < size.y) {
+		nameStart.y += (size.y >> 3); // / 8
+	}
+	lib->writeText(name.c_str(), nameStart, lib->getFontSize(), color);
 }
 
 /* Setter */

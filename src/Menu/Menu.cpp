@@ -84,14 +84,14 @@ Menu::Menu(iVec2 startMenu, iVec2 sizeMenu, iVec2 txtPause, s32 nbBtn)  {
 void Menu::displayMenu(GraphicLib *lib) {
 	u8 btnState;
 	lib->colorTile(start, size, LIGHT_DARK_RGBA);
-	lib->writeText("PAUSE", txtPausePos, FONT_SIZE, WHITE_RGBA);
+	lib->writeText("PAUSE", txtPausePos, lib->getFontSize(), WHITE_RGBA);
 	for (s32 i = 0; i < btnNumber; i++) {
 		btnState = btn[i].getState();
 		if (btnState == BTN_PRESSED) {
-			btn[i].drawButton(lib, textBtnPress);
+			btn[i].drawButton(lib, textBtnPress, YELLOW_RGBA);
 		}
 		else {
-			btn[i].drawButton(lib, textBtnUnpress);
+			btn[i].drawButton(lib, textBtnUnpress, WHITE_RGBA);
 		}
 	}
 }
@@ -125,6 +125,14 @@ void Menu::handleMenu(Nibbler &ctx, u32 key) {
 	}
 }
 
+void Menu::resetBtnState() {
+	for (s32 i = 0; i < btnNumber; i++) {
+		btn[i].setState(BTN_UNPRESS);
+	}
+	btn[BTN_RESUME].setState(BTN_PRESSED);
+	currentBtn = BTN_RESUME;
+}
+
 /* Getter/Setter */
 
 void Menu::setTextureBtnPress(void *texture) {
@@ -133,6 +141,14 @@ void Menu::setTextureBtnPress(void *texture) {
 
 void Menu::setTextureBtnUnpress(void *texture) {
 	textBtnUnpress = texture;
+}
+
+u8 Menu::getCurrentBtn() {
+	return (currentBtn);
+}
+
+void Menu::setCurrentBtn(u8 newBtn) {
+	currentBtn = newBtn;
 }
 
 void *Menu::getTextureBtnPress() {

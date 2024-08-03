@@ -212,8 +212,10 @@ extern "C" {
 	 * @param path The path to the font
 	 * @return The font pointer
 	*/
-	void *loadFontWrapper(const char* path) {
+	void *loadFontWrapper(const char* path, s32 fontSize) {
 		sf::Font *font = new sf::Font();
+
+		(void)fontSize;
 		if (!font->loadFromFile(path)) {
 			delete font;
 			return (nullptr);

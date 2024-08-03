@@ -51,10 +51,10 @@ static int parseIntegerData(const std::string &line) {
     } catch (const std::exception& e) {
 		throw std::invalid_argument("Invalid integer data in Nibbler constructor: " + line);
     }
-	if (nb <= 4) {
-		throw std::invalid_argument("Integer data in Nibbler constructor must be greater than 4");
-	} else if (nb >= 30) {
-		throw std::invalid_argument("Integer data in Nibbler constructor must be less than 30");
+	if (nb < 10) {
+		throw std::invalid_argument("Integer data in Nibbler constructor must be greater or equal than 10");
+	} else if (nb > 20) {
+		throw std::invalid_argument("Integer data in Nibbler constructor must be less or equal than 20");
 	}
 
 	return (nb);

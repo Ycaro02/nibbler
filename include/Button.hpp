@@ -18,7 +18,7 @@ class Button {
 
 	/* Constructor */
 	Button(iVec2 start, iVec2 size);
-	void drawButton(GraphicLib *lib, void *texture);
+	void drawButton(GraphicLib *lib, void *texture, u32 color);
 
 	/* Setter */
 	void setState(u8 newState);

@@ -29,8 +29,10 @@
 
 /* Define font info : path, size, mult per char for align/center text */
 #define FONT_PATH "rsc/font/arial.ttf"
-#define FONT_SIZE 40
-#define FONT_MULT 12
+// #define FONT_SIZE 40
+// #define FONT_MULT 12
+// #define FONT_SIZE 20
+// #define FONT_MULT 6
 
 typedef enum textureIdx {
 	HEAD_LEFT_IDX = 0,
@@ -78,7 +80,7 @@ typedef void (*unloadTextFunc)(void *);
 typedef void (*drawTextFunc)(void *, void *, iVec2, iVec2);
 
 /* Here const char* is the path to the font, return the allocated font loaded */
-typedef void *(*loadFontFunc)(const char*);
+typedef void *(*loadFontFunc)(const char*, s32);
 
 /* Here void* is the font to unload */
 typedef void (*unloadFontFunc)(void*);
@@ -140,7 +142,7 @@ class GraphicLib {
 	void unloadTexture(void *texture);
 
 	/* Load a font */
-	void *loadFont(const char *path);
+	void *loadFont(const char *path, s32 fontSize);
 	/* Unload a font */
 	void unloadFont(void *font);
 
@@ -163,6 +165,9 @@ class GraphicLib {
 	std::string getTitle() const;
 	std::string getTextName(std::string name) const;
 
+	s32 getFontSize() const ;
+	s32 getFontMult() const ;
+
 	void *getTexture(s32 id) const;
 	void drawPauseMenu();
 	Menu *getMenu();
@@ -179,6 +184,8 @@ class GraphicLib {
     std::string			winTitle;		/* Title of the window */
 	s16					libID;			/* ID of the library */
 	void				*font;			/* Pointer to the font */
+	s32					fontSize;		/* Size of the font */
+	s32					fontMult;		/* Mult per char for align/center text */
 	Menu				*menu;			/* Menu object */
 
 	/* Function pointers */

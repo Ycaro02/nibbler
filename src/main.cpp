@@ -96,14 +96,17 @@ static void drawGame(GraphicLib *lib, Nibbler &ctx) {
 	std::string	libName = lib->getTitle();
 	s32			textStartX = lib->getWidth() >> 1;
 
-	textStartX -= (libName.size() * FONT_MULT);
+	s32 fontSize = lib->getFontSize();
+	s32 fontMult = lib->getFontMult();
+
+	textStartX -= (libName.size() * fontMult);
 	
 	if (ctx.getColorMode()) {
 		colorDisplay(lib, ctx);
 	} else {
 		textureDisplay(lib, ctx);
 	}
-	lib->writeText(libName.c_str(), {textStartX, 30}, FONT_SIZE, WHITE_RGBA);
+	lib->writeText(libName.c_str(), {textStartX, 30}, fontSize, WHITE_RGBA);
 }
 
 void GameLoop(Nibbler &ctx) {

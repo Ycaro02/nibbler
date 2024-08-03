@@ -93,6 +93,9 @@ bool HandleAction::isChangeColor(u32 key) {
 
 void HandleAction::actionPause(u32 key) {
 	(void)key;
+	std::cout << "Act Pause\n";
+	Menu *menu = ctx.getCurrentLib()->getMenu();
+	menu->resetBtnState();
 	ctx.setPause(!ctx.getPause());
 }
 
@@ -108,6 +111,7 @@ void HandleAction::actionMove(u32 key) {
 }
 
 void HandleAction::actionMenu(u32 key) {
+	
 	ctx.getCurrentLib()->getMenu()->handleMenu(ctx, key);
 }
 

@@ -67,7 +67,7 @@ static void *loadFuncPtr(void *dlPtr, const std::string &name, const std::string
 	return funcPtr;
 }
 
-static Menu *initMenu(s32 windowWidth, s32 windowHeight) {
+static Menu *initMenu(s32 windowWidth, s32 windowHeight, s32 fontMult) {
 	iVec2 startMenu, sizeMenu, textPause;
 	std::string pause = "PAUSE";
 
@@ -75,7 +75,7 @@ static Menu *initMenu(s32 windowWidth, s32 windowHeight) {
 	sizeMenu.y = (windowHeight - TOP_BAND_HEIGHT) >> 1;
 	startMenu.x = sizeMenu.x >> 1;
 	startMenu.y = (sizeMenu.y >> 1) + TOP_BAND_HEIGHT;
-	textPause.x = startMenu.x + (sizeMenu.x - startMenu.x) - (pause.size() * FONT_MULT);
+	textPause.x = startMenu.x + (sizeMenu.x - startMenu.x) - (pause.size() * fontMult);
 	textPause.y = startMenu.y;
 
 	return (new Menu(startMenu, sizeMenu, textPause, 4));
@@ -120,7 +120,18 @@ GraphicLib::GraphicLib(s32 width, s32 height, const std::string title, const std
 	unloadFontF		=	(unloadFontFunc)loadFuncPtr(dlPtr, "unloadFontWrapper", path);
 	writeTextF		=	(writeTextFunc)loadFuncPtr(dlPtr, "writeTextWrapper", path);
 
-	menu = initMenu(getWidth(), getHeight());
+
+	fontSize = (s32)((winWidth + winHeight) / (TILE_SIZE + TILE_SPACING));
+
+	if (fontSize >= 20) {
+		fontSize -= (s32)(fontSize / 3);
+	} 
+
+	fontMult = (s32)(fontSize / 3);
+
+	std::cout << "For Width : " << winWidth << " | Font size : " << fontSize << " | Font mult : " << fontMult << std::endl;
+
+	menu = initMenu(getWidth(), getHeight(), fontMult);
 
 }
 
@@ -157,10 +168,22 @@ bool GraphicLib::windowCreate() {
 		throw std::invalid_argument("Error: Button texture not found");
 	}
 
+	menu->resetBtnState();
 
-	font = loadFont(FONT_PATH);
-
+	font = loadFont(FONT_PATH,fontSize);
+	if (!font) {
+		std::cerr << "Error: Font not found" << std::endl;
+		return (false);
+	}
 	return (window != nullptr);
+}
+
+s32 GraphicLib::getFontSize() const {
+	return (fontSize);
+}
+
+s32 GraphicLib::getFontMult() const {
+	return (fontMult);
 }
 
 /* Clear the screen */
@@ -214,8 +237,8 @@ void GraphicLib::processEvents(Nibbler &ctx) {
 	ctx.getActionHandler()->actionProcess(key);
 }
 
-void *GraphicLib::loadFont(const char *path) {
-	return (loadFontF(path));
+void *GraphicLib::loadFont(const char *path, s32 fontSize) {
+	return (loadFontF(path, fontSize));
 }
 
 void GraphicLib::unloadFont(void *font) {

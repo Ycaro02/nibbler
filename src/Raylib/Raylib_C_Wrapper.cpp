@@ -246,8 +246,10 @@ extern "C" {
 	 * @param path The path to the font
 	 * @return The font pointer
 	*/
-	void *loadFontWrapper(const char* path) {
+	void *loadFontWrapper(const char* path, s32 fontSize) {
 		Font *font = new Font();
+
+		(void)fontSize;
 		 /* If load loading fail, raylib return default font instead */
 		*font = LoadFont(path);
 		return (font);

@@ -273,8 +273,8 @@ extern "C" {
 	 * @param path The path of the font
 	 * @return The font pointer
 	*/
-	void *loadFontWrapper(const char *path) {
-		TTF_Font *font = TTF_OpenFont(path, FONT_SIZE);
+	void *loadFontWrapper(const char *path, s32 fontSize) {
+		TTF_Font *font = TTF_OpenFont(path, fontSize);
 		if (!font) {
 			std::cerr << "TTF_OpenFont Error: " << TTF_GetError() << std::endl;
 			return (nullptr);
