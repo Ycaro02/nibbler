@@ -13,11 +13,11 @@
 #define TEXTURE_DIR "rsc/texture/"
 
 /* Define the TEXTURE_NAME without extension */
-#define HEAD_L_FILE "/HeadLeft."
-#define HEAD_R_FILE "/HeadRight."
-#define HEAD_BOT_FILE "/HeadBot."
-#define HEAD_TOP_FILE "/HeadTop."
-#define BODY_FILE "/Body."
+#define HEAD_L_FILE "/player1/HeadLeft."
+#define HEAD_R_FILE "/player1/HeadRight."
+#define HEAD_BOT_FILE "/player1/HeadBot."
+#define HEAD_TOP_FILE "/player1/HeadTop."
+#define BODY_FILE "/player1/Body."
 #define FOOD_FILE "/Food."
 #define EMPTY_FILE "/Empty."
 
