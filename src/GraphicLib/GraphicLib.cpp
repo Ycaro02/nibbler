@@ -38,20 +38,16 @@ GraphicLib::GraphicLib(const GraphicLib& ref) {
 /* Destructor */
 GraphicLib::~GraphicLib() {
 
-	std::string name = libID == SDL2_IDX ? "SDL2" : libID == SFML_IDX ? "SFML" : "Raylib";
-
-	std::cout << YELLOW << "GraphicLib Destructor for " + name + " with :";
+	// std::string name = libID == SDL2_IDX ? "SDL2" : libID == SFML_IDX ? "SFML" : "Raylib";
+	// std::cout << YELLOW << "GraphicLib Destructor for " + name + " with :";
 	
 	if (window) {
-		std::cout << RED << " window close()";
+		// std::cout << RED << " window close()";
 		close();
 	}
-	if (menu) {
-		delete menu;
-		menu = nullptr;
-		std::cout << RED << " menu delete()";
-	}
-	std::cout << ORANGE << " libDestructor()" << GREEN << " dlclose()" << RESET << std::endl;
+	delete menu;
+	menu = nullptr;
+	// std::cout << ORANGE << " libDestructor()" << GREEN << " dlclose()" << RESET << std::endl;
 	libDestructorF();
 	if (dlPtr) {
 		dlclose(dlPtr);
@@ -265,26 +261,15 @@ void GraphicLib::drawTextureTile(void *texture, iVec2 tilePos, iVec2 scale) {
 /* Close the graphics library and set window to null */
 void GraphicLib::close() {
 	for (u32 i = 0; i < TEXTURE_MAX; i++) {
-		if (texture[i]) {
-			unloadTexture(texture[i]);
-			texture[i] = nullptr;
-		}
+		unloadTexture(texture[i]);
+		texture[i] = nullptr;
 	}
-
-	if (menu) {
-		if (menu->getTextureBtnPress()) {
-			unloadTexture(menu->getTextureBtnPress());
-		}
-		if (menu->getTextureBtnUnpress()) {
-			unloadTexture(menu->getTextureBtnUnpress());
-		}
-	}
+	unloadTexture(menu->getTextureBtnPress());
+	unloadTexture(menu->getTextureBtnUnpress());
 
 	if (window) {
 		winCloseF(window);
 		window = nullptr;
-	}
-	if (font) {
 		unloadFont(font);
 		font = nullptr;
 	}
