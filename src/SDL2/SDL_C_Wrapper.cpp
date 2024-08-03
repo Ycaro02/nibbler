@@ -17,7 +17,6 @@
 #include "../../include/Nibbler.hpp"
 
 extern "C" {
-
 	/**
 	 * @brief Create a window with SDL2
 	 * @param width The width of the window
@@ -28,7 +27,7 @@ extern "C" {
     SDL_Window* createWindowWrapper(u32 width ,u32 height, const char* title) {
         SDL_Window		*window = NULL;
 		SDL_Renderer	*renderer = NULL;
-		static			 bool isInit = false;
+		static bool		isInit = false;
 		
 		/* Init SDL2 and TTF if not already done */
 		if (!isInit) {
@@ -226,16 +225,23 @@ extern "C" {
 	void *loadTextureWrapper(SDL_Window* window, const char* path) {
 		SDL_Renderer	*renderer = NULL;
 		SDL_Texture		*texture = NULL;
+		SDL_Surface		*surface = NULL;
 
 		renderer = SDL_GetRenderer(window);
 		if (!renderer) {
 			return (nullptr);
 		}
-		texture = SDL_CreateTextureFromSurface(renderer, SDL_LoadBMP(path));
+		surface = SDL_LoadBMP(path);
+		if (!surface) {
+			std::cerr << "SDL_LoadBMP Error: " << SDL_GetError() << std::endl;
+			return (nullptr);
+		}
+		texture = SDL_CreateTextureFromSurface(renderer, surface);
 		if (!texture) {
 			std::cerr << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
 			return (nullptr);
 		}
+		SDL_FreeSurface(surface);
 		return (texture);
 	}
 
@@ -255,8 +261,10 @@ extern "C" {
 	 * @note This function will quit the SDL2 subsystem
 	*/
 	void libDestructorWrapper() {
-		TTF_Quit();
-		SDL_Quit();
+		if (SDL_WasInit(SDL_INIT_VIDEO) != 0) {
+			TTF_Quit();
+			SDL_Quit();
+		}
 	}
 
 
