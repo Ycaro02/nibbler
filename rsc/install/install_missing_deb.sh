@@ -106,8 +106,8 @@ function load_missing_deb_package {
 	load_deb_package ${ubuntu_url}/main/libp/libpciaccess/libpciaccess0_0.17-3build1_amd64.deb libpciaccess0 ${ONLY_LIB}
 	
 	# Lib udev and his dependencies
-	load_deb_package ${ubuntu_url}/main/s/systemd/libudev-dev_255.4-1ubuntu8.2_amd64.deb libudev-dev ${INC_AND_LIB}
-	load_deb_package ${ubuntu_url}/main/s/systemd/libudev1_255.4-1ubuntu8.2_amd64.deb libudev1 ${ONLY_LIB}
+	load_deb_package ${ubuntu_url}/main/s/systemd/libudev-dev_255.4-1ubuntu8.4_amd64.deb libudev-dev ${INC_AND_LIB}
+	load_deb_package ${ubuntu_url}/main/s/systemd/libudev1_255.4-1ubuntu8.4_amd64.deb libudev1 ${ONLY_LIB}
 
 	# x11 
 	# load_deb_package ${ubuntu_url}/main/libx/libx11/libx11-dev_1.8.7-1build1_amd64.deb libx11-dev ${INC_AND_LIB}
